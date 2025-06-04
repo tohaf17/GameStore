@@ -7,7 +7,9 @@ A template for setting up a CI pipeline for the `Gamestore` project.
 - Update Visual Studio to the latest version (2022+).
 - All tests should be consolidated into a single test project.
 - The test project must reference the `coverlet.msbuild` package.
-- The solution must be located in the `Gamestore` folder.
+- The solution must be located in the `Gamestore` folder. Compliance with the following repository structure is mandatory.    
+
+![](AdditionalInfo/RepositoryStructure.png)
 
 ## Installation
 1. Copy the [.gitlab-ci.yml](.gitlab-ci.yml) file to the repository root folder.
