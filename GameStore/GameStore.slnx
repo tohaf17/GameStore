@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="GameStore.Models/GameStore.Models.csproj" Id="7eae395c-0cde-42fc-b895-f4d573071ac2" />
+  <Project Path="GameStoreApi/GameStoreApi.csproj" Id="285043ea-9015-4f59-893d-85884a0636f6" />
+</Solution>
