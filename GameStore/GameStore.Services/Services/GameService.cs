@@ -21,7 +21,7 @@ namespace GameStore.Services.Services
             this.gameRepository = gameRepository;
             this.mapper = mapper;
         }
-        public async Task<Guid> CreateAsync(CreateGameRequest request, CancellationToken token)
+        public async Task<Guid> CreateGameAsync(CreateGameRequest request, CancellationToken token)
         {
             if (string.IsNullOrWhiteSpace(request.Game.Name))
             {
@@ -47,6 +47,32 @@ namespace GameStore.Services.Services
             await gameRepository.AddAsync(game, token);
 
             return game.Id;
+        }
+
+        public async Task<bool> UpdateGameAsync(UpdateGameRequest request, CancellationToken token)
+        {
+            if (request.Game.Id == Guid.Empty)
+            {
+                throw new ArgumentException("Game ID is required");
+            }
+            var existingGame = await gameRepository.GetGameByIdAsync(request.Game.Id, token);
+            if (existingGame == null)
+            {
+                return false;
+            }
+            mapper.Map(request.Game, existingGame);
+            existingGame.GameGenres.Clear();
+            foreach (var genreDto in request.Genres)
+            {
+                existingGame.GameGenres.Add(new GameGenre { GameId=existingGame.Id,GenreId = genreDto.Id });
+            }
+            existingGame.GamePlatforms.Clear();
+            foreach (var platformDto in request.Platforms)
+            {
+                existingGame.GamePlatforms.Add(new GamePlatform { GameId=existingGame.Id,PlatformId = platformDto.Id });
+            }
+            await gameRepository.AddAsync(existingGame, token);
+            return true;
         }
         public async Task<GameDTO> GetGameByKeyAsync(string key,CancellationToken token)
         {

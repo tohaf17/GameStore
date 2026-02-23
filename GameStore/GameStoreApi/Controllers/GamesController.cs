@@ -21,8 +21,16 @@ namespace GameStoreApi.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateGameAsync([FromBody] CreateGameRequest request, CancellationToken token)
         {
-            var id = await gameService.CreateAsync(request, token);
+            var id = await gameService.CreateGameAsync(request, token);
             return CreatedAtAction(nameof(id), new { id, token });
+
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateGameAsync([FromBody] UpdateGameRequest request,CancellationToken token)
+        {
+            var result = await gameService.UpdateGameAsync(request, token);
+            return (result) ? NoContent() : NotFound("Game not found");
 
         }
 
