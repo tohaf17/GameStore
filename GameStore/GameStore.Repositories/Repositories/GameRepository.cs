@@ -29,6 +29,15 @@ namespace GameStore.Repositories.Repositories
                 await dbContext.SaveChangesAsync(token);
             }
         }
+
+        public async Task<IEnumerable<Game>> GetAllGamesAsync(CancellationToken token)
+        {
+            return await dbContext.Games
+                .Include(g => g.GameGenres).ThenInclude(gg => gg.Genre)
+                .Include(g => g.GamePlatforms).ThenInclude(gp => gp.Platform)
+                .ToListAsync(token);
+
+        }
         public async Task<Game> GetGameByKeyAsync(string key,CancellationToken token)
         {
             return await dbContext.Games

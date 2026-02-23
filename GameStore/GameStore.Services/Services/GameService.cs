@@ -130,7 +130,11 @@ namespace GameStore.Services.Services
             }
             return true;
         }
-
+        public async Task<IEnumerable<GameDTO>> GetAllGamesAsync(CancellationToken token)
+        {
+            var games = await gameRepository.GetAllGamesAsync(token);
+            return mapper.Map<List<GameDTO>>(games);
+        }
         private void GenerateGameFile(Game game)
         {
             string fileContent = $"Game ID: {game.Id}\nName: {game.Name}\nDescription: {game.Description}\nGenres: {string.Join(", ", game.GameGenres.Select(g => g.Genre.Name))}\nPlatforms: {string.Join(", ", game.GamePlatforms.Select(p => p.Platform.Type))}";

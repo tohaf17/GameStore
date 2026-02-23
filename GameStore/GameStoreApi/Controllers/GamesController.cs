@@ -51,6 +51,13 @@ namespace GameStoreApi.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetAllGamesAsync(CancellationToken token)
+        {
+            var games = await gameService.GetAllGamesAsync(token);
+            return Ok(games);
+        }
+
+        [HttpGet]
         [Route("{key}")]
         public async Task<IActionResult> GetGameByKeyAsync(string key, CancellationToken token)
         {
