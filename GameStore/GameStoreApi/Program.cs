@@ -1,13 +1,27 @@
-using GameStore.Models;
+using GameStore.Application;
+using GameStore.Infrastructure.Data;
+using GameStore.Repositories.Interfaces;
+using GameStore.Repositories.Repositories;
+using GameStore.Services.Interfaces;
+using GameStore.Services.Services;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Register DbContext (Reads connection string from appsettings.json)
+// 1. Register DbContext 
 builder.Services.AddDbContext<GameStoreContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+//AutoMapper Profile
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AddProfile<MappingProfile>();
+});
 builder.Services.AddControllers();
+
+//Register game service and repository
+builder.Services.AddScoped<IGameService, GameService>();
+builder.Services.AddScoped<IGameRepository, GameRepository>();
 
 // 2. Add Swagger/OpenAPI services
 builder.Services.AddEndpointsApiExplorer();

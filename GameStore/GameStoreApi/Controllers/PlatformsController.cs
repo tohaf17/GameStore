@@ -1,6 +1,8 @@
-﻿using GameStore.Models;
+﻿using GameStore.Infrastructure.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using GameStore.Domain.Entities;
+using GameStore.Infrastructure;
 
 namespace GameStoreApi.Controllers
 {

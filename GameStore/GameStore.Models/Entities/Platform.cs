@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-namespace GameStore.Models
+namespace GameStore.Domain.Entities
 {
     public class Platform
     {

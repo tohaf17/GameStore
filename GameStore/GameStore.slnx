@@ -1,4 +1,8 @@
 <Solution>
-  <Project Path="GameStore.Models/GameStore.Models.csproj" Id="7eae395c-0cde-42fc-b895-f4d573071ac2" />
-  <Project Path="GameStoreApi/GameStoreApi.csproj" Id="285043ea-9015-4f59-893d-85884a0636f6" />
+  <Project Path="GameStore.Application/GameStore.Application.csproj" />
+  <Project Path="GameStore.Infrastructure/GameStore.Infrastructure.csproj" />
+  <Project Path="GameStore.Models/GameStore.Domain.csproj" />
+  <Project Path="GameStore.Repositories/GameStore.Repositories.csproj" />
+  <Project Path="GameStore.Services/GameStore.Services.csproj" />
+  <Project Path="GameStoreApi/GameStoreApi.csproj" />
 </Solution>
