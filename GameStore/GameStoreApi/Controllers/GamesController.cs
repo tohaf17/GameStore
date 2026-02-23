@@ -34,6 +34,14 @@ namespace GameStoreApi.Controllers
 
         }
 
+        [HttpGet]
+        [Route("{id}/files")]
+        public async Task<IActionResult> GetGameFilesAsync(Guid id, CancellationToken token)
+        {
+            var files = await gameService.GetGameFilesAsync(id, token);
+            return (files)?Ok("file downloading is started"):BadRequest("File didn`t create");
+        }
+
         [HttpDelete]
         [Route("{id :guid}")]
         public async Task<IActionResult> DeleteGameAsync(Guid id, CancellationToken token)

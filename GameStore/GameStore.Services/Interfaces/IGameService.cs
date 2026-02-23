@@ -13,5 +13,6 @@ namespace GameStore.Services.Interfaces
         Task<bool> DeleteGameAsync(Guid id, CancellationToken token);
         Task<GameDTO> GetGameByKeyAsync(string key, CancellationToken token);
         Task<GameDTO> GetGameByIdAsync(Guid id, CancellationToken token);
+        Task<bool> GetGameFilesAsync(Guid id, CancellationToken token);
     }
 }

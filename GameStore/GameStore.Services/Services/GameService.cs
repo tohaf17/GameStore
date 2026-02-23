@@ -10,13 +10,13 @@ using System.Text;
 
 namespace GameStore.Services.Services
 {
-    public class GameService:IGameService
+    public class GameService : IGameService
     {
         private readonly IGameRepository gameRepository;
 
-        private readonly IMapper mapper; 
+        private readonly IMapper mapper;
 
-        public GameService(IGameRepository gameRepository,IMapper mapper)
+        public GameService(IGameRepository gameRepository, IMapper mapper)
         {
             this.gameRepository = gameRepository;
             this.mapper = mapper;
@@ -36,12 +36,12 @@ namespace GameStore.Services.Services
 
             foreach (var genreDto in request.Genres)
             {
-                game.GameGenres.Add(new GameGenre { GameId=game.Id,GenreId = genreDto.Id });
+                game.GameGenres.Add(new GameGenre { GameId = game.Id, GenreId = genreDto.Id });
             }
 
             foreach (var platformDto in request.Platforms)
             {
-                game.GamePlatforms.Add(new GamePlatform { GameId=game.Id,PlatformId = platformDto.Id });
+                game.GamePlatforms.Add(new GamePlatform { GameId = game.Id, PlatformId = platformDto.Id });
             }
 
             await gameRepository.AddGameAsync(game, token);
@@ -64,12 +64,12 @@ namespace GameStore.Services.Services
             existingGame.GameGenres.Clear();
             foreach (var genreDto in request.Genres)
             {
-                existingGame.GameGenres.Add(new GameGenre { GameId=existingGame.Id,GenreId = genreDto.Id });
+                existingGame.GameGenres.Add(new GameGenre { GameId = existingGame.Id, GenreId = genreDto.Id });
             }
             existingGame.GamePlatforms.Clear();
             foreach (var platformDto in request.Platforms)
             {
-                existingGame.GamePlatforms.Add(new GamePlatform { GameId=existingGame.Id,PlatformId = platformDto.Id });
+                existingGame.GamePlatforms.Add(new GamePlatform { GameId = existingGame.Id, PlatformId = platformDto.Id });
             }
             await gameRepository.AddGameAsync(existingGame, token);
             return true;
@@ -89,7 +89,7 @@ namespace GameStore.Services.Services
             await gameRepository.DeleteGameAsync(existingGame, token);
             return true;
         }
-        public async Task<GameDTO> GetGameByKeyAsync(string key,CancellationToken token)
+        public async Task<GameDTO> GetGameByKeyAsync(string key, CancellationToken token)
         {
             if (string.IsNullOrWhiteSpace(key))
             {
@@ -103,7 +103,7 @@ namespace GameStore.Services.Services
             return mapper.Map<GameDTO>(game);
         }
 
-        public async Task<GameDTO> GetGameByIdAsync(Guid id,CancellationToken token)
+        public async Task<GameDTO> GetGameByIdAsync(Guid id, CancellationToken token)
         {
             if (id == Guid.Empty)
             {
@@ -115,6 +115,31 @@ namespace GameStore.Services.Services
                 return null;
             }
             return mapper.Map<GameDTO>(game);
+        }
+
+        public async Task<bool> GetGameFilesAsync(Guid id, CancellationToken token)
+        {
+            if (id == Guid.Empty)
+            {
+                throw new ArgumentException("Game ID is required");
+            }
+            var game = await gameRepository.GetGameByIdAsync(id, token);
+            if (game == null)
+            {
+                GenerateGameFile(game);
+            }
+            return true;
+        }
+
+        private void GenerateGameFile(Game game)
+        {
+            string fileContent = $"Game ID: {game.Id}\nName: {game.Name}\nDescription: {game.Description}\nGenres: {string.Join(", ", game.GameGenres.Select(g => g.Genre.Name))}\nPlatforms: {string.Join(", ", game.GamePlatforms.Select(p => p.Platform.Type))}";
+            Directory.CreateDirectory("GameFiles");
+            string filePath = Path.Combine("GameFiles", $"_{game.Name}.txt");
+            using (StreamWriter writer=new StreamWriter(filePath))
+            {
+                writer.Write(fileContent);
+            }
         }
     }
 }
