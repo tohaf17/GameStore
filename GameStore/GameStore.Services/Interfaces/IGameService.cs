@@ -10,5 +10,6 @@ namespace GameStore.Services.Interfaces
     {
         Task<Guid> CreateAsync(CreateGameRequest request, CancellationToken token);
         Task<GameDTO> GetGameByKeyAsync(string key, CancellationToken token);
+        Task<GameDTO> GetGameByIdAsync(Guid id, CancellationToken token);
     }
 }

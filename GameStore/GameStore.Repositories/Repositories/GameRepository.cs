@@ -28,5 +28,12 @@ namespace GameStore.Repositories.Repositories
                 .Include(g => g.GamePlatforms).ThenInclude(gp => gp.Platform)
                 .FirstOrDefaultAsync(g => g.Key == key,token);
         }
+        public async Task<Game> GetGameByIdAsync(Guid id,CancellationToken token)
+        {
+            return await dbContext.Games
+                .Include(g => g.GameGenres).ThenInclude(gg => gg.Genre)
+                .Include(g => g.GamePlatforms).ThenInclude(gp => gp.Platform)
+                .FirstOrDefaultAsync(g => g.Id == id, token);
+        }
     }
 }

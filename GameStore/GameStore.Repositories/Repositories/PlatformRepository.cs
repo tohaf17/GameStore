@@ -16,7 +16,7 @@ namespace GameStore.Repositories.Repositories
             this.dbContext=dbContext;
         }
 
-        public async Task<IEnumerable<Game>> GetGameByPlatformAsync(Guid id, CancellationToken)
+        public async Task<IEnumerable<Game>> GetGameByPlatformAsync(Guid id, CancellationToken token)
         {
             return await dbContext.Games
                 .Include(g => g.GameGenres).ThenInclude(gg => gg.Genre)

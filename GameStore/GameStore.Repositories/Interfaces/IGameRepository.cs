@@ -5,6 +5,7 @@ namespace GameStore.Repositories.Interfaces
     {
         Task AddAsync(Game game, CancellationToken token);
         Task<Game> GetGameByKeyAsync(string key, CancellationToken token);
+        Task<Game> GetGameByIdAsync(Guid id, CancellationToken token);
 
     }
 }

@@ -61,5 +61,19 @@ namespace GameStore.Services.Services
             }
             return mapper.Map<GameDTO>(game);
         }
+
+        public async Task<GameDTO> GetGameByIdAsync(Guid id,CancellationToken token)
+        {
+            if (id == Guid.Empty)
+            {
+                throw new ArgumentException("Game ID is required");
+            }
+            var game = await gameRepository.GetGameByIdAsync(id, token);
+            if (game == null)
+            {
+                return null;
+            }
+            return mapper.Map<GameDTO>(game);
+        }
     }
 }

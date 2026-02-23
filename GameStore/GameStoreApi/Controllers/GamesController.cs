@@ -19,10 +19,10 @@ namespace GameStoreApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateGameAsync([FromBody] CreateGameRequest request,CancellationToken token)
+        public async Task<IActionResult> CreateGameAsync([FromBody] CreateGameRequest request, CancellationToken token)
         {
             var id = await gameService.CreateAsync(request, token);
-            return CreatedAtAction(nameof(id), new { id ,token});
+            return CreatedAtAction(nameof(id), new { id, token });
 
         }
 
@@ -31,8 +31,16 @@ namespace GameStoreApi.Controllers
         public async Task<IActionResult> GetGameByKeyAsync(string key, CancellationToken token)
         {
             var game = await gameService.GetGameByKeyAsync(key, token);
-            return ((game is null )? Ok(game) : NotFound("Game not found"));
+            return ((game is null) ? Ok(game) : NotFound("Game not found"));
         }
-        
+
+        [HttpGet]
+        [Route("{id :guid}")]
+        public async Task<IActionResult> GetGameByIdAsync(Guid id, CancellationToken token)
+        {
+            var game = await gameService.GetGameByIdAsync(id, token);
+            return ((game is null) ? Ok(game) : NotFound("Game not found"));
+
+        }
     }
 }
