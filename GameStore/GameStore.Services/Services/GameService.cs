@@ -44,7 +44,7 @@ namespace GameStore.Services.Services
                 game.GamePlatforms.Add(new GamePlatform { GameId=game.Id,PlatformId = platformDto.Id });
             }
 
-            await gameRepository.AddAsync(game, token);
+            await gameRepository.AddGameAsync(game, token);
 
             return game.Id;
         }
@@ -71,7 +71,22 @@ namespace GameStore.Services.Services
             {
                 existingGame.GamePlatforms.Add(new GamePlatform { GameId=existingGame.Id,PlatformId = platformDto.Id });
             }
-            await gameRepository.AddAsync(existingGame, token);
+            await gameRepository.AddGameAsync(existingGame, token);
+            return true;
+        }
+
+        public async Task<bool> DeleteGameAsync(Guid id, CancellationToken token)
+        {
+            if (id == Guid.Empty)
+            {
+                throw new ArgumentException("Game ID is required");
+            }
+            var existingGame = await gameRepository.GetGameByIdAsync(id, token);
+            if (existingGame == null)
+            {
+                return false;
+            }
+            await gameRepository.DeleteGameAsync(existingGame, token);
             return true;
         }
         public async Task<GameDTO> GetGameByKeyAsync(string key,CancellationToken token)

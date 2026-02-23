@@ -34,6 +34,14 @@ namespace GameStoreApi.Controllers
 
         }
 
+        [HttpDelete]
+        [Route("{id :guid}")]
+        public async Task<IActionResult> DeleteGameAsync(Guid id, CancellationToken token)
+        {
+            var result = await gameService.DeleteGameAsync(id, token);
+            return (result) ? NoContent() : NotFound("Game not found");
+        }
+
         [HttpGet]
         [Route("{key}")]
         public async Task<IActionResult> GetGameByKeyAsync(string key, CancellationToken token)
