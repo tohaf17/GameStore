@@ -6,7 +6,7 @@ namespace GameStore.Domain.Entities
         [Required]
         public Guid Id { get; set; }
         [Required]
-        public string Type { get; set; }
+        public required string Type { get; set; }
 
         public ICollection<GamePlatform> GamePlatforms { get; set; } = new List<GamePlatform>();
     }

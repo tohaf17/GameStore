@@ -7,6 +7,6 @@ namespace GameStore.Application.DTO
     public class PlatformDTO
     {
         public Guid Id { get; set; }
-        public string Type { get; set; }
+        public required string Type { get; set; }
     }
 }

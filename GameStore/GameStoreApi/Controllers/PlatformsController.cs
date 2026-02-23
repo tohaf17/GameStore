@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using GameStore.Domain.Entities;
+using GameStore.Services.Interfaces;
 using GameStore.Infrastructure;
 
 namespace GameStoreApi.Controllers
@@ -10,17 +11,17 @@ namespace GameStoreApi.Controllers
     [ApiController]
     public class PlatformsController : ControllerBase
     {
-        private readonly GameStoreContext dbContext;
-        public PlatformsController(GameStoreContext dbContext)
+        private readonly IPlatformService platformService;
+        public PlatformsController(IPlatformService platformService)
         {
-            this.dbContext= dbContext;
+            this.platformService = platformService;
         }
 
         [HttpGet]
         [Route("{id:guid}/games")]
-        public async Task<IActionResult> GetGame(Guid id)
+        public async Task<IActionResult> GetGameByPlatformAsync(Guid id, CancellationToken token)
         {
-            var games = dbContext.Games.Where(p=>p.Id==id);
+            var games = await platformService.GetGameByPlatformAsync(id, token);
             return Ok(games);
         }
     }
