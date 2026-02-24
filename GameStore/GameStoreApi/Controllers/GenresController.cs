@@ -35,7 +35,17 @@ namespace GameStoreApi.Controllers
             }
             return NoContent();
         }
-
+        [HttpDelete]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> DeleteGenreAsync(Guid id, CancellationToken token)
+        {
+            var result = await genreService.DeleteGenreAsync(id, token);
+            if (!result)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
         [HttpGet]
         [Route("{id:guid}")]
         public async Task<IActionResult> GetGenreByIdAsync(Guid id, CancellationToken token)

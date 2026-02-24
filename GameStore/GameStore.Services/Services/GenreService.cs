@@ -35,6 +35,23 @@ namespace GameStore.Services.Services
 
             return genre.Id;
         }
+        public async Task<bool> DeleteGenreAsync(Guid id, CancellationToken token)
+        {
+            if (id == Guid.Empty)
+            {
+                throw new ArgumentNullException("Id is required");
+            }
+            var existingGenre = await genreRepository.GetGenreByIdAsync(id, token);
+            if (existingGenre is null)
+            {
+                throw new NotFoundException($"Genre with id {id} not found");
+            }
+            if (await genreRepository.DeleteGenreAsync(id, token))
+            {
+                return true;
+            }
+            return false;
+        }
         public async Task<bool> UpdateGenreAsync(UpdateGenreRequest request, CancellationToken token)
         {
             if (request.Genre.Id == Guid.Empty)
