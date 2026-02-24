@@ -25,6 +25,17 @@ namespace GameStoreApi.Controllers
             return CreatedAtAction(nameof(id), new { id, token });
         }
 
+        [HttpPut]
+        public async Task<IActionResult> UpdateGenreAsync([FromBody] UpdateGenreRequest request, CancellationToken token)
+        {
+            var result = await genreService.UpdateGenreAsync(request, token);
+            if (!result)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
+
         [HttpGet]
         [Route("{id:guid}")]
         public async Task<IActionResult> GetGenreByIdAsync(Guid id, CancellationToken token)

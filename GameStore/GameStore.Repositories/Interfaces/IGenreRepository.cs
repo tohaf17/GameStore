@@ -11,6 +11,7 @@ namespace GameStore.Repositories.Interfaces
         Task<IEnumerable<Game>> GetGameByGenreAsync(Guid id, CancellationToken token);
         Task<Genre> GetGenreByIdAsync(Guid id, CancellationToken token);
         Task<IEnumerable<Genre>> GetAllGenresAsync(CancellationToken token);
+        Task<bool> UpdateGenreAsync(Genre genre, CancellationToken token);
         Task<IEnumerable<Genre>> GetGenresByParentIdAsync(Guid id, CancellationToken token);
     }
 }

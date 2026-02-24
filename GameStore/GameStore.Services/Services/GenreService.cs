@@ -35,7 +35,30 @@ namespace GameStore.Services.Services
 
             return genre.Id;
         }
-        
+        public async Task<bool> UpdateGenreAsync(UpdateGenreRequest request, CancellationToken token)
+        {
+            if (request.Genre.Id == Guid.Empty)
+            {
+                throw new ArgumentNullException("Id is required");
+            }
+            if (request is null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+            var existingGenre = await genreRepository.GetGenreByIdAsync(request.Genre.Id, token);
+            if (existingGenre is null)
+            {
+                throw new NotFoundException($"Genre with id {request.Genre.Id} not found");
+            }
+            mapper.Map(request.Genre, existingGenre);
+            if (await genreRepository.UpdateGenreAsync(existingGenre, token))
+            {
+                return true;
+            }
+            return false;
+            
+        }
+
         public async Task<IEnumerable<GenreDTO>> GetGenresByParentIdAsync(Guid id,CancellationToken token)
         {
             if (id == Guid.Empty)
