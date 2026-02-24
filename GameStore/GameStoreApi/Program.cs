@@ -45,7 +45,7 @@ if (app.Environment.IsDevelopment())
     // Enables the Swagger UI (the visual interface)
     app.UseSwaggerUI();
 }
-
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();

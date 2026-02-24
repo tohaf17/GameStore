@@ -5,6 +5,7 @@ using GameStore.Services.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using GameStore.Services.Interfaces;
+using GameStore.Application.Requests;
 namespace GameStoreApi.Controllers
 {
     [Route("api/[controller]")]
@@ -17,7 +18,13 @@ namespace GameStoreApi.Controllers
             this.genreService = genreService;
         }
 
-        
+        [HttpPost]
+        public async Task<IActionResult> CreateGenreAsync([FromBody] CreateGenreRequest request, CancellationToken token)
+        {
+            var id = await genreService.CreateGenreAsync(request, token);
+            return CreatedAtAction(nameof(id), new { id, token });
+        }
+
         [HttpGet]
         [Route("{id:guid}/games")]
         public async Task<IActionResult> GetGameByGenreAsync(Guid id, CancellationToken token)

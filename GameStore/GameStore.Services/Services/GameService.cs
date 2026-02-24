@@ -4,6 +4,7 @@ using GameStore.Application.DTO;
 using GameStore.Domain.Entities;
 using GameStore.Repositories.Interfaces;
 using GameStore.Services.Interfaces;
+using GameStore.Services.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -58,7 +59,7 @@ namespace GameStore.Services.Services
             var existingGame = await gameRepository.GetGameByIdAsync(request.Game.Id, token);
             if (existingGame == null)
             {
-                return false;
+                throw new NotFoundException("Game not found");
             }
             mapper.Map(request.Game, existingGame);
             existingGame.GameGenres.Clear();
@@ -84,7 +85,7 @@ namespace GameStore.Services.Services
             var existingGame = await gameRepository.GetGameByIdAsync(id, token);
             if (existingGame == null)
             {
-                return false;
+                throw new NotFoundException("Game not found");
             }
             await gameRepository.DeleteGameAsync(existingGame, token);
             return true;
@@ -112,7 +113,7 @@ namespace GameStore.Services.Services
             var game = await gameRepository.GetGameByIdAsync(id, token);
             if (game == null)
             {
-                return null;
+                throw new NotFoundException("Game not found");
             }
             return mapper.Map<GameDTO>(game);
         }

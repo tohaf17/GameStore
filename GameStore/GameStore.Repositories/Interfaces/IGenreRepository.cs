@@ -7,6 +7,7 @@ namespace GameStore.Repositories.Interfaces
 {
     public interface IGenreRepository
     {
+        Task AddGenreAsync(Genre genre, CancellationToken token);
         Task<IEnumerable<Game>> GetGameByGenreAsync(Guid id, CancellationToken token);
     }
 }

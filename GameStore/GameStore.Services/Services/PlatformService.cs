@@ -5,6 +5,7 @@ using GameStore.Application.DTO;
 using System.Collections.Generic;
 using GameStore.Repositories.Interfaces;
 using System.Text;
+using GameStore.Services.Exceptions;
 
 namespace GameStore.Services.Services
 {
@@ -28,7 +29,7 @@ namespace GameStore.Services.Services
             var games = await platformRepository.GetGameByPlatformAsync(id, token);
             if(games is null)
             {
-                return null;
+                throw new NotFoundException("Games not found for the given platform id");
             }
             return games.Select(games => mapper.Map<GameDTO>(games));
         }  

@@ -6,6 +6,7 @@ namespace GameStore.Application.DTO
 {
     public class GameDTO
     {
+        public Guid Id { get; set; }
         public required string Name { get; set; }
         public required string Key { get; set; }
         public required string Description { get; set; }

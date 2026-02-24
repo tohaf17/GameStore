@@ -2,9 +2,12 @@
 using GameStore.Application.DTO;
 using GameStore.Repositories.Interfaces;
 using GameStore.Services.Interfaces;
+using GameStore.Domain.Entities;
+using GameStore.Services.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using GameStore.Application.Requests;
 
 namespace GameStore.Services.Services
 {
@@ -19,6 +22,20 @@ namespace GameStore.Services.Services
             this.mapper = mapper;
         }
 
+        public async Task<Guid> CreateGenreAsync(CreateGenreRequest request,CancellationToken token)
+        {
+            if(request is null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+            
+                var genre = mapper.Map<Genre>(request.Genre);
+
+                await genreRepository.AddGenreAsync(genre, token);
+
+                return genre.Id;
+            
+        }
         public async Task<IEnumerable<GameDTO>> GetGameByGenreAsync(Guid id, CancellationToken token)
         {
             if (id == null)
@@ -28,7 +45,7 @@ namespace GameStore.Services.Services
             var games = await genreRepository.GetGameByGenreAsync(id, token);
             if (games is null)
             {
-                return null;
+                throw new NotFoundException($"No games found for genre with id {id}");
             }
             return games.Select(games => mapper.Map<GameDTO>(games));
         }

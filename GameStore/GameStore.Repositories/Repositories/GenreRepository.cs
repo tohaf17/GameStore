@@ -15,7 +15,11 @@ namespace GameStore.Repositories.Repositories
         {
             this.dbContext = dbContext;
         }
-
+        public async Task AddGenreAsync(Genre genre,CancellationToken token)
+        {
+            await dbContext.Genres.AddAsync(genre, token);
+            await dbContext.SaveChangesAsync(token);
+        } 
         public async Task<IEnumerable<Game>> GetGameByGenreAsync(Guid id, CancellationToken token)
         {
             return await dbContext.Games
