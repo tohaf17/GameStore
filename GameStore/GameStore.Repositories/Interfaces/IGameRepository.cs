@@ -7,7 +7,7 @@ namespace GameStore.Repositories.Interfaces
         Task DeleteGameAsync(Game game, CancellationToken token);
         Task<Game> GetGameByKeyAsync(string key, CancellationToken token);
         Task<Game> GetGameByIdAsync(Guid id, CancellationToken token);
-
+        Task<IEnumerable<Genre>> GetGameGenresByKeyAsync(string key, CancellationToken token);
         Task<IEnumerable<Game>> GetAllGamesAsync(CancellationToken token);
     }
 }

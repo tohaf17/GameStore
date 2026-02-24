@@ -26,6 +26,36 @@ namespace GameStoreApi.Controllers
         }
 
         [HttpGet]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> GetGenreByIdAsync(Guid id, CancellationToken token)
+        {
+            var genre = await genreService.GetGenreByIdAsync(id, token);
+            if (genre is null)
+            {
+                return NotFound();
+            }
+            return Ok(genre);
+        }
+
+        [HttpGet]
+        [Route("{id:guid}/genres")]
+        public async Task<IActionResult> GetGenreByParentIdAsync(Guid id, CancellationToken token)
+        {
+            var genre = await genreService.GetGenresByParentIdAsync(id, token);
+            if (genre is null)
+            {
+                return NotFound();
+            }
+            return Ok(genre);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAllGenresAsync(CancellationToken token)
+        {
+            var genres = await genreService.GetAllGenresAsync(token);
+            return Ok(genres);
+        }
+
+        [HttpGet]
         [Route("{id:guid}/games")]
         public async Task<IActionResult> GetGameByGenreAsync(Guid id, CancellationToken token)
         {

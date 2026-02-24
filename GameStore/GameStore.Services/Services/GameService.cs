@@ -49,7 +49,19 @@ namespace GameStore.Services.Services
 
             return game.Id;
         }
-
+        public async Task<IEnumerable<GenreDTO>> GetGameGenresByKeyAsync(string key,CancellationToken token)
+        {
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                throw new ArgumentException("Game key is required");
+            }
+            var genres = await gameRepository.GetGameGenresByKeyAsync(key, token);
+            if (genres == null)
+            {
+                throw new NotFoundException("Game not found");
+            }
+            return genres.Select(g => mapper.Map<GenreDTO>(g)).ToList();
+        }
         public async Task<bool> UpdateGameAsync(UpdateGameRequest request, CancellationToken token)
         {
             if (request.Game.Id == Guid.Empty)

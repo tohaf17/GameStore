@@ -38,6 +38,14 @@ namespace GameStore.Repositories.Repositories
                 .ToListAsync(token);
 
         }
+        public async Task<IEnumerable<Genre>> GetGameGenresByKeyAsync(string key, CancellationToken token)
+        {
+            return await dbContext.Games
+                .Where(g => g.Key == key)
+                .SelectMany(g => g.GameGenres)
+                .Select(gg => gg.Genre)
+                .ToListAsync(token);
+        }
         public async Task<Game> GetGameByKeyAsync(string key,CancellationToken token)
         {
             return await dbContext.Games
