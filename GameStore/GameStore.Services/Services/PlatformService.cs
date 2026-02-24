@@ -51,6 +51,20 @@ namespace GameStore.Services.Services
             await platformRepository.UpdatePlatformAsync(existingPlatform, token);
             return true;
         }
+        public async Task<bool> DeletePlatformAsync(Guid id, CancellationToken token)
+        {
+            if (id == null)
+            {
+                throw new ArgumentNullException("Id is required");
+            }
+            var existingPlatform = await platformRepository.GetPlatformByIdAsync(id, token);
+            if (existingPlatform is null)
+            {
+                return false;
+            }
+            await platformRepository.DeletePlatformAsync(existingPlatform.Id, token);
+            return true;
+        }
         public async Task<PlatformDTO> GetPlatformByIdAsync(Guid id, CancellationToken token)
         {
             if (id == null)

@@ -32,6 +32,14 @@ namespace GameStoreApi.Controllers
             return (result) ? NoContent() : NotFound("Platform not found");
         }
 
+        [HttpDelete]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> DeletePlatformAsync(Guid id, CancellationToken token)
+        {
+            var result = await platformService.DeletePlatformAsync(id, token);
+            return (result) ? NoContent() : NotFound("Platform not found");
+        }
+
         [HttpGet]
         [Route("{id:guid}")]
         public async Task<IActionResult> GetPlatformByIdAsync(Guid id, CancellationToken token)

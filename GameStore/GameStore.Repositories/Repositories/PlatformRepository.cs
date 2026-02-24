@@ -26,6 +26,15 @@ namespace GameStore.Repositories.Repositories
             dbContext.Platforms.Update(platform);
             await dbContext.SaveChangesAsync(token);
         }
+        public async Task DeletePlatformAsync(Guid id, CancellationToken token)
+        {
+            var platform = await dbContext.Platforms.FindAsync(new object[] { id }, token);
+            if (platform != null)
+            {
+                dbContext.Platforms.Remove(platform);
+                await dbContext.SaveChangesAsync(token);
+            }
+        }
         public async Task<IEnumerable<Platform>> GetAllPlatformsAsync(CancellationToken token)
         {
             return await dbContext.Platforms
