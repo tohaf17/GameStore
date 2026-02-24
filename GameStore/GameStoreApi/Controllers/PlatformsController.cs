@@ -25,6 +25,23 @@ namespace GameStoreApi.Controllers
             return CreatedAtAction(nameof(GetPlatformByIdAsync), new { createdPlatformId,token});
         }
         [HttpGet]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> GetPlatformByIdAsync(Guid id, CancellationToken token)
+        {
+            var platform = await platformService.GetPlatformByIdAsync(id, token);
+            if (platform == null)
+            {
+                return NotFound();
+            }
+            return Ok(platform);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAllPlatformsAsync(CancellationToken token)
+        {
+            var platforms = await platformService.GetAllPlatformsAsync(token);
+            return Ok(platforms);
+        }
+        [HttpGet]
         [Route("{id:guid}/games")]
         public async Task<IActionResult> GetGameByPlatformAsync(Guid id, CancellationToken token)
         {

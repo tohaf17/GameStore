@@ -36,6 +36,24 @@ namespace GameStore.Services.Services
 
             return genre.Id;
         }
+        public async Task<PlatformDTO> GetPlatformByIdAsync(Guid id, CancellationToken token)
+        {
+            if (id == null)
+            {
+                throw new ArgumentNullException("Id is required");
+            }
+            var platform = await platformRepository.GetPlatformByIdAsync(id, token);
+            if (platform is null)
+            {
+                throw new NotFoundException("Platform not found for the given id");
+            }
+            return mapper.Map<PlatformDTO>(platform);
+        }
+        public async Task<IEnumerable<PlatformDTO>> GetAllPlatformsAsync(CancellationToken token)
+        {
+            var platforms = await platformRepository.GetAllPlatformsAsync(token);
+            return platforms.Select(platform => mapper.Map<PlatformDTO>(platform));
+        }
         public async Task<IEnumerable<GameDTO>> GetGameByPlatformAsync(Guid id,CancellationToken token)
         {
             if (id==null)

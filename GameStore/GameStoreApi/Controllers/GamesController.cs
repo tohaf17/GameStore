@@ -72,6 +72,15 @@ namespace GameStoreApi.Controllers
             var genres = await gameService.GetGameGenresByKeyAsync(key, token);
             return (genres is null) ? Ok(genres) : NotFound("Game not found");
         }
+
+        [HttpGet]
+        [Route("{key}/platforms")]
+        public async Task<IActionResult> GetGamePlatformsAsync(string key, CancellationToken token)
+        {
+            var platforms = await gameService.GetGamePlatformsByKeyAsync(key, token);
+            return (platforms is null) ? Ok(platforms) : NotFound("Game not found");
+        }
+
         [HttpGet]
         [Route("{id :guid}")]
         public async Task<IActionResult> GetGameByIdAsync(Guid id, CancellationToken token)

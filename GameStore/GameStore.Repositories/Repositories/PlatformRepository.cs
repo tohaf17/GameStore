@@ -21,6 +21,18 @@ namespace GameStore.Repositories.Repositories
             await dbContext.Platforms.AddAsync(platform, token);
             await dbContext.SaveChangesAsync(token);
         }
+        public async Task<IEnumerable<Platform>> GetAllPlatformsAsync(CancellationToken token)
+        {
+            return await dbContext.Platforms
+                .Include(p => p.GamePlatforms).ThenInclude(gp => gp.Game)
+                .ToListAsync(token);
+        }
+        public async Task<Platform> GetPlatformByIdAsync(Guid id,CancellationToken token)
+        {
+            return await dbContext.Platforms
+                .Include(p => p.GamePlatforms).ThenInclude(gp => gp.Game)
+                .FirstOrDefaultAsync(p => p.Id == id, token);
+        }
         public async Task<IEnumerable<Game>> GetGameByPlatformAsync(Guid id, CancellationToken token)
         {
             return await dbContext.Games

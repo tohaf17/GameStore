@@ -62,6 +62,19 @@ namespace GameStore.Services.Services
             }
             return genres.Select(g => mapper.Map<GenreDTO>(g)).ToList();
         }
+        public async Task<IEnumerable<PlatformDTO>> GetGamePlatformsByKeyAsync(string key, CancellationToken token)
+        {
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                throw new ArgumentException("Game key is required");
+            }
+            var platforms = await gameRepository.GetGamePlatformsByKeyAsync(key, token);
+            if (platforms == null)
+            {
+                throw new NotFoundException("Game not found");
+            }
+            return platforms.Select(p => mapper.Map<PlatformDTO>(p)).ToList();
+        }
         public async Task<bool> UpdateGameAsync(UpdateGameRequest request, CancellationToken token)
         {
             if (request.Game.Id == Guid.Empty)
