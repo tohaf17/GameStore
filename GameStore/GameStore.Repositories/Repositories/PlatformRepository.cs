@@ -16,6 +16,11 @@ namespace GameStore.Repositories.Repositories
             this.dbContext=dbContext;
         }
 
+        public async Task AddPlatformAsync(Platform platform, CancellationToken token)
+        {
+            await dbContext.Platforms.AddAsync(platform, token);
+            await dbContext.SaveChangesAsync(token);
+        }
         public async Task<IEnumerable<Game>> GetGameByPlatformAsync(Guid id, CancellationToken token)
         {
             return await dbContext.Games

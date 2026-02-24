@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using GameStore.Domain.Entities;
 using GameStore.Services.Interfaces;
 using GameStore.Infrastructure;
+using GameStore.Application.Requests;
 
 namespace GameStoreApi.Controllers
 {
@@ -17,6 +18,12 @@ namespace GameStoreApi.Controllers
             this.platformService = platformService;
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CreatePlatformAsync([FromBody] CreatePlatformRequest request, CancellationToken token)
+        {
+            var createdPlatformId = await platformService.CreatePlatformAsync(request, token);
+            return CreatedAtAction(nameof(GetPlatformByIdAsync), new { createdPlatformId,token});
+        }
         [HttpGet]
         [Route("{id:guid}/games")]
         public async Task<IActionResult> GetGameByPlatformAsync(Guid id, CancellationToken token)

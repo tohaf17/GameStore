@@ -15,6 +15,7 @@ namespace GameStore.Application
             CreateMap<Game, GameDTO>().ReverseMap();
             CreateMap<Genre,CreateGenreDTO>().ReverseMap();
             CreateMap<Genre, GenreDTO>().ReverseMap();
+            CreateMap<Platform, CreatePlatformDTO>().ReverseMap();
             CreateMap<Platform, PlatformDTO>().ReverseMap();
         }
     }

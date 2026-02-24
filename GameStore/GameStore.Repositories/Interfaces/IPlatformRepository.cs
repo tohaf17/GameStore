@@ -7,6 +7,7 @@ namespace GameStore.Repositories.Interfaces
 {
     public interface IPlatformRepository
     {
+        Task AddPlatformAsync(Platform platform, CancellationToken token);
         Task<IEnumerable<Game>> GetGameByPlatformAsync(Guid id, CancellationToken token);
     }
 }

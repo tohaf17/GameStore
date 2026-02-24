@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
+using GameStore.Application.DTO;
+using GameStore.Domain.Entities;
+using GameStore.Repositories.Interfaces;
+using GameStore.Repositories.Repositories;
+using GameStore.Services.Exceptions;
 using GameStore.Services.Interfaces;
 using System;
-using GameStore.Application.DTO;
+using GameStore.Application.Requests;
 using System.Collections.Generic;
-using GameStore.Repositories.Interfaces;
 using System.Text;
-using GameStore.Services.Exceptions;
 
 namespace GameStore.Services.Services
 {
@@ -20,6 +23,19 @@ namespace GameStore.Services.Services
             this.mapper = mapper;
         }
 
+        public async Task<Guid> CreatePlatformAsync(CreatePlatformRequest request, CancellationToken token)
+        {
+            if (request is null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            var genre = mapper.Map<Platform>(request.Platform);
+
+            await platformRepository.AddPlatformAsync(genre, token);
+
+            return genre.Id;
+        }
         public async Task<IEnumerable<GameDTO>> GetGameByPlatformAsync(Guid id,CancellationToken token)
         {
             if (id==null)
