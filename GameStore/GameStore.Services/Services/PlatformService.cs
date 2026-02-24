@@ -36,6 +36,21 @@ namespace GameStore.Services.Services
 
             return genre.Id;
         }
+        public async Task<bool> UpdatePlatformAsync(UpdatePlatformRequest request, CancellationToken token)
+        {
+            if (request is null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+            var existingPlatform = await platformRepository.GetPlatformByIdAsync(request.Platform.Id, token);
+            if (existingPlatform is null)
+            {
+                return false;
+            }
+            mapper.Map(request.Platform, existingPlatform);
+            await platformRepository.UpdatePlatformAsync(existingPlatform, token);
+            return true;
+        }
         public async Task<PlatformDTO> GetPlatformByIdAsync(Guid id, CancellationToken token)
         {
             if (id == null)

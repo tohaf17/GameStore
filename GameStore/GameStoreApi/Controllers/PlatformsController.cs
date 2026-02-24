@@ -24,6 +24,14 @@ namespace GameStoreApi.Controllers
             var createdPlatformId = await platformService.CreatePlatformAsync(request, token);
             return CreatedAtAction(nameof(GetPlatformByIdAsync), new { createdPlatformId,token});
         }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdatePlatformAsync([FromBody] UpdatePlatformRequest request, CancellationToken token)
+        {
+            var result = await platformService.UpdatePlatformAsync(request, token);
+            return (result) ? NoContent() : NotFound("Platform not found");
+        }
+
         [HttpGet]
         [Route("{id:guid}")]
         public async Task<IActionResult> GetPlatformByIdAsync(Guid id, CancellationToken token)

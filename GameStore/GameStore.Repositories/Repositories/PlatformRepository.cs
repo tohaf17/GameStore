@@ -21,6 +21,11 @@ namespace GameStore.Repositories.Repositories
             await dbContext.Platforms.AddAsync(platform, token);
             await dbContext.SaveChangesAsync(token);
         }
+        public async Task UpdatePlatformAsync(Platform platform, CancellationToken token)
+        {
+            dbContext.Platforms.Update(platform);
+            await dbContext.SaveChangesAsync(token);
+        }
         public async Task<IEnumerable<Platform>> GetAllPlatformsAsync(CancellationToken token)
         {
             return await dbContext.Platforms
