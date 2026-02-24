@@ -1,11 +1,12 @@
+using AutoMapper;
 using GameStore.Application;
 using GameStore.Infrastructure.Data;
 using GameStore.Repositories.Interfaces;
 using GameStore.Repositories.Repositories;
 using GameStore.Services.Interfaces;
 using GameStore.Services.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,15 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.AddProfile<MappingProfile>();
 });
 builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.CacheProfiles.Add("Default1Min",
+        new CacheProfile()
+        {
+            Duration = 60,
+            Location = ResponseCacheLocation.Any
+        });
+});
 
 //Register game service and repository
 builder.Services.AddScoped<IGameService, GameService>();
@@ -46,6 +56,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseMiddleware<ExceptionHandlingMiddleware>();
+app.UseRouting();
+app.UseResponseCaching();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();

@@ -48,6 +48,7 @@ namespace GameStoreApi.Controllers
         }
         [HttpGet]
         [Route("{id:guid}")]
+        [ResponseCache(CacheProfileName = "Default1Min")]
         public async Task<IActionResult> GetGenreByIdAsync(Guid id, CancellationToken token)
         {
             var genre = await genreService.GetGenreByIdAsync(id, token);
@@ -60,6 +61,7 @@ namespace GameStoreApi.Controllers
 
         [HttpGet]
         [Route("{id:guid}/genres")]
+        [ResponseCache(CacheProfileName = "Default1Min")]
         public async Task<IActionResult> GetGenreByParentIdAsync(Guid id, CancellationToken token)
         {
             var genre = await genreService.GetGenresByParentIdAsync(id, token);
@@ -70,6 +72,7 @@ namespace GameStoreApi.Controllers
             return Ok(genre);
         }
         [HttpGet]
+        [ResponseCache(CacheProfileName = "Default1Min")]
         public async Task<IActionResult> GetAllGenresAsync(CancellationToken token)
         {
             var genres = await genreService.GetAllGenresAsync(token);
@@ -78,6 +81,7 @@ namespace GameStoreApi.Controllers
 
         [HttpGet]
         [Route("{id:guid}/games")]
+        [ResponseCache(CacheProfileName = "Default1Min")]
         public async Task<IActionResult> GetGameByGenreAsync(Guid id, CancellationToken token)
         {
             var games = await genreService.GetGameByGenreAsync(id, token);

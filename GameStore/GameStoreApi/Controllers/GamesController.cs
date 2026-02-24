@@ -36,6 +36,7 @@ namespace GameStoreApi.Controllers
 
         [HttpGet]
         [Route("{id}/files")]
+        [ResponseCache(CacheProfileName = "Default1Min")]
         public async Task<IActionResult> GetGameFilesAsync(Guid id, CancellationToken token)
         {
             var files = await gameService.GetGameFilesAsync(id, token);
@@ -51,6 +52,7 @@ namespace GameStoreApi.Controllers
         }
 
         [HttpGet]
+        [ResponseCache(CacheProfileName = "Default1Min")]
         public async Task<IActionResult> GetAllGamesAsync(CancellationToken token)
         {
             var games = await gameService.GetAllGamesAsync(token);
@@ -59,6 +61,7 @@ namespace GameStoreApi.Controllers
 
         [HttpGet]
         [Route("{key}")]
+        [ResponseCache(CacheProfileName = "Default1Min")]
         public async Task<IActionResult> GetGameByKeyAsync(string key, CancellationToken token)
         {
             var game = await gameService.GetGameByKeyAsync(key, token);
@@ -67,6 +70,7 @@ namespace GameStoreApi.Controllers
 
         [HttpGet]
         [Route("{key}/genres")]
+        [ResponseCache(CacheProfileName = "Default1Min")]
         public async Task<IActionResult> GetGameGenresAsync(string key, CancellationToken token)
         {
             var genres = await gameService.GetGameGenresByKeyAsync(key, token);
@@ -75,6 +79,7 @@ namespace GameStoreApi.Controllers
 
         [HttpGet]
         [Route("{key}/platforms")]
+        [ResponseCache(CacheProfileName = "Default1Min")]
         public async Task<IActionResult> GetGamePlatformsAsync(string key, CancellationToken token)
         {
             var platforms = await gameService.GetGamePlatformsByKeyAsync(key, token);
@@ -83,6 +88,7 @@ namespace GameStoreApi.Controllers
 
         [HttpGet]
         [Route("{id :guid}")]
+        [ResponseCache(CacheProfileName = "Default1Min")]
         public async Task<IActionResult> GetGameByIdAsync(Guid id, CancellationToken token)
         {
             var game = await gameService.GetGameByIdAsync(id, token);
