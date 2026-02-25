@@ -11,6 +11,7 @@ namespace GameStore.Repositories.Repositories
     public class GenreRepository:IGenreRepository
     {
         private readonly GameStoreContext dbContext;
+        
         public GenreRepository(GameStoreContext dbContext)
         {
             this.dbContext = dbContext;
@@ -52,7 +53,7 @@ namespace GameStore.Repositories.Repositories
             return await dbContext.Games
                 .Include(g => g.GameGenres).ThenInclude(gg => gg.Genre)
                 .Include(g => g.GamePlatforms).ThenInclude(gp => gp.Platform)
-                .Where(g => g.GameGenres.Any(gg => gg.GenreId == id)).ToListAsync();
+                .Where(g => g.GameGenres.Any(gg => gg.GenreId == id)).ToListAsync(token);
         }
     }
 }

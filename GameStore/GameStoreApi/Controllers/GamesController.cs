@@ -45,7 +45,7 @@ namespace GameStoreApi.Controllers
         }
 
         [HttpDelete]
-        [Route("{id :guid}")]
+        [Route("{id:guid}")]
         public async Task<IActionResult> DeleteGameAsync(Guid id, CancellationToken token)
         {
             var result = await gameService.DeleteGameAsync(id, token);
@@ -88,7 +88,7 @@ namespace GameStoreApi.Controllers
         }
 
         [HttpGet]
-        [Route("{id :guid}")]
+        [Route("{id:guid}")]
         [ResponseCache(CacheProfileName = "Default1Min")]
         public async Task<IActionResult> GetGameByIdAsync(Guid id, CancellationToken token)
         {

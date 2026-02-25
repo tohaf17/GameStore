@@ -52,7 +52,7 @@ namespace GameStore.Repositories.Repositories
             return await dbContext.Games
                 .Include(g => g.GameGenres).ThenInclude(gg => gg.Genre)
                 .Include(g=>g.GamePlatforms).ThenInclude(gp=>gp.Platform)
-                .Where(g=>g.GamePlatforms.Any(gp=>gp.PlatformId==id)).ToListAsync();
+                .Where(g=>g.GamePlatforms.Any(gp=>gp.PlatformId==id)).ToListAsync(token);
         }
     }
 }

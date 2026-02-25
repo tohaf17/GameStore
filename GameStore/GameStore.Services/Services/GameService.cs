@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
-using GameStore.Application.Requests;
+using Azure.Core;
 using GameStore.Application.DTO;
+using GameStore.Application.Requests;
 using GameStore.Domain.Entities;
 using GameStore.Repositories.Interfaces;
-using GameStore.Services.Interfaces;
+using GameStore.Repositories.Repositories;
 using GameStore.Services.Exceptions;
+using GameStore.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,7 +16,6 @@ namespace GameStore.Services.Services
     public class GameService : IGameService
     {
         private readonly IGameRepository gameRepository;
-        private const string NotFoundMessage = "Game not found";
 
         private readonly IMapper mapper;
 
@@ -23,12 +24,12 @@ namespace GameStore.Services.Services
             this.gameRepository = gameRepository;
             this.mapper = mapper;
         }
+        
         public async Task<Guid> CreateGameAsync(CreateGameRequest request, CancellationToken token)
         {
-            if (string.IsNullOrWhiteSpace(request.Game.Name))
-            {
-                throw new ArgumentException("Game name is required");
-            }
+
+            ArgumentNullException.ThrowIfNull(request);
+            Validation.ValidateString(request.Game?.Name, nameof(request.Game.Name));
 
             var game = mapper.Map<Game>(request.Game);
             if (string.IsNullOrWhiteSpace(game.Key))
@@ -40,7 +41,7 @@ namespace GameStore.Services.Services
             {
                 game.GameGenres.Add(new GameGenre { GameId = game.Id, GenreId = genreDto.Id });
             }
-
+            
             foreach (var platformDto in request.Platforms)
             {
                 game.GamePlatforms.Add(new GamePlatform { GameId = game.Id, PlatformId = platformDto.Id });
@@ -52,43 +53,34 @@ namespace GameStore.Services.Services
         }
         public async Task<IEnumerable<GenreDTO>> GetGameGenresByKeyAsync(string key,CancellationToken token)
         {
-            if (string.IsNullOrWhiteSpace(key))
-            {
-                throw new ArgumentException("Game key is required");
-            }
+            Validation.ValidateString(key, nameof(key));
+
             var genres = await gameRepository.GetGameGenresByKeyAsync(key, token);
-            if (genres == null)
-            {
-                throw new NotFoundException(NotFoundMessage);
-            }
-            return genres.Select(g => mapper.Map<GenreDTO>(g)).ToList();
+            Validation.ValidateNull(genres);
+
+            return mapper.Map<IEnumerable<GenreDTO>>(genres);
         }
         public async Task<IEnumerable<PlatformDTO>> GetGamePlatformsByKeyAsync(string key, CancellationToken token)
         {
-            if (string.IsNullOrWhiteSpace(key))
-            {
-                throw new ArgumentException("Game key is required");
-            }
+            Validation.ValidateString(key, nameof(key));
+
             var platforms = await gameRepository.GetGamePlatformsByKeyAsync(key, token);
-            if (platforms == null)
-            {
-                throw new NotFoundException(NotFoundMessage);
-            }
-            return platforms.Select(p => mapper.Map<PlatformDTO>(p)).ToList();
+            Validation.ValidateNull(platforms);
+
+            return mapper.Map<IEnumerable<PlatformDTO>>(platforms);
         }
         public async Task<bool> UpdateGameAsync(UpdateGameRequest request, CancellationToken token)
         {
-            if (request.Game.Id == Guid.Empty)
-            {
-                throw new ArgumentException($"Game ID {request.Game.Id} is required");
-            }
+
+            ArgumentNullException.ThrowIfNull(request);
+            Validation.ValidateGuid(request.Game.Id, nameof(request.Game.Id));
+
             var existingGame = await gameRepository.GetGameByIdAsync(request.Game.Id, token);
-            if (existingGame == null)
-            {
-                throw new NotFoundException(NotFoundMessage);
-            }
+            Validation.ValidateNull(existingGame);
+
             mapper.Map(request.Game, existingGame);
-            existingGame.GameGenres.Clear();
+
+            existingGame!.GameGenres.Clear();
             foreach (var genreDto in request.Genres)
             {
                 existingGame.GameGenres.Add(new GameGenre { GameId = existingGame.Id, GenreId = genreDto.Id });
@@ -104,63 +96,46 @@ namespace GameStore.Services.Services
 
         public async Task<bool> DeleteGameAsync(Guid id, CancellationToken token)
         {
-            if (id == Guid.Empty)
-            {
-                throw new ArgumentException("Game ID is required");
-            }
+            Validation.ValidateGuid(id, nameof(id));
+
             var existingGame = await gameRepository.GetGameByIdAsync(id, token);
-            if (existingGame == null)
-            {
-                throw new NotFoundException(NotFoundMessage);
-            }
-            await gameRepository.DeleteGameAsync(existingGame, token);
+            Validation.ValidateNull(existingGame);
+
+            await gameRepository.DeleteGameAsync(existingGame!, token);
             return true;
         }
         public async Task<GameDTO?> GetGameByKeyAsync(string key, CancellationToken token)
         {
-            if (string.IsNullOrWhiteSpace(key))
-            {
-                throw new ArgumentException("Game key is required");
-            }
-            Game? game = await gameRepository.GetGameByKeyAsync(key, token);
-            if (game == null)
-            {
-                return null;
-            }
-            return mapper.Map<GameDTO>(game);
+            Validation.ValidateString(key, nameof(key));
+
+            var game = await gameRepository.GetGameByKeyAsync(key, token);
+            return game == null ? null : mapper.Map<GameDTO>(game);
         }
 
         public async Task<GameDTO> GetGameByIdAsync(Guid id, CancellationToken token)
         {
-            if (id == Guid.Empty)
-            {
-                throw new ArgumentException("Game ID is required");
-            }
+            Validation.ValidateGuid(id, nameof(id));
+
             var game = await gameRepository.GetGameByIdAsync(id, token);
-            if (game == null)
-            {
-                throw new NotFoundException(NotFoundMessage);
-            }
+            Validation.ValidateNull(game);
+
             return mapper.Map<GameDTO>(game);
         }
 
         public async Task<bool> GetGameFilesAsync(Guid id, CancellationToken token)
         {
-            if (id == Guid.Empty)
-            {
-                throw new ArgumentException("Game ID is required");
-            }
+            Validation.ValidateGuid(id, nameof(id));
+
             var game = await gameRepository.GetGameByIdAsync(id, token);
-            if (game == null)
-            {
-                GenerateGameFile(game);
-            }
+            Validation.ValidateNull(game);
+
+            GenerateGameFile(game!);
             return true;
         }
         public async Task<IEnumerable<GameDTO>> GetAllGamesAsync(CancellationToken token)
         {
             var games = await gameRepository.GetAllGamesAsync(token);
-            return mapper.Map<List<GameDTO>>(games);
+            return mapper.Map<IEnumerable<GameDTO>>(games);
         }
         private static void GenerateGameFile(Game? game)
         {

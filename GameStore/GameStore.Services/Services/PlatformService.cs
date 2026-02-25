@@ -12,7 +12,7 @@ using System.Text;
 
 namespace GameStore.Services.Services
 {
-    public class PlatformService:IPlatformService
+    public class PlatformService : IPlatformService
     {
         private readonly IPlatformRepository platformRepository;
         private readonly IMapper mapper;
@@ -23,78 +23,75 @@ namespace GameStore.Services.Services
             this.mapper = mapper;
         }
 
+        
+
         public async Task<Guid> CreatePlatformAsync(CreatePlatformRequest request, CancellationToken token)
         {
-            if (request is null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
+            ArgumentNullException.ThrowIfNull(request);
 
-            var genre = mapper.Map<Platform>(request.Platform);
+            var platform = mapper.Map<Platform>(request.Platform);
 
-            await platformRepository.AddPlatformAsync(genre, token);
+            await platformRepository.AddPlatformAsync(platform, token);
 
-            return genre.Id;
+            return platform.Id;
         }
+
         public async Task<bool> UpdatePlatformAsync(UpdatePlatformRequest request, CancellationToken token)
         {
-            if (request is null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
+            ArgumentNullException.ThrowIfNull(request);
+            Validation.ValidateGuid(request.Platform.Id, nameof(request.Platform.Id));
+
             var existingPlatform = await platformRepository.GetPlatformByIdAsync(request.Platform.Id, token);
+
             if (existingPlatform is null)
             {
                 return false;
             }
+
             mapper.Map(request.Platform, existingPlatform);
             await platformRepository.UpdatePlatformAsync(existingPlatform, token);
             return true;
         }
+
         public async Task<bool> DeletePlatformAsync(Guid id, CancellationToken token)
         {
-            if (id == Guid.Empty)
-            {
-                throw new ArgumentNullException($"Id {id} is required");
-            }
+            Validation.ValidateGuid(id, nameof(id));
+
             var existingPlatform = await platformRepository.GetPlatformByIdAsync(id, token);
+
             if (existingPlatform is null)
             {
                 return false;
             }
+
             await platformRepository.DeletePlatformAsync(existingPlatform.Id, token);
             return true;
         }
+
         public async Task<PlatformDTO> GetPlatformByIdAsync(Guid id, CancellationToken token)
         {
-            if (id == Guid.Empty)
-            {
-                throw new ArgumentNullException($"Id {id} is required");
-            }
+            Validation.ValidateGuid(id, nameof(id));
+
             var platform = await platformRepository.GetPlatformByIdAsync(id, token);
-            if (platform is null)
-            {
-                throw new NotFoundException("Platform not found for the given id");
-            }
+            Validation.ValidateNull(platform);
+
             return mapper.Map<PlatformDTO>(platform);
         }
+
         public async Task<IEnumerable<PlatformDTO>> GetAllPlatformsAsync(CancellationToken token)
         {
             var platforms = await platformRepository.GetAllPlatformsAsync(token);
             return platforms.Select(platform => mapper.Map<PlatformDTO>(platform));
         }
-        public async Task<IEnumerable<GameDTO>> GetGameByPlatformAsync(Guid id,CancellationToken token)
+
+        public async Task<IEnumerable<GameDTO>> GetGameByPlatformAsync(Guid id, CancellationToken token)
         {
-            if (id==Guid.Empty)
-            {
-                throw new ArgumentNullException($"Id {id} is required");
-            }
+            Validation.ValidateGuid(id, nameof(id));
+
             var games = await platformRepository.GetGameByPlatformAsync(id, token);
-            if(games is null)
-            {
-                throw new NotFoundException("Games not found for the given platform id");
-            }
-            return games.Select(games => mapper.Map<GameDTO>(games));
-        }  
+            Validation.ValidateNull(games);
+
+            return games.Select(game => mapper.Map<GameDTO>(game));
+        }
     }
 }
