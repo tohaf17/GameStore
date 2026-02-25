@@ -1,8 +1,0 @@
-<Solution>
-  <Project Path="GameStore.Application/GameStore.Application.csproj" />
-  <Project Path="GameStore.Infrastructure/GameStore.Infrastructure.csproj" />
-  <Project Path="GameStore.Models/GameStore.Domain.csproj" />
-  <Project Path="GameStore.Repositories/GameStore.Repositories.csproj" />
-  <Project Path="GameStore.Services/GameStore.Services.csproj" />
-  <Project Path="GameStoreApi/GameStoreApi.csproj" />
-</Solution>
