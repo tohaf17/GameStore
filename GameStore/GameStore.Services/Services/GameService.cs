@@ -14,6 +14,7 @@ namespace GameStore.Services.Services
     public class GameService : IGameService
     {
         private readonly IGameRepository gameRepository;
+        private const string NotFoundMessage = "Game not found";
 
         private readonly IMapper mapper;
 
@@ -58,7 +59,7 @@ namespace GameStore.Services.Services
             var genres = await gameRepository.GetGameGenresByKeyAsync(key, token);
             if (genres == null)
             {
-                throw new NotFoundException("Game not found");
+                throw new NotFoundException(NotFoundMessage);
             }
             return genres.Select(g => mapper.Map<GenreDTO>(g)).ToList();
         }
@@ -71,7 +72,7 @@ namespace GameStore.Services.Services
             var platforms = await gameRepository.GetGamePlatformsByKeyAsync(key, token);
             if (platforms == null)
             {
-                throw new NotFoundException("Game not found");
+                throw new NotFoundException(NotFoundMessage);
             }
             return platforms.Select(p => mapper.Map<PlatformDTO>(p)).ToList();
         }
@@ -79,12 +80,12 @@ namespace GameStore.Services.Services
         {
             if (request.Game.Id == Guid.Empty)
             {
-                throw new ArgumentException("Game ID is required");
+                throw new ArgumentException($"Game ID {request.Game.Id} is required");
             }
             var existingGame = await gameRepository.GetGameByIdAsync(request.Game.Id, token);
             if (existingGame == null)
             {
-                throw new NotFoundException("Game not found");
+                throw new NotFoundException(NotFoundMessage);
             }
             mapper.Map(request.Game, existingGame);
             existingGame.GameGenres.Clear();
@@ -110,18 +111,18 @@ namespace GameStore.Services.Services
             var existingGame = await gameRepository.GetGameByIdAsync(id, token);
             if (existingGame == null)
             {
-                throw new NotFoundException("Game not found");
+                throw new NotFoundException(NotFoundMessage);
             }
             await gameRepository.DeleteGameAsync(existingGame, token);
             return true;
         }
-        public async Task<GameDTO> GetGameByKeyAsync(string key, CancellationToken token)
+        public async Task<GameDTO>? GetGameByKeyAsync(string key, CancellationToken token)
         {
             if (string.IsNullOrWhiteSpace(key))
             {
                 throw new ArgumentException("Game key is required");
             }
-            var game = await gameRepository.GetGameByKeyAsync(key, token);
+            Game? game = await gameRepository.GetGameByKeyAsync(key, token);
             if (game == null)
             {
                 return null;
@@ -138,7 +139,7 @@ namespace GameStore.Services.Services
             var game = await gameRepository.GetGameByIdAsync(id, token);
             if (game == null)
             {
-                throw new NotFoundException("Game not found");
+                throw new NotFoundException(NotFoundMessage);
             }
             return mapper.Map<GameDTO>(game);
         }
@@ -161,7 +162,7 @@ namespace GameStore.Services.Services
             var games = await gameRepository.GetAllGamesAsync(token);
             return mapper.Map<List<GameDTO>>(games);
         }
-        private void GenerateGameFile(Game game)
+        private static void GenerateGameFile(Game? game)
         {
             string fileContent = $"Game ID: {game.Id}\nName: {game.Name}\nDescription: {game.Description}\nGenres: {string.Join(", ", game.GameGenres.Select(g => g.Genre.Name))}\nPlatforms: {string.Join(", ", game.GamePlatforms.Select(p => p.Platform.Type))}";
             Directory.CreateDirectory("GameFiles");

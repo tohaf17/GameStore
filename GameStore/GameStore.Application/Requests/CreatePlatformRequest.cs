@@ -7,6 +7,6 @@ namespace GameStore.Application.Requests
 {
     public class CreatePlatformRequest
     {
-        public CreatePlatformDTO Platform { get; set; }
+        public required CreatePlatformDto Platform { get; set; }
     }
 }

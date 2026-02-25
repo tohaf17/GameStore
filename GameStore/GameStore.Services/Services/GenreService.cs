@@ -39,7 +39,7 @@ namespace GameStore.Services.Services
         {
             if (id == Guid.Empty)
             {
-                throw new ArgumentNullException("Id is required");
+                throw new ArgumentNullException($"Id {id} is required");
             }
             var existingGenre = await genreRepository.GetGenreByIdAsync(id, token);
             if (existingGenre is null)
@@ -56,7 +56,7 @@ namespace GameStore.Services.Services
         {
             if (request.Genre.Id == Guid.Empty)
             {
-                throw new ArgumentNullException("Id is required");
+                throw new ArgumentNullException($"Id {request.Genre.Id} is required");
             }
             if (request is null)
             {
@@ -80,7 +80,7 @@ namespace GameStore.Services.Services
         {
             if (id == Guid.Empty)
             {
-                throw new ArgumentNullException("Id is required");
+                throw new ArgumentNullException($"Id {id} is required");
             }
             var genres = await genreRepository.GetGenresByParentIdAsync(id, token);
             if(genres is null)
@@ -93,7 +93,7 @@ namespace GameStore.Services.Services
         {
             if (id == Guid.Empty)
             {
-                throw new ArgumentNullException("Id is required");
+                throw new ArgumentNullException($"Id {id} is required");
             }
             var genre = await genreRepository.GetGenreByIdAsync(id, token);
             if(genre is null)
@@ -116,7 +116,7 @@ namespace GameStore.Services.Services
         {
             if (id == Guid.Empty)
             {
-                throw new ArgumentNullException("Id is required");
+                throw new ArgumentNullException($"Id {id} is required");
             }
             var games = await genreRepository.GetGameByGenreAsync(id, token);
             if (games is null)

@@ -54,7 +54,7 @@ namespace GameStore.Repositories.Repositories
                 .Select(gp => gp.Platform)
                 .ToListAsync(token);
         }
-        public async Task<Game> GetGameByKeyAsync(string key,CancellationToken token)
+        public async Task<Game>? GetGameByKeyAsync(string key,CancellationToken token)
         {
             return await dbContext.Games
                 .Include(g => g.GameGenres).ThenInclude(gg => gg.Genre)

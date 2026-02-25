@@ -53,9 +53,9 @@ namespace GameStore.Services.Services
         }
         public async Task<bool> DeletePlatformAsync(Guid id, CancellationToken token)
         {
-            if (id == null)
+            if (id == Guid.Empty)
             {
-                throw new ArgumentNullException("Id is required");
+                throw new ArgumentNullException($"Id {id} is required");
             }
             var existingPlatform = await platformRepository.GetPlatformByIdAsync(id, token);
             if (existingPlatform is null)
@@ -67,9 +67,9 @@ namespace GameStore.Services.Services
         }
         public async Task<PlatformDTO> GetPlatformByIdAsync(Guid id, CancellationToken token)
         {
-            if (id == null)
+            if (id == Guid.Empty)
             {
-                throw new ArgumentNullException("Id is required");
+                throw new ArgumentNullException($"Id {id} is required");
             }
             var platform = await platformRepository.GetPlatformByIdAsync(id, token);
             if (platform is null)
@@ -85,9 +85,9 @@ namespace GameStore.Services.Services
         }
         public async Task<IEnumerable<GameDTO>> GetGameByPlatformAsync(Guid id,CancellationToken token)
         {
-            if (id==null)
+            if (id==Guid.Empty)
             {
-                throw new ArgumentNullException("Id is required");
+                throw new ArgumentNullException($"Id {id} is required");
             }
             var games = await platformRepository.GetGameByPlatformAsync(id, token);
             if(games is null)

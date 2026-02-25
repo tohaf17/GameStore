@@ -4,8 +4,8 @@ using System.Text;
 
 namespace GameStore.Application.DTO
 {
-    public class CreatePlatformDTO
+    public class CreatePlatformDto
     {
-        public string Type { get; set; }
+        public required string Type { get; set; }
     }
 }

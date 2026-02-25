@@ -7,6 +7,7 @@ using GameStore.Services.Interfaces;
 using GameStore.Services.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using GameStoreApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -62,4 +63,4 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();

@@ -4,9 +4,9 @@ using System.Text;
 
 namespace GameStore.Application.DTO
 {
-    public class CreateGenreDTO
+    public class CreateGenreDto
     {
-        public string Name { get; set; }
+        public required string Name { get; set; }
         public Guid? ParentId { get; set; }
     }
 }

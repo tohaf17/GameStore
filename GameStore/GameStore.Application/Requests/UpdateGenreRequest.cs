@@ -7,7 +7,7 @@ namespace GameStore.Application.Requests
 {
     public class UpdateGenreRequest
     {
-        public GenreDTO Genre { get; set; }
+        public required GenreDTO Genre { get; set; }
 
     }
 }

@@ -5,7 +5,7 @@ namespace GameStore.Repositories.Interfaces
     {
         Task AddGameAsync(Game game, CancellationToken token);
         Task DeleteGameAsync(Game game, CancellationToken token);
-        Task<Game> GetGameByKeyAsync(string key, CancellationToken token);
+        Task<Game>? GetGameByKeyAsync(string key, CancellationToken token);
         Task<Game> GetGameByIdAsync(Guid id, CancellationToken token);
         Task<IEnumerable<Genre>> GetGameGenresByKeyAsync(string key, CancellationToken token);
         Task<IEnumerable<Platform>> GetGamePlatformsByKeyAsync(string key, CancellationToken token);
