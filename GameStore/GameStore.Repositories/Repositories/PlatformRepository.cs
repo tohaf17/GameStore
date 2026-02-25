@@ -41,7 +41,7 @@ namespace GameStore.Repositories.Repositories
                 .Include(p => p.GamePlatforms).ThenInclude(gp => gp.Game)
                 .ToListAsync(token);
         }
-        public async Task<Platform> GetPlatformByIdAsync(Guid id,CancellationToken token)
+        public async Task<Platform?> GetPlatformByIdAsync(Guid id,CancellationToken token)
         {
             return await dbContext.Platforms
                 .Include(p => p.GamePlatforms).ThenInclude(gp => gp.Game)

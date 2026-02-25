@@ -116,7 +116,7 @@ namespace GameStore.Services.Services
             await gameRepository.DeleteGameAsync(existingGame, token);
             return true;
         }
-        public async Task<GameDTO>? GetGameByKeyAsync(string key, CancellationToken token)
+        public async Task<GameDTO?> GetGameByKeyAsync(string key, CancellationToken token)
         {
             if (string.IsNullOrWhiteSpace(key))
             {
@@ -164,9 +164,9 @@ namespace GameStore.Services.Services
         }
         private static void GenerateGameFile(Game? game)
         {
-            string fileContent = $"Game ID: {game.Id}\nName: {game.Name}\nDescription: {game.Description}\nGenres: {string.Join(", ", game.GameGenres.Select(g => g.Genre.Name))}\nPlatforms: {string.Join(", ", game.GamePlatforms.Select(p => p.Platform.Type))}";
+            string fileContent = $"Game ID: {game?.Id}\nName: {game?.Name}\nDescription: {game?.Description}\nGenres: {string.Join(", ", game?.GameGenres?.Select(g => g.Genre.Name) ?? Array.Empty<string>())}\nPlatforms: {string.Join(", ", game?.GamePlatforms?.Select(p => p.Platform.Type)??Array.Empty<string>())}";
             Directory.CreateDirectory("GameFiles");
-            string filePath = Path.Combine("GameFiles", $"_{game.Name}.txt");
+            string filePath = Path.Combine("GameFiles", $"_{game?.Name}.txt");
             using (StreamWriter writer=new StreamWriter(filePath))
             {
                 writer.Write(fileContent);

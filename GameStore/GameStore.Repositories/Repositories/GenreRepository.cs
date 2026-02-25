@@ -35,7 +35,7 @@ namespace GameStore.Repositories.Repositories
             await dbContext.SaveChangesAsync(token);
             return true;
         }
-        public async Task<Genre> GetGenreByIdAsync(Guid id, CancellationToken token)
+        public async Task<Genre?> GetGenreByIdAsync(Guid id, CancellationToken token)
         {
             return await dbContext.Genres.FindAsync(new object[] { id }, token);
         }

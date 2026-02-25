@@ -12,7 +12,7 @@ namespace GameStore.Services.Interfaces
         Task<bool> UpdateGameAsync(UpdateGameRequest request, CancellationToken token);
         Task<bool> DeleteGameAsync(Guid id, CancellationToken token);
         Task<IEnumerable<GameDTO>> GetAllGamesAsync(CancellationToken token);
-        Task<GameDTO>? GetGameByKeyAsync(string key, CancellationToken token);
+        Task<GameDTO?> GetGameByKeyAsync(string key, CancellationToken token);
         Task<IEnumerable<GenreDTO>> GetGameGenresByKeyAsync(string key, CancellationToken token);
         Task<IEnumerable<PlatformDTO>> GetGamePlatformsByKeyAsync(string key, CancellationToken token);
         Task<GameDTO> GetGameByIdAsync(Guid id, CancellationToken token);
