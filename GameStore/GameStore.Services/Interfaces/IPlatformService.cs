@@ -11,8 +11,8 @@ namespace GameStore.Services.Interfaces
         Task<Guid> CreatePlatformAsync(CreatePlatformRequest request, CancellationToken token);
         Task<bool> UpdatePlatformAsync(UpdatePlatformRequest request, CancellationToken token);
         Task<bool> DeletePlatformAsync(Guid id, CancellationToken token);
-        Task<PlatformDTO> GetPlatformByIdAsync(Guid id, CancellationToken token);
-        Task<IEnumerable<PlatformDTO>> GetAllPlatformsAsync(CancellationToken token);
-        Task<IEnumerable<GameDTO>> GetGameByPlatformAsync(Guid id, CancellationToken token);
+        Task<PlatformDto> GetPlatformByIdAsync(Guid id, CancellationToken token);
+        Task<IEnumerable<PlatformDto>> GetAllPlatformsAsync(CancellationToken token);
+        Task<IEnumerable<GameDto>> GetGameByPlatformAsync(Guid id, CancellationToken token);
     }
 }

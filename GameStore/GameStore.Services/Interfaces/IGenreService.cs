@@ -12,10 +12,10 @@ namespace GameStore.Services.Interfaces
     {
         Task<Guid> CreateGenreAsync(CreateGenreRequest request, CancellationToken token);
         Task<bool> UpdateGenreAsync(UpdateGenreRequest request, CancellationToken token);
-        Task<IEnumerable<GameDTO>> GetGameByGenreAsync(Guid id, CancellationToken token);
-        Task<GenreDTO> GetGenreByIdAsync(Guid id, CancellationToken token);
+        Task<IEnumerable<GameDto>> GetGameByGenreAsync(Guid id, CancellationToken token);
+        Task<GenreDto> GetGenreByIdAsync(Guid id, CancellationToken token);
         Task<bool> DeleteGenreAsync(Guid id, CancellationToken token);
-        Task<IEnumerable<GenreDTO>> GetGenresByParentIdAsync(Guid id, CancellationToken token);
-        Task<IEnumerable<GenreDTO>> GetAllGenresAsync(CancellationToken token);
+        Task<IEnumerable<GenreDto>> GetGenresByParentIdAsync(Guid id, CancellationToken token);
+        Task<IEnumerable<GenreDto>> GetAllGenresAsync(CancellationToken token);
     }
 }

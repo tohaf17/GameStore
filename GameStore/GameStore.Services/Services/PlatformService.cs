@@ -23,12 +23,16 @@ namespace GameStore.Services.Services
             this.mapper = mapper;
         }
 
-        
 
-        public async Task<Guid> CreatePlatformAsync(CreatePlatformRequest request, CancellationToken token)
+
+        public Task<Guid> CreatePlatformAsync(CreatePlatformRequest request, CancellationToken token)
         {
             ArgumentNullException.ThrowIfNull(request);
+            return CreatePlatformInternalAsync(request, token);
+        }
 
+        private async Task<Guid> CreatePlatformInternalAsync(CreatePlatformRequest request, CancellationToken token)
+        {
             var platform = mapper.Map<Platform>(request.Platform);
 
             await platformRepository.AddPlatformAsync(platform, token);
@@ -36,11 +40,15 @@ namespace GameStore.Services.Services
             return platform.Id;
         }
 
-        public async Task<bool> UpdatePlatformAsync(UpdatePlatformRequest request, CancellationToken token)
+        public Task<bool> UpdatePlatformAsync(UpdatePlatformRequest request, CancellationToken token)
         {
             ArgumentNullException.ThrowIfNull(request);
             Validation.ValidateGuid(request.Platform.Id, nameof(request.Platform.Id));
+            return UpdatePlatformInternalAsync(request, token);
+        }
 
+        private async Task<bool> UpdatePlatformInternalAsync(UpdatePlatformRequest request, CancellationToken token)
+        {
             var existingPlatform = await platformRepository.GetPlatformByIdAsync(request.Platform.Id, token);
 
             if (existingPlatform is null)
@@ -50,6 +58,7 @@ namespace GameStore.Services.Services
 
             mapper.Map(request.Platform, existingPlatform);
             await platformRepository.UpdatePlatformAsync(existingPlatform, token);
+
             return true;
         }
 
@@ -68,30 +77,30 @@ namespace GameStore.Services.Services
             return true;
         }
 
-        public async Task<PlatformDTO> GetPlatformByIdAsync(Guid id, CancellationToken token)
+        public async Task<PlatformDto> GetPlatformByIdAsync(Guid id, CancellationToken token)
         {
             Validation.ValidateGuid(id, nameof(id));
 
             var platform = await platformRepository.GetPlatformByIdAsync(id, token);
             Validation.ValidateNull(platform);
 
-            return mapper.Map<PlatformDTO>(platform);
+            return mapper.Map<PlatformDto>(platform);
         }
 
-        public async Task<IEnumerable<PlatformDTO>> GetAllPlatformsAsync(CancellationToken token)
+        public async Task<IEnumerable<PlatformDto>> GetAllPlatformsAsync(CancellationToken token)
         {
             var platforms = await platformRepository.GetAllPlatformsAsync(token);
-            return platforms.Select(platform => mapper.Map<PlatformDTO>(platform));
+            return platforms.Select(platform => mapper.Map<PlatformDto>(platform));
         }
 
-        public async Task<IEnumerable<GameDTO>> GetGameByPlatformAsync(Guid id, CancellationToken token)
+        public async Task<IEnumerable<GameDto>> GetGameByPlatformAsync(Guid id, CancellationToken token)
         {
             Validation.ValidateGuid(id, nameof(id));
 
             var games = await platformRepository.GetGameByPlatformAsync(id, token);
             Validation.ValidateNull(games);
 
-            return games.Select(game => mapper.Map<GameDTO>(game));
+            return games.Select(game => mapper.Map<GameDto>(game));
         }
     }
 }

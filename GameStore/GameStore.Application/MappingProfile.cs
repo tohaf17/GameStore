@@ -12,11 +12,11 @@ namespace GameStore.Application
         public MappingProfile()
         {
             CreateMap<Game, CreateGameDto>().ReverseMap();
-            CreateMap<Game, GameDTO>().ReverseMap();
+            CreateMap<Game, GameDto>().ReverseMap();
             CreateMap<Genre,CreateGenreDto>().ReverseMap();
-            CreateMap<Genre, GenreDTO>().ReverseMap();
+            CreateMap<Genre, GenreDto>().ReverseMap();
             CreateMap<Platform, CreatePlatformDto>().ReverseMap();
-            CreateMap<Platform, PlatformDTO>().ReverseMap();
+            CreateMap<Platform, PlatformDto>().ReverseMap();
         }
     }
 }

@@ -22,10 +22,15 @@ namespace GameStore.Services.Services
             this.mapper = mapper;
         }
 
-        public async Task<Guid> CreateGenreAsync(CreateGenreRequest request, CancellationToken token)
+        public Task<Guid> CreateGenreAsync(CreateGenreRequest request, CancellationToken token)
         {
             ArgumentNullException.ThrowIfNull(request);
 
+            return CreateGenreInternalAsync(request, token);
+        }
+
+        private async Task<Guid> CreateGenreInternalAsync(CreateGenreRequest request, CancellationToken token)
+        {
             var genre = mapper.Map<Genre>(request.Genre);
 
             await genreRepository.AddGenreAsync(genre, token);
@@ -47,43 +52,50 @@ namespace GameStore.Services.Services
             return false;
         }
 
-        public async Task<bool> UpdateGenreAsync(UpdateGenreRequest request, CancellationToken token)
+        public Task<bool> UpdateGenreAsync(UpdateGenreRequest request, CancellationToken token)
         {
             ArgumentNullException.ThrowIfNull(request);
             Validation.ValidateGuid(request.Genre.Id, nameof(request.Genre.Id));
 
+            return UpdateGenreInternalAsync(request, token);
+        }
+
+        private async Task<bool> UpdateGenreInternalAsync(UpdateGenreRequest request, CancellationToken token)
+        {
             var existingGenre = await genreRepository.GetGenreByIdAsync(request.Genre.Id, token);
             Validation.ValidateNull(existingGenre);
 
             mapper.Map(request.Genre, existingGenre);
+
             if (await genreRepository.UpdateGenreAsync(existingGenre!, token))
             {
                 return true;
             }
+
             return false;
         }
 
-        public async Task<IEnumerable<GenreDTO>> GetGenresByParentIdAsync(Guid id, CancellationToken token)
+        public async Task<IEnumerable<GenreDto>> GetGenresByParentIdAsync(Guid id, CancellationToken token)
         {
             Validation.ValidateGuid(id, nameof(id));
 
             var genres = await genreRepository.GetGenresByParentIdAsync(id, token);
             Validation.ValidateNull(genres);
 
-            return genres.Select(genre => mapper.Map<GenreDTO>(genre));
+            return genres.Select(genre => mapper.Map<GenreDto>(genre));
         }
 
-        public async Task<GenreDTO> GetGenreByIdAsync(Guid id, CancellationToken token)
+        public async Task<GenreDto> GetGenreByIdAsync(Guid id, CancellationToken token)
         {
             Validation.ValidateGuid(id, nameof(id));
 
             var genre = await genreRepository.GetGenreByIdAsync(id, token);
             Validation.ValidateNull(genre);
 
-            return mapper.Map<GenreDTO>(genre);
+            return mapper.Map<GenreDto>(genre);
         }
 
-        public async Task<IEnumerable<GenreDTO>> GetAllGenresAsync(CancellationToken token)
+        public async Task<IEnumerable<GenreDto>> GetAllGenresAsync(CancellationToken token)
         {
             var genres = await genreRepository.GetAllGenresAsync(token);
 
@@ -92,17 +104,17 @@ namespace GameStore.Services.Services
                 throw new NotFoundException("No genres found");
             }
 
-            return genres.Select(genre => mapper.Map<GenreDTO>(genre));
+            return genres.Select(genre => mapper.Map<GenreDto>(genre));
         }
 
-        public async Task<IEnumerable<GameDTO>> GetGameByGenreAsync(Guid id, CancellationToken token)
+        public async Task<IEnumerable<GameDto>> GetGameByGenreAsync(Guid id, CancellationToken token)
         {
             Validation.ValidateGuid(id, nameof(id));
 
             var games = await genreRepository.GetGameByGenreAsync(id, token);
             Validation.ValidateNull(games);
 
-            return games.Select(game => mapper.Map<GameDTO>(game));
+            return games.Select(game => mapper.Map<GameDto>(game));
         }
     }
 }

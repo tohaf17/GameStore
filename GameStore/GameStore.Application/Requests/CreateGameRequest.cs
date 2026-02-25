@@ -9,7 +9,7 @@ namespace GameStore.Application.Requests
     {
         public required CreateGameDto Game { get; set; }
 
-        public required ICollection<GenreDTO> Genres{ get; set; }
-        public required ICollection<PlatformDTO> Platforms { get; set; }
+        public required ICollection<GenreDto> Genres{ get; set; }
+        public required ICollection<PlatformDto> Platforms { get; set; }
     }
 }

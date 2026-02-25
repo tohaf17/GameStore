@@ -7,8 +7,8 @@ namespace GameStore.Application.Requests
 {
     public class UpdateGameRequest
     {
-        public required GameDTO Game { get; set; }
-        public required ICollection<GenreDTO> Genres { get; set; }
-        public required ICollection<PlatformDTO> Platforms { get; set; }
+        public required GameDto Game { get; set; }
+        public required ICollection<GenreDto> Genres { get; set; }
+        public required ICollection<PlatformDto> Platforms { get; set; }
     }
 }

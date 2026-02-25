@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GameStore.Application.DTO
 {
-    public class GameDTO
+    public class GameDto
     {
         public Guid Id { get; set; }
         public required string Name { get; set; }
