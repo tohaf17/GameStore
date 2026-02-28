@@ -13,12 +13,12 @@ namespace GameStore.Services.Services
 {
     public class GenreService : IGenreService
     {
-        private readonly IGenreRepository genreRepository;
+        private readonly IUnitOfWork repository;
         private readonly IMapper mapper;
 
-        public GenreService(IGenreRepository genreRepository, IMapper mapper)
+        public GenreService(IUnitOfWork repository, IMapper mapper)
         {
-            this.genreRepository = genreRepository;
+            this.repository = repository;
             this.mapper = mapper;
         }
 
@@ -33,8 +33,8 @@ namespace GameStore.Services.Services
         {
             var genre = mapper.Map<Genre>(request.Genre);
 
-            await genreRepository.AddGenreAsync(genre, token);
-
+            await repository.Genres.AddGenreAsync(genre, token);
+            await repository.SaveChangesAsync(token);
             return genre.Id;
         }
 
@@ -42,11 +42,12 @@ namespace GameStore.Services.Services
         {
             Validation.ValidateGuid(id, nameof(id));
 
-            var existingGenre = await genreRepository.GetGenreByIdAsync(id, token);
+            var existingGenre = await repository.Genres.GetGenreByIdAsync(id, token);
             Validation.ValidateNull(existingGenre);
 
-            if (await genreRepository.DeleteGenreAsync(id, token))
+            if (await repository.Genres.DeleteGenreAsync(id, token))
             {
+                await repository.SaveChangesAsync(token);
                 return true;
             }
             return false;
@@ -62,13 +63,14 @@ namespace GameStore.Services.Services
 
         private async Task<bool> UpdateGenreInternalAsync(UpdateGenreRequest request, CancellationToken token)
         {
-            var existingGenre = await genreRepository.GetGenreByIdAsync(request.Genre.Id, token);
+            var existingGenre = await repository.Genres.GetGenreByIdAsync(request.Genre.Id, token);
             Validation.ValidateNull(existingGenre);
 
             mapper.Map(request.Genre, existingGenre);
 
-            if (await genreRepository.UpdateGenreAsync(existingGenre!, token))
+            if (await repository.Genres.UpdateGenreAsync(existingGenre!, token))
             {
+                await repository.SaveChangesAsync(token);
                 return true;
             }
 
@@ -79,7 +81,7 @@ namespace GameStore.Services.Services
         {
             Validation.ValidateGuid(id, nameof(id));
 
-            var genres = await genreRepository.GetGenresByParentIdAsync(id, token);
+            var genres = await repository.Genres.GetGenresByParentIdAsync(id, token);
             Validation.ValidateNull(genres);
 
             return genres.Select(genre => mapper.Map<GenreDto>(genre));
@@ -89,7 +91,7 @@ namespace GameStore.Services.Services
         {
             Validation.ValidateGuid(id, nameof(id));
 
-            var genre = await genreRepository.GetGenreByIdAsync(id, token);
+            var genre = await repository.Genres.GetGenreByIdAsync(id, token);
             Validation.ValidateNull(genre);
 
             return mapper.Map<GenreDto>(genre);
@@ -97,7 +99,7 @@ namespace GameStore.Services.Services
 
         public async Task<IEnumerable<GenreDto>> GetAllGenresAsync(CancellationToken token)
         {
-            var genres = await genreRepository.GetAllGenresAsync(token);
+            var genres = await repository.Genres.GetAllGenresAsync(token);
 
             if (genres is null || !genres.Any())
             {
@@ -111,7 +113,7 @@ namespace GameStore.Services.Services
         {
             Validation.ValidateGuid(id, nameof(id));
 
-            var games = await genreRepository.GetGameByGenreAsync(id, token);
+            var games = await repository.Genres.GetGameByGenreAsync(id, token);
             Validation.ValidateNull(games);
 
             return games.Select(game => mapper.Map<GameDto>(game));

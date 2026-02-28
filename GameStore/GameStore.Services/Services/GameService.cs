@@ -15,13 +15,13 @@ namespace GameStore.Services.Services
 {
     public class GameService : IGameService
     {
-        private readonly IGameRepository gameRepository;
+        private readonly IUnitOfWork repository;
 
         private readonly IMapper mapper;
 
-        public GameService(IGameRepository gameRepository, IMapper mapper)
+        public GameService(IUnitOfWork repository, IMapper mapper)
         {
-            this.gameRepository = gameRepository;
+            this.repository = repository;
             this.mapper = mapper;
         }
 
@@ -52,7 +52,8 @@ namespace GameStore.Services.Services
                 game.GamePlatforms.Add(new GamePlatform { GameId = game.Id, PlatformId = platformDto.Id });
             }
 
-            await gameRepository.AddGameAsync(game, token);
+            await repository.Games.AddGameAsync(game, token);
+            await repository.SaveChangesAsync(token);
 
             return game.Id;
         }
@@ -60,7 +61,7 @@ namespace GameStore.Services.Services
         {
             Validation.ValidateString(key, nameof(key));
 
-            var genres = await gameRepository.GetGameGenresByKeyAsync(key, token);
+            var genres = await repository.Games.GetGameGenresByKeyAsync(key, token);
             Validation.ValidateNull(genres);
 
             return mapper.Map<IEnumerable<GenreDto>>(genres);
@@ -69,7 +70,7 @@ namespace GameStore.Services.Services
         {
             Validation.ValidateString(key, nameof(key));
 
-            var platforms = await gameRepository.GetGamePlatformsByKeyAsync(key, token);
+            var platforms = await repository.Games.GetGamePlatformsByKeyAsync(key, token);
             Validation.ValidateNull(platforms);
 
             return mapper.Map<IEnumerable<PlatformDto>>(platforms);
@@ -84,7 +85,7 @@ namespace GameStore.Services.Services
 
         private async Task<bool> UpdateGameInternalAsync(UpdateGameRequest request, CancellationToken token)
         {
-            var existingGame = await gameRepository.GetGameByIdAsync(request.Game.Id, token);
+            var existingGame = await repository.Games.GetGameByIdAsync(request.Game.Id, token);
             Validation.ValidateNull(existingGame);
 
             mapper.Map(request.Game, existingGame);
@@ -100,8 +101,8 @@ namespace GameStore.Services.Services
                 existingGame.GamePlatforms.Add(new GamePlatform { GameId = existingGame.Id, PlatformId = platformDto.Id });
             }
 
-            await gameRepository.AddGameAsync(existingGame, token);
-
+            await repository.Games.AddGameAsync(existingGame, token);
+            await repository.SaveChangesAsync(token);
             return true;
         }
 
@@ -109,17 +110,18 @@ namespace GameStore.Services.Services
         {
             Validation.ValidateGuid(id, nameof(id));
 
-            var existingGame = await gameRepository.GetGameByIdAsync(id, token);
+            var existingGame = await repository.Games.GetGameByIdAsync(id, token);
             Validation.ValidateNull(existingGame);
 
-            await gameRepository.DeleteGameAsync(existingGame!, token);
+            await repository.Games.DeleteGameAsync(existingGame!, token);
+            await repository.SaveChangesAsync(token);
             return true;
         }
         public async Task<GameDto?> GetGameByKeyAsync(string key, CancellationToken token)
         {
             Validation.ValidateString(key, nameof(key));
 
-            var game = await gameRepository.GetGameByKeyAsync(key, token);
+            var game = await repository.Games.GetGameByKeyAsync(key, token);
             return game == null ? null : mapper.Map<GameDto>(game);
         }
 
@@ -127,7 +129,7 @@ namespace GameStore.Services.Services
         {
             Validation.ValidateGuid(id, nameof(id));
 
-            var game = await gameRepository.GetGameByIdAsync(id, token);
+            var game = await repository.Games.GetGameByIdAsync(id, token);
             Validation.ValidateNull(game);
 
             return mapper.Map<GameDto>(game);
@@ -137,7 +139,7 @@ namespace GameStore.Services.Services
         {
             Validation.ValidateGuid(id, nameof(id));
 
-            var game = await gameRepository.GetGameByIdAsync(id, token);
+            var game = await repository.Games.GetGameByIdAsync(id, token);
             Validation.ValidateNull(game);
 
             GenerateGameFile(game!);
@@ -145,7 +147,7 @@ namespace GameStore.Services.Services
         }
         public async Task<IEnumerable<GameDto>> GetAllGamesAsync(CancellationToken token)
         {
-            var games = await gameRepository.GetAllGamesAsync(token);
+            var games = await repository.Games.GetAllGamesAsync(token);
             return mapper.Map<IEnumerable<GameDto>>(games);
         }
         private static void GenerateGameFile(Game? game)

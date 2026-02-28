@@ -19,12 +19,10 @@ namespace GameStore.Repositories.Repositories
         public async Task AddPlatformAsync(Platform platform, CancellationToken token)
         {
             await dbContext.Platforms.AddAsync(platform, token);
-            await dbContext.SaveChangesAsync(token);
         }
         public async Task UpdatePlatformAsync(Platform platform, CancellationToken token)
         {
             dbContext.Platforms.Update(platform);
-            await dbContext.SaveChangesAsync(token);
         }
         public async Task DeletePlatformAsync(Guid id, CancellationToken token)
         {
@@ -32,7 +30,6 @@ namespace GameStore.Repositories.Repositories
             if (platform != null)
             {
                 dbContext.Platforms.Remove(platform);
-                await dbContext.SaveChangesAsync(token);
             }
         }
         public async Task<IEnumerable<Platform>> GetAllPlatformsAsync(CancellationToken token)

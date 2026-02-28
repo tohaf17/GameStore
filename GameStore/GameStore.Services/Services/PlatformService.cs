@@ -14,12 +14,12 @@ namespace GameStore.Services.Services
 {
     public class PlatformService : IPlatformService
     {
-        private readonly IPlatformRepository platformRepository;
+        private readonly IUnitOfWork repository;
         private readonly IMapper mapper;
 
-        public PlatformService(IPlatformRepository platformRepository, IMapper mapper)
+        public PlatformService(IUnitOfWork repository, IMapper mapper)
         {
-            this.platformRepository = platformRepository;
+            this.repository = repository;
             this.mapper = mapper;
         }
 
@@ -35,8 +35,8 @@ namespace GameStore.Services.Services
         {
             var platform = mapper.Map<Platform>(request.Platform);
 
-            await platformRepository.AddPlatformAsync(platform, token);
-
+            await repository.Platforms.AddPlatformAsync(platform, token);
+            await repository.SaveChangesAsync(token);
             return platform.Id;
         }
 
@@ -49,7 +49,7 @@ namespace GameStore.Services.Services
 
         private async Task<bool> UpdatePlatformInternalAsync(UpdatePlatformRequest request, CancellationToken token)
         {
-            var existingPlatform = await platformRepository.GetPlatformByIdAsync(request.Platform.Id, token);
+            var existingPlatform = await repository.Platforms.GetPlatformByIdAsync(request.Platform.Id, token);
 
             if (existingPlatform is null)
             {
@@ -57,8 +57,8 @@ namespace GameStore.Services.Services
             }
 
             mapper.Map(request.Platform, existingPlatform);
-            await platformRepository.UpdatePlatformAsync(existingPlatform, token);
-
+            await repository.Platforms.UpdatePlatformAsync(existingPlatform, token);
+            await repository.SaveChangesAsync(token);
             return true;
         }
 
@@ -66,14 +66,15 @@ namespace GameStore.Services.Services
         {
             Validation.ValidateGuid(id, nameof(id));
 
-            var existingPlatform = await platformRepository.GetPlatformByIdAsync(id, token);
+            var existingPlatform = await repository.Platforms.GetPlatformByIdAsync(id, token);
 
             if (existingPlatform is null)
             {
                 return false;
             }
 
-            await platformRepository.DeletePlatformAsync(existingPlatform.Id, token);
+            await repository.Platforms.DeletePlatformAsync(existingPlatform.Id, token);
+            await repository.SaveChangesAsync(token);
             return true;
         }
 
@@ -81,7 +82,7 @@ namespace GameStore.Services.Services
         {
             Validation.ValidateGuid(id, nameof(id));
 
-            var platform = await platformRepository.GetPlatformByIdAsync(id, token);
+            var platform = await repository.Platforms.GetPlatformByIdAsync(id, token);
             Validation.ValidateNull(platform);
 
             return mapper.Map<PlatformDto>(platform);
@@ -89,7 +90,7 @@ namespace GameStore.Services.Services
 
         public async Task<IEnumerable<PlatformDto>> GetAllPlatformsAsync(CancellationToken token)
         {
-            var platforms = await platformRepository.GetAllPlatformsAsync(token);
+            var platforms = await repository.Platforms.GetAllPlatformsAsync(token);
             return platforms.Select(platform => mapper.Map<PlatformDto>(platform));
         }
 
@@ -97,7 +98,7 @@ namespace GameStore.Services.Services
         {
             Validation.ValidateGuid(id, nameof(id));
 
-            var games = await platformRepository.GetGameByPlatformAsync(id, token);
+            var games = await repository.Platforms.GetGameByPlatformAsync(id, token);
             Validation.ValidateNull(games);
 
             return games.Select(game => mapper.Map<GameDto>(game));

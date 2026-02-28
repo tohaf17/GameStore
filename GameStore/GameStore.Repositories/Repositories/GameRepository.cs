@@ -19,14 +19,12 @@ namespace GameStore.Repositories.Repositories
         public async Task AddGameAsync(Game game,CancellationToken token)
         {
             await dbContext.Games.AddAsync(game, token);
-            await dbContext.SaveChangesAsync(token);
         }
         public async Task DeleteGameAsync(Game game,CancellationToken token)
         {
             if (game != null)
             {
                 dbContext.Games.Remove(game);
-                await dbContext.SaveChangesAsync(token);
             }
         }
 

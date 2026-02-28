@@ -29,7 +29,7 @@ builder.Services.AddControllers(options =>
             Location = ResponseCacheLocation.Any
         });
 });
-
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 //Register game service and repository
 builder.Services.AddScoped<IGameService, GameService>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();
