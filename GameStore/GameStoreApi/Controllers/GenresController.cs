@@ -15,7 +15,6 @@ namespace GameStoreApi.Controllers
     public class GenresController : ControllerBase
     {
         private readonly IGenreService genreService;
-        private const string GenreNotFoundMessage = "Genre not found.";
         public GenresController(IGenreService genreService)
         {
             this.genreService = genreService;
@@ -32,14 +31,14 @@ namespace GameStoreApi.Controllers
         public async Task<IActionResult> UpdateGenreAsync([FromBody] UpdateGenreRequest request, CancellationToken token = default)
         {
             var result = await genreService.UpdateGenreAsync(request, token);
-            return (result)?NoContent(): NotFound(GenreNotFoundMessage);
+            return (result)?NoContent(): NotFound();
         }
         [HttpDelete]
         [Route("{id:guid}")]
         public async Task<IActionResult> DeleteGenreAsync(Guid id, CancellationToken token= default)
         {
             var result = await genreService.DeleteGenreAsync(id, token);
-            return (result) ? NoContent() : NotFound(GenreNotFoundMessage);
+            return (result) ? NoContent() : NotFound();
         }
         [HttpGet]
         [Route("{id:guid}")]
@@ -47,7 +46,7 @@ namespace GameStoreApi.Controllers
         public async Task<IActionResult> GetGenreByIdAsync(Guid id, CancellationToken token = default)
         {
             var genre = await genreService.GetGenreByIdAsync(id, token);
-            return (genre is null) ? NotFound(GenreNotFoundMessage) : Ok(genre);
+            return (genre is null) ? NotFound() : Ok(genre);
         }
 
         [HttpGet]
@@ -56,7 +55,7 @@ namespace GameStoreApi.Controllers
         public async Task<IActionResult> GetGenreByParentIdAsync(Guid id, CancellationToken token = default)
         {
             var genre = await genreService.GetGenresByParentIdAsync(id, token);
-            return (genre is null) ? NotFound(GenreNotFoundMessage) : Ok(genre);
+            return (genre is null) ? NotFound() : Ok(genre);
         }
         [HttpGet]
         [ResponseCache(CacheProfileName = "Default1Min")]
@@ -72,7 +71,7 @@ namespace GameStoreApi.Controllers
         public async Task<IActionResult> GetGameByGenreAsync(Guid id, CancellationToken token = default)
         {
             var games = await genreService.GetGameByGenreAsync(id, token);
-            return (games is null) ? NotFound("Not found any games") : Ok(games);
+            return (games is null) ? NotFound() : Ok(games);
         }
     }
 }

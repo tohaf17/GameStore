@@ -3,7 +3,6 @@ using GameStore.Application.DTO;
 using GameStore.Domain.Entities;
 using GameStore.Repositories.Interfaces;
 using GameStore.Repositories.Repositories;
-using GameStore.Services.Exceptions;
 using GameStore.Services.Interfaces;
 using System;
 using GameStore.Application.Requests;
@@ -43,7 +42,6 @@ namespace GameStore.Services.Services
         public Task<bool> UpdatePlatformAsync(UpdatePlatformRequest request, CancellationToken token = default)
         {
             ArgumentNullException.ThrowIfNull(request);
-            Validation.ValidateGuid(request.Platform.Id, nameof(request.Platform.Id));
             return UpdatePlatformInternalAsync(request, token);
         }
 
@@ -64,7 +62,6 @@ namespace GameStore.Services.Services
 
         public async Task<bool> DeletePlatformAsync(Guid id, CancellationToken token = default)
         {
-            Validation.ValidateGuid(id, nameof(id));
 
             var existingPlatform = await repository.Platforms.GetPlatformByIdAsync(id, token);
 
@@ -80,10 +77,9 @@ namespace GameStore.Services.Services
 
         public async Task<PlatformDto> GetPlatformByIdAsync(Guid id, CancellationToken token = default)
         {
-            Validation.ValidateGuid(id, nameof(id));
 
             var platform = await repository.Platforms.GetPlatformByIdAsync(id, token);
-            Validation.ValidateNull(platform);
+            
 
             return mapper.Map<PlatformDto>(platform);
         }
@@ -96,10 +92,7 @@ namespace GameStore.Services.Services
 
         public async Task<IEnumerable<GameDto>> GetGameByPlatformAsync(Guid id, CancellationToken token = default)
         {
-            Validation.ValidateGuid(id, nameof(id));
-
             var games = await repository.Platforms.GetGameByPlatformAsync(id, token);
-            Validation.ValidateNull(games);
 
             return games.Select(game => mapper.Map<GameDto>(game));
         }

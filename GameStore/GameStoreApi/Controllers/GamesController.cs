@@ -18,19 +18,15 @@ namespace GameStoreApi.Controllers
     public class GamesController : ControllerBase
     {
         private readonly IGameService gameService;
-        private readonly IValidator<CreateGameDto> validator;
-        private const string NotFoundMessage = "Game not found";
 
-        public GamesController(IGameService gameService,IValidator<CreateGameDto> validator)
+        public GamesController(IGameService gameService)
         {
             this.gameService = gameService;
-            this.validator = validator;
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateGameAsync([FromBody] CreateGameRequest request, CancellationToken token=default)
         {
-            var result = await validator.ValidateAsync(request.Game, token);
             var game= await gameService.CreateGameAsync(request, token);
             return CreatedAtAction(nameof(GetGameByIdAsync), new {id=game.Id},game);
         }
@@ -40,7 +36,7 @@ namespace GameStoreApi.Controllers
         public async Task<IActionResult> UpdateGameAsync([FromBody] UpdateGameRequest request,CancellationToken token=default)
         {
             var result = await gameService.UpdateGameAsync(request, token);
-            return (result) ? NoContent() : NotFound(NotFoundMessage);
+            return (result) ? NoContent() : NotFound();
 
         }
 
@@ -49,7 +45,7 @@ namespace GameStoreApi.Controllers
         public async Task<IActionResult> DeleteGameAsync(Guid id, CancellationToken token = default)
         {
             var result = await gameService.DeleteGameAsync(id, token);
-            return (result) ? NoContent() : NotFound(NotFoundMessage);
+            return (result) ? NoContent() : NotFound();
         }
 
         [HttpGet]
@@ -75,7 +71,7 @@ namespace GameStoreApi.Controllers
         public async Task<IActionResult> GetGameByKeyAsync(string key, CancellationToken token = default)
         {
             var game = await gameService.GetGameByKeyAsync(key, token);
-            return (game is null) ? NotFound(NotFoundMessage):Ok(game);
+            return (game is null) ? NotFound():Ok(game);
         }
 
         [HttpGet]
@@ -84,7 +80,7 @@ namespace GameStoreApi.Controllers
         public async Task<IActionResult> GetGameGenresAsync(string key, CancellationToken token = default)
         {
             var genres = await gameService.GetGameGenresByKeyAsync(key, token);
-            return (genres is null) ? NotFound(NotFoundMessage):Ok(genres);
+            return (genres is null) ? NotFound():Ok(genres);
         }
 
         [HttpGet]
@@ -93,7 +89,7 @@ namespace GameStoreApi.Controllers
         public async Task<IActionResult> GetGamePlatformsAsync(string key, CancellationToken token = default)
         {
             var platforms = await gameService.GetGamePlatformsByKeyAsync(key, token);
-            return (platforms is null) ? NotFound(NotFoundMessage) : Ok(platforms);
+            return (platforms is null) ? NotFound() : Ok(platforms);
         }
 
         [HttpGet]
@@ -102,7 +98,7 @@ namespace GameStoreApi.Controllers
         public async Task<IActionResult> GetGameByIdAsync(Guid id, CancellationToken token = default)
         {
             var game = await gameService.GetGameByIdAsync(id, token);
-            return ((game is null) ? NotFound(NotFoundMessage) : Ok(game));
+            return ((game is null) ? NotFound() : Ok(game));
         }
     }
 }

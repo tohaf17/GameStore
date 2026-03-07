@@ -5,7 +5,6 @@ using GameStore.Application.Requests;
 using GameStore.Domain.Entities;
 using GameStore.Repositories.Interfaces;
 using GameStore.Repositories.Repositories;
-using GameStore.Services.Exceptions;
 using GameStore.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -29,7 +28,6 @@ namespace GameStore.Services.Services
         {
             ArgumentNullException.ThrowIfNull(request);
 
-            Validation.ValidateString(request.Game?.Name, nameof(request.Game.Name));
 
             return CreateGameInternalAsync(request, token);
         }
@@ -61,26 +59,23 @@ namespace GameStore.Services.Services
         }
         public async Task<IEnumerable<GenreDto>> GetGameGenresByKeyAsync(string key,CancellationToken token = default)
         {
-            Validation.ValidateString(key, nameof(key));
 
             var genres = await repository.Games.GetGameGenresByKeyAsync(key, token);
-            Validation.ValidateNull(genres);
+            
 
             return mapper.Map<IEnumerable<GenreDto>>(genres);
         }
         public async Task<IEnumerable<PlatformDto>> GetGamePlatformsByKeyAsync(string key, CancellationToken token=default)
         {
-            Validation.ValidateString(key, nameof(key));
 
             var platforms = await repository.Games.GetGamePlatformsByKeyAsync(key, token);
-            Validation.ValidateNull(platforms);
+            
 
             return mapper.Map<IEnumerable<PlatformDto>>(platforms);
         }
         public Task<bool> UpdateGameAsync(UpdateGameRequest request, CancellationToken token = default)
         {
             ArgumentNullException.ThrowIfNull(request);
-            Validation.ValidateGuid(request.Game.Id, nameof(request.Game.Id));
 
             return UpdateGameInternalAsync(request, token);
         }
@@ -88,7 +83,6 @@ namespace GameStore.Services.Services
         private async Task<bool> UpdateGameInternalAsync(UpdateGameRequest request, CancellationToken token = default)
         {
             var existingGame = await repository.Games.GetGameByIdAsync(request.Game.Id, token);
-            Validation.ValidateNull(existingGame);
 
             mapper.Map(request.Game, existingGame);
             existingGame!.GameGenres.Clear();
@@ -112,10 +106,8 @@ namespace GameStore.Services.Services
 
         public async Task<bool> DeleteGameAsync(Guid id, CancellationToken token = default)
         {
-            Validation.ValidateGuid(id, nameof(id));
 
             var existingGame = await repository.Games.GetGameByIdAsync(id, token);
-            Validation.ValidateNull(existingGame);
 
             await repository.Games.DeleteGameAsync(existingGame!);
             await repository.SaveChangesAsync(token);
@@ -123,28 +115,21 @@ namespace GameStore.Services.Services
         }
         public async Task<GameDto?> GetGameByKeyAsync(string key, CancellationToken token = default)
         {
-            Validation.ValidateString(key, nameof(key));
-
             var game = await repository.Games.GetGameByKeyAsync(key, token);
             return game == null ? null : mapper.Map<GameDto>(game);
         }
 
         public async Task<GameDto> GetGameByIdAsync(Guid id, CancellationToken token = default)
         {
-            Validation.ValidateGuid(id, nameof(id));
-
             var game = await repository.Games.GetGameByIdAsync(id, token);
-            Validation.ValidateNull(game);
 
             return mapper.Map<GameDto>(game);
         }
 
         public async Task<bool> GetGameFilesAsync(Guid id, CancellationToken token = default)
         {
-            Validation.ValidateGuid(id, nameof(id));
 
             var game = await repository.Games.GetGameByIdAsync(id, token);
-            Validation.ValidateNull(game);
 
             await GenerateGameFile(game!,token);
             return true;

@@ -15,7 +15,6 @@ namespace GameStoreApi.Controllers
     public class PlatformsController : ControllerBase
     {
         private readonly IPlatformService platformService;
-        private const string PlatformNotFoundMessage = "Platform not found";
         public PlatformsController(IPlatformService platformService)
         {
             this.platformService = platformService;
@@ -32,7 +31,7 @@ namespace GameStoreApi.Controllers
         public async Task<IActionResult> UpdatePlatformAsync([FromBody] UpdatePlatformRequest request, CancellationToken token=default)
         {
             var result = await platformService.UpdatePlatformAsync(request, token);
-            return (result) ? NoContent() : NotFound(PlatformNotFoundMessage);
+            return (result) ? NoContent() : NotFound();
         }
 
         [HttpDelete]
@@ -40,7 +39,7 @@ namespace GameStoreApi.Controllers
         public async Task<IActionResult> DeletePlatformAsync(Guid id, CancellationToken token=default)
         {
             var result = await platformService.DeletePlatformAsync(id, token);
-            return (result) ? NoContent() : NotFound(PlatformNotFoundMessage);
+            return (result) ? NoContent() : NotFound();
         }
 
         [HttpGet]
@@ -49,7 +48,7 @@ namespace GameStoreApi.Controllers
         public async Task<IActionResult> GetPlatformByIdAsync(Guid id, CancellationToken token = default)
         {
             var platform = await platformService.GetPlatformByIdAsync(id, token);
-            return (platform is null) ? NotFound(PlatformNotFoundMessage): Ok(platform);
+            return (platform is null) ? NotFound(): Ok(platform);
         }
         [HttpGet]
         [ResponseCache(CacheProfileName = "Default1Min")]
@@ -64,7 +63,7 @@ namespace GameStoreApi.Controllers
         public async Task<IActionResult> GetGameByPlatformAsync(Guid id, CancellationToken token = default)
         {
             var games = await platformService.GetGameByPlatformAsync(id, token);
-            return (games is null)? NotFound(PlatformNotFoundMessage) : Ok(games);
+            return (games is null)? NotFound() : Ok(games);
         }
     }
 }
