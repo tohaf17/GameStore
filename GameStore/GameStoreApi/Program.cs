@@ -1,13 +1,18 @@
 using AutoMapper;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using GameStore.Application;
+using GameStore.Application.DTO;
 using GameStore.Infrastructure.Data;
 using GameStore.Repositories.Interfaces;
 using GameStore.Repositories.Repositories;
 using GameStore.Services.Interfaces;
 using GameStore.Services.Services;
+using GameStoreApi.Validation;
+using GameStoreApi;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GameStoreApi;
 
 var builder = WebApplication.CreateBuilder(args);
 //ProblemDetails
@@ -17,7 +22,17 @@ builder.Services.AddControllers(options =>
 {
     options.SuppressAsyncSuffixInActionNames = false;
 });
-
+//Validators
+builder.Services.AddValidatorsFromAssemblyContaining<GameValidator>();
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ValidationFilter>();
+});
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.SuppressModelStateInvalidFilter = true;
+});
 //DbContext
 builder.Services.AddDbContext<GameStoreContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

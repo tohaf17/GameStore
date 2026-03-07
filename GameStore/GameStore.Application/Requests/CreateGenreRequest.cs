@@ -10,4 +10,12 @@ namespace GameStore.Application.Requests
         public required CreateGenreDto Genre { get; set; }
 
     }
-}
+    public class CreateGenreRequestValidator : FluentValidation.AbstractValidator<CreateGenreRequest>
+    {
+        public CreateGenreRequestValidator()
+        {
+            RuleFor(r => r.Genre)
+                .SetValidator(new CreateGenreValidator());
+        }
+    }
+    }

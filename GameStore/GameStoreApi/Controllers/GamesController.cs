@@ -1,27 +1,36 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using GameStore.Application.DTO;
+using GameStore.Application.Requests;
 using GameStore.Domain.Entities;
 using GameStore.Infrastructure.Data;
-using GameStore.Application.Requests;
 using GameStore.Services.Interfaces;
+using GameStoreApi.Validation;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+
 namespace GameStoreApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ServiceFilter(typeof(ValidationFilter))]
     public class GamesController : ControllerBase
     {
         private readonly IGameService gameService;
+        private readonly IValidator<CreateGameDto> validator;
         private const string NotFoundMessage = "Game not found";
 
-        public GamesController(IGameService gameService)
+        public GamesController(IGameService gameService,IValidator<CreateGameDto> validator)
         {
             this.gameService = gameService;
+            this.validator = validator;
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateGameAsync([FromBody] CreateGameRequest request, CancellationToken token=default)
         {
+            var result = await validator.ValidateAsync(request.Game, token);
             var game= await gameService.CreateGameAsync(request, token);
             return CreatedAtAction(nameof(GetGameByIdAsync), new {id=game.Id},game);
         }

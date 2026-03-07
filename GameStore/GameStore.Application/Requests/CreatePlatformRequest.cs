@@ -9,4 +9,12 @@ namespace GameStore.Application.Requests
     {
         public required CreatePlatformDto Platform { get; set; }
     }
-}
+    public class CreatePlatformRequestValidator : FluentValidation.AbstractValidator<CreatePlatformRequest>
+    {
+        public CreatePlatformRequestValidator()
+        {
+            RuleFor(r => r.Platform)
+                .SetValidator(new CreatePlatformValidator());
+        }
+    }
+    }

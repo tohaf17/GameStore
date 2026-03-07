@@ -1,15 +1,17 @@
-﻿using GameStore.Infrastructure.Data;
+﻿using GameStore.Application.Requests;
+using GameStore.Domain.Entities;
+using GameStore.Infrastructure;
+using GameStore.Infrastructure.Data;
+using GameStore.Services.Interfaces;
+using GameStoreApi.Validation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using GameStore.Domain.Entities;
-using GameStore.Services.Interfaces;
-using GameStore.Infrastructure;
-using GameStore.Application.Requests;
 
 namespace GameStoreApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ServiceFilter(typeof(ValidationFilter))]
     public class PlatformsController : ControllerBase
     {
         private readonly IPlatformService platformService;
