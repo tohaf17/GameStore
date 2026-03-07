@@ -10,6 +10,14 @@ using Microsoft.EntityFrameworkCore;
 using GameStoreApi;
 
 var builder = WebApplication.CreateBuilder(args);
+//ProblemDetails
+builder.Services.AddProblemDetails();
+//Async sufix
+builder.Services.AddControllers(options =>
+{
+    options.SuppressAsyncSuffixInActionNames = false;
+});
+
 //DbContext
 builder.Services.AddDbContext<GameStoreContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

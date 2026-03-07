@@ -8,7 +8,7 @@ namespace GameStore.Services.Interfaces
 {
     public interface IGameService
     {
-        Task<Guid> CreateGameAsync(CreateGameRequest request, CancellationToken token=default);
+        Task<GameDto> CreateGameAsync(CreateGameRequest request, CancellationToken token=default);
         Task<bool> UpdateGameAsync(UpdateGameRequest request, CancellationToken token=default);
         Task<bool> DeleteGameAsync(Guid id, CancellationToken token = default);
         Task<IEnumerable<GameDto>> GetAllGamesAsync(CancellationToken token=default);

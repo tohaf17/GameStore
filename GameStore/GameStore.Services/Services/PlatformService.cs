@@ -25,19 +25,19 @@ namespace GameStore.Services.Services
 
 
 
-        public Task<Guid> CreatePlatformAsync(CreatePlatformRequest request, CancellationToken token=default)
+        public Task<PlatformDto> CreatePlatformAsync(CreatePlatformRequest request, CancellationToken token=default)
         {
             ArgumentNullException.ThrowIfNull(request);
             return CreatePlatformInternalAsync(request, token);
         }
 
-        private async Task<Guid> CreatePlatformInternalAsync(CreatePlatformRequest request, CancellationToken token = default)
+        private async Task<PlatformDto> CreatePlatformInternalAsync(CreatePlatformRequest request, CancellationToken token = default)
         {
             var platform = mapper.Map<Platform>(request.Platform);
 
             await repository.Platforms.AddPlatformAsync(platform);
             await repository.SaveChangesAsync(token);
-            return platform.Id;
+            return mapper.Map<PlatformDto>(platform);
         }
 
         public Task<bool> UpdatePlatformAsync(UpdatePlatformRequest request, CancellationToken token = default)

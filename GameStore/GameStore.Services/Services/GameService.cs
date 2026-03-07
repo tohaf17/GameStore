@@ -25,7 +25,7 @@ namespace GameStore.Services.Services
             this.mapper = mapper;
         }
 
-        public Task<Guid> CreateGameAsync(CreateGameRequest request, CancellationToken token = default)
+        public Task<GameDto> CreateGameAsync(CreateGameRequest request, CancellationToken token = default)
         {
             ArgumentNullException.ThrowIfNull(request);
 
@@ -34,7 +34,7 @@ namespace GameStore.Services.Services
             return CreateGameInternalAsync(request, token);
         }
 
-        private async Task<Guid> CreateGameInternalAsync(CreateGameRequest request, CancellationToken token= default)
+        private async Task<GameDto> CreateGameInternalAsync(CreateGameRequest request, CancellationToken token= default)
         {
             var game = mapper.Map<Game>(request.Game);
             if (string.IsNullOrWhiteSpace(game.Key))
@@ -57,7 +57,7 @@ namespace GameStore.Services.Services
             await repository.Games.AddGameAsync(game);
             await repository.SaveChangesAsync(token);
 
-            return game.Id;
+            return mapper.Map<GameDto>(game);
         }
         public async Task<IEnumerable<GenreDto>> GetGameGenresByKeyAsync(string key,CancellationToken token = default)
         {

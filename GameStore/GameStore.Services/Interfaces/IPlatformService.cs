@@ -8,7 +8,7 @@ namespace GameStore.Services.Interfaces
 {
     public interface IPlatformService
     {
-        Task<Guid> CreatePlatformAsync(CreatePlatformRequest request, CancellationToken token=default);
+        Task<PlatformDto> CreatePlatformAsync(CreatePlatformRequest request, CancellationToken token=default);
         Task<bool> UpdatePlatformAsync(UpdatePlatformRequest request, CancellationToken token=default);
         Task<bool> DeletePlatformAsync(Guid id, CancellationToken token = default);
         Task<PlatformDto> GetPlatformByIdAsync(Guid id, CancellationToken token = default);

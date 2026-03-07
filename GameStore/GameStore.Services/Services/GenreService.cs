@@ -22,20 +22,20 @@ namespace GameStore.Services.Services
             this.mapper = mapper;
         }
 
-        public Task<Guid> CreateGenreAsync(CreateGenreRequest request, CancellationToken token=default)
+        public Task<GenreDto> CreateGenreAsync(CreateGenreRequest request, CancellationToken token=default)
         {
             ArgumentNullException.ThrowIfNull(request);
 
             return CreateGenreInternalAsync(request, token);
         }
 
-        private async Task<Guid> CreateGenreInternalAsync(CreateGenreRequest request, CancellationToken token = default)
+        private async Task<GenreDto> CreateGenreInternalAsync(CreateGenreRequest request, CancellationToken token = default)
         {
             var genre = mapper.Map<Genre>(request.Genre);
 
             await repository.Genres.AddGenreAsync(genre);
             await repository.SaveChangesAsync(token);
-            return genre.Id;
+            return mapper.Map<GenreDto>(genre);
         }
 
         public async Task<bool> DeleteGenreAsync(Guid id, CancellationToken token = default)
