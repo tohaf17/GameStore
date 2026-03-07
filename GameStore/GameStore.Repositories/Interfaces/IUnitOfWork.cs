@@ -11,6 +11,6 @@ namespace GameStore.Repositories.Interfaces
         IGameRepository Games { get; }
         IGenreRepository Genres { get; }
         IPlatformRepository Platforms { get; }
-        Task SaveChangesAsync(CancellationToken token);
+        Task SaveChangesAsync(CancellationToken token=default);
     }
 }

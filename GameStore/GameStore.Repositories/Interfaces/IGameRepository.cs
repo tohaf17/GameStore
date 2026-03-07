@@ -3,12 +3,13 @@ namespace GameStore.Repositories.Interfaces
 {
     public interface IGameRepository
     {
-        Task AddGameAsync(Game game, CancellationToken token);
-        Task DeleteGameAsync(Game game, CancellationToken token);
-        Task<Game?> GetGameByKeyAsync(string key, CancellationToken token);
-        Task<Game?> GetGameByIdAsync(Guid id, CancellationToken token);
-        Task<IEnumerable<Genre>> GetGameGenresByKeyAsync(string key, CancellationToken token);
-        Task<IEnumerable<Platform>> GetGamePlatformsByKeyAsync(string key, CancellationToken token);
-        Task<IEnumerable<Game>> GetAllGamesAsync(CancellationToken token);
+        Task AddGameAsync(Game game);
+        Task DeleteGameAsync(Game game);
+        Task UpdateGameAsync(Game game);
+        Task<Game?> GetGameByKeyAsync(string key, CancellationToken token=default);
+        Task<Game?> GetGameByIdAsync(Guid id, CancellationToken token=default);
+        Task<IEnumerable<Genre>> GetGameGenresByKeyAsync(string key, CancellationToken token = default);
+        Task<IEnumerable<Platform>> GetGamePlatformsByKeyAsync(string key, CancellationToken token = default);
+        Task<IEnumerable<Game>> GetAllGamesAsync(CancellationToken token=default);
     }
 }

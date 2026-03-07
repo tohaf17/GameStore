@@ -25,7 +25,7 @@ namespace GameStore.Services.Services
             this.mapper = mapper;
         }
 
-        public Task<Guid> CreateGameAsync(CreateGameRequest request, CancellationToken token)
+        public Task<Guid> CreateGameAsync(CreateGameRequest request, CancellationToken token = default)
         {
             ArgumentNullException.ThrowIfNull(request);
 
@@ -34,7 +34,7 @@ namespace GameStore.Services.Services
             return CreateGameInternalAsync(request, token);
         }
 
-        private async Task<Guid> CreateGameInternalAsync(CreateGameRequest request, CancellationToken token)
+        private async Task<Guid> CreateGameInternalAsync(CreateGameRequest request, CancellationToken token= default)
         {
             var game = mapper.Map<Game>(request.Game);
             if (string.IsNullOrWhiteSpace(game.Key))
@@ -44,20 +44,22 @@ namespace GameStore.Services.Services
 
             foreach (var genreDto in request.Genres)
             {
+                token.ThrowIfCancellationRequested();
                 game.GameGenres.Add(new GameGenre { GameId = game.Id, GenreId = genreDto.Id });
             }
 
             foreach (var platformDto in request.Platforms)
             {
+                token.ThrowIfCancellationRequested();
                 game.GamePlatforms.Add(new GamePlatform { GameId = game.Id, PlatformId = platformDto.Id });
             }
 
-            await repository.Games.AddGameAsync(game, token);
+            await repository.Games.AddGameAsync(game);
             await repository.SaveChangesAsync(token);
 
             return game.Id;
         }
-        public async Task<IEnumerable<GenreDto>> GetGameGenresByKeyAsync(string key,CancellationToken token)
+        public async Task<IEnumerable<GenreDto>> GetGameGenresByKeyAsync(string key,CancellationToken token = default)
         {
             Validation.ValidateString(key, nameof(key));
 
@@ -66,7 +68,7 @@ namespace GameStore.Services.Services
 
             return mapper.Map<IEnumerable<GenreDto>>(genres);
         }
-        public async Task<IEnumerable<PlatformDto>> GetGamePlatformsByKeyAsync(string key, CancellationToken token)
+        public async Task<IEnumerable<PlatformDto>> GetGamePlatformsByKeyAsync(string key, CancellationToken token=default)
         {
             Validation.ValidateString(key, nameof(key));
 
@@ -75,7 +77,7 @@ namespace GameStore.Services.Services
 
             return mapper.Map<IEnumerable<PlatformDto>>(platforms);
         }
-        public Task<bool> UpdateGameAsync(UpdateGameRequest request, CancellationToken token)
+        public Task<bool> UpdateGameAsync(UpdateGameRequest request, CancellationToken token = default)
         {
             ArgumentNullException.ThrowIfNull(request);
             Validation.ValidateGuid(request.Game.Id, nameof(request.Game.Id));
@@ -83,7 +85,7 @@ namespace GameStore.Services.Services
             return UpdateGameInternalAsync(request, token);
         }
 
-        private async Task<bool> UpdateGameInternalAsync(UpdateGameRequest request, CancellationToken token)
+        private async Task<bool> UpdateGameInternalAsync(UpdateGameRequest request, CancellationToken token = default)
         {
             var existingGame = await repository.Games.GetGameByIdAsync(request.Game.Id, token);
             Validation.ValidateNull(existingGame);
@@ -92,32 +94,34 @@ namespace GameStore.Services.Services
             existingGame!.GameGenres.Clear();
             foreach (var genreDto in request.Genres)
             {
+                token.ThrowIfCancellationRequested();
                 existingGame.GameGenres.Add(new GameGenre { GameId = existingGame.Id, GenreId = genreDto.Id });
             }
 
             existingGame.GamePlatforms.Clear();
             foreach (var platformDto in request.Platforms)
             {
+                token.ThrowIfCancellationRequested();
                 existingGame.GamePlatforms.Add(new GamePlatform { GameId = existingGame.Id, PlatformId = platformDto.Id });
             }
 
-            await repository.Games.AddGameAsync(existingGame, token);
+            await repository.Games.UpdateGameAsync(existingGame);
             await repository.SaveChangesAsync(token);
             return true;
         }
 
-        public async Task<bool> DeleteGameAsync(Guid id, CancellationToken token)
+        public async Task<bool> DeleteGameAsync(Guid id, CancellationToken token = default)
         {
             Validation.ValidateGuid(id, nameof(id));
 
             var existingGame = await repository.Games.GetGameByIdAsync(id, token);
             Validation.ValidateNull(existingGame);
 
-            await repository.Games.DeleteGameAsync(existingGame!, token);
+            await repository.Games.DeleteGameAsync(existingGame!);
             await repository.SaveChangesAsync(token);
             return true;
         }
-        public async Task<GameDto?> GetGameByKeyAsync(string key, CancellationToken token)
+        public async Task<GameDto?> GetGameByKeyAsync(string key, CancellationToken token = default)
         {
             Validation.ValidateString(key, nameof(key));
 
@@ -125,7 +129,7 @@ namespace GameStore.Services.Services
             return game == null ? null : mapper.Map<GameDto>(game);
         }
 
-        public async Task<GameDto> GetGameByIdAsync(Guid id, CancellationToken token)
+        public async Task<GameDto> GetGameByIdAsync(Guid id, CancellationToken token = default)
         {
             Validation.ValidateGuid(id, nameof(id));
 
@@ -135,30 +139,34 @@ namespace GameStore.Services.Services
             return mapper.Map<GameDto>(game);
         }
 
-        public async Task<bool> GetGameFilesAsync(Guid id, CancellationToken token)
+        public async Task<bool> GetGameFilesAsync(Guid id, CancellationToken token = default)
         {
             Validation.ValidateGuid(id, nameof(id));
 
             var game = await repository.Games.GetGameByIdAsync(id, token);
             Validation.ValidateNull(game);
 
-            GenerateGameFile(game!);
+            await GenerateGameFile(game!,token);
             return true;
         }
-        public async Task<IEnumerable<GameDto>> GetAllGamesAsync(CancellationToken token)
+        public async Task<IEnumerable<GameDto>> GetAllGamesAsync(CancellationToken token=default)
         {
             var games = await repository.Games.GetAllGamesAsync(token);
             return mapper.Map<IEnumerable<GameDto>>(games);
         }
-        private static void GenerateGameFile(Game? game)
+        private async Task GenerateGameFile(Game? game,CancellationToken token = default)
         {
-            string fileContent = $"Game ID: {game?.Id}\nName: {game?.Name}\nDescription: {game?.Description}\nGenres: {string.Join(", ", game?.GameGenres?.Select(g => g.Genre.Name) ?? Array.Empty<string>())}\nPlatforms: {string.Join(", ", game?.GamePlatforms?.Select(p => p.Platform.Type)??Array.Empty<string>())}";
+            string fileContent = $"Game ID: {game?.Id}" +
+                $"\nName: {game?.Name}" +
+                $"\nDescription: {game?.Description}" +
+                $"\nGenres: {string.Join(", ", game?.GameGenres?.Select(g => g.Genre.Name) ?? Array.Empty<string>())}" +
+                $"\nPlatforms: {string.Join(", ", game?.GamePlatforms?.Select(p => p.Platform.Type)??Array.Empty<string>())}";
+
             Directory.CreateDirectory("GameFiles");
             string filePath = Path.Combine("GameFiles", $"_{game?.Name}.txt");
-            using (StreamWriter writer=new StreamWriter(filePath))
-            {
-                writer.Write(fileContent);
-            }
+            
+            token.ThrowIfCancellationRequested();
+            await File.WriteAllTextAsync(filePath, fileContent, token);
         }
     }
 }

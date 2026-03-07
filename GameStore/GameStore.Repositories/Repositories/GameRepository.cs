@@ -16,19 +16,32 @@ namespace GameStore.Repositories.Repositories
             this.dbContext = dbContext;
         }
 
-        public async Task AddGameAsync(Game game,CancellationToken token)
+        public Task AddGameAsync(Game game)
         {
-            await dbContext.Games.AddAsync(game, token);
+            if (game != null)
+            {
+                dbContext.Games.Add(game);
+            }
+            return Task.CompletedTask;
         }
-        public async Task DeleteGameAsync(Game game,CancellationToken token)
+        public Task UpdateGameAsync(Game game)
+        {
+            if (game != null)
+            {
+                dbContext.Games.Update(game);
+            }
+            return Task.CompletedTask;
+        }
+        public Task DeleteGameAsync(Game game)
         {
             if (game != null)
             {
                 dbContext.Games.Remove(game);
             }
+            return Task.CompletedTask;
         }
 
-        public async Task<IEnumerable<Game>> GetAllGamesAsync(CancellationToken token)
+        public async Task<IEnumerable<Game>> GetAllGamesAsync(CancellationToken token = default)
         {
             return await dbContext.Games
                 .Include(g => g.GameGenres).ThenInclude(gg => gg.Genre)
@@ -36,7 +49,7 @@ namespace GameStore.Repositories.Repositories
                 .ToListAsync(token);
 
         }
-        public async Task<IEnumerable<Genre>> GetGameGenresByKeyAsync(string key, CancellationToken token)
+        public async Task<IEnumerable<Genre>> GetGameGenresByKeyAsync(string key, CancellationToken token = default)
         {
             return await dbContext.Games
                 .Where(g => g.Key == key)
@@ -44,7 +57,7 @@ namespace GameStore.Repositories.Repositories
                 .Select(gg => gg.Genre)
                 .ToListAsync(token);
         }
-        public async Task<IEnumerable<Platform>> GetGamePlatformsByKeyAsync(string key, CancellationToken token)
+        public async Task<IEnumerable<Platform>> GetGamePlatformsByKeyAsync(string key, CancellationToken token = default)
         {
             return await dbContext.Games
                 .Where(g => g.Key == key)
@@ -52,14 +65,14 @@ namespace GameStore.Repositories.Repositories
                 .Select(gp => gp.Platform)
                 .ToListAsync(token);
         }
-        public async Task<Game?> GetGameByKeyAsync(string key,CancellationToken token)
+        public async Task<Game?> GetGameByKeyAsync(string key,CancellationToken token = default)
         {
             return await dbContext.Games
                 .Include(g => g.GameGenres).ThenInclude(gg => gg.Genre)
                 .Include(g => g.GamePlatforms).ThenInclude(gp => gp.Platform)
                 .FirstOrDefaultAsync(g => g.Key == key,token);
         }
-        public async Task<Game?> GetGameByIdAsync(Guid id,CancellationToken token)
+        public async Task<Game?> GetGameByIdAsync(Guid id,CancellationToken token = default)
         {
             return await dbContext.Games
                 .Include(g => g.GameGenres).ThenInclude(gg => gg.Genre)

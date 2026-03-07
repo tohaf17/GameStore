@@ -21,7 +21,7 @@ namespace GameStore.Repositories.Repositories
             Genres = genres;
             Platforms = platforms;
         }
-        public async Task SaveChangesAsync(CancellationToken token)
+        public async Task SaveChangesAsync(CancellationToken token=default)
         {
             await context.SaveChangesAsync(token);
         }

@@ -10,15 +10,15 @@ using Microsoft.EntityFrameworkCore;
 using GameStoreApi;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// 1. Register DbContext 
+//DbContext
 builder.Services.AddDbContext<GameStoreContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-//AutoMapper Profile
+//Mapper
 builder.Services.AddAutoMapper(cfg =>
 {
     cfg.AddProfile<MappingProfile>();
 });
+//Controllers
 builder.Services.AddControllers();
 builder.Services.AddControllers(options =>
 {
@@ -29,6 +29,7 @@ builder.Services.AddControllers(options =>
             Location = ResponseCacheLocation.Any
         });
 });
+//Unit of work
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 //Register game service and repository
 builder.Services.AddScoped<IGameService, GameService>();
@@ -42,18 +43,14 @@ builder.Services.AddScoped<IPlatformService, PlatformService>();
 builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 builder.Services.AddScoped<IGenreService, GenreService>();
 
-// 2. Add Swagger/OpenAPI services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// 3. Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
-    // Enables the middleware to serve generated Swagger as a JSON endpoint.
     app.UseSwagger();
-    // Enables the Swagger UI (the visual interface)
     app.UseSwaggerUI();
 }
 app.UseMiddleware<ExceptionHandlingMiddleware>();

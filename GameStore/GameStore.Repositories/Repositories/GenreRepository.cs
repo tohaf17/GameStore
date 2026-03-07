@@ -16,36 +16,34 @@ namespace GameStore.Repositories.Repositories
         {
             this.dbContext = dbContext;
         }
-        public async Task AddGenreAsync(Genre genre,CancellationToken token)
+        public Task AddGenreAsync(Genre genre)
         {
-            await dbContext.Genres.AddAsync(genre, token);
+            dbContext.Genres.Add(genre);
+            return Task.CompletedTask;
         } 
-        public async Task<bool> UpdateGenreAsync(Genre genre, CancellationToken token)
+        public Task UpdateGenreAsync(Genre genre)
         {
             dbContext.Genres.Update(genre);
-            return true;
+            return Task.CompletedTask;
         }
-        public async Task<bool> DeleteGenreAsync(Guid id, CancellationToken token)
+        public Task DeleteGenreAsync(Genre genre)
         {
-            var genre = await dbContext.Genres.FindAsync(new object[] { id }, token);
-            if (genre == null)
-                return false;
             dbContext.Genres.Remove(genre);
-            return true;
+            return Task.CompletedTask;
         }
-        public async Task<Genre?> GetGenreByIdAsync(Guid id, CancellationToken token)
+        public async Task<Genre?> GetGenreByIdAsync(Guid id, CancellationToken token = default)
         {
             return await dbContext.Genres.FindAsync(new object[] { id }, token);
         }
-        public async Task<IEnumerable<Genre>> GetAllGenresAsync(CancellationToken token)
+        public async Task<IEnumerable<Genre>> GetAllGenresAsync(CancellationToken token = default)
         {
             return await dbContext.Genres.ToListAsync(token);
         }
-        public async Task<IEnumerable<Genre>> GetGenresByParentIdAsync(Guid id, CancellationToken token)
+        public async Task<IEnumerable<Genre>> GetGenresByParentIdAsync(Guid id, CancellationToken token = default)
             {
                 return await dbContext.Genres.Where(g => g.ParentGenreId == id).ToListAsync(token);
         }
-        public async Task<IEnumerable<Game>> GetGameByGenreAsync(Guid id, CancellationToken token)
+        public async Task<IEnumerable<Game>> GetGameByGenreAsync(Guid id, CancellationToken token = default)
         {
             return await dbContext.Games
                 .Include(g => g.GameGenres).ThenInclude(gg => gg.Genre)

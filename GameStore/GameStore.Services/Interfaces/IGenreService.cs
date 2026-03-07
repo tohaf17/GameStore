@@ -10,12 +10,12 @@ namespace GameStore.Services.Interfaces
 {
     public interface IGenreService
     {
-        Task<Guid> CreateGenreAsync(CreateGenreRequest request, CancellationToken token);
-        Task<bool> UpdateGenreAsync(UpdateGenreRequest request, CancellationToken token);
-        Task<IEnumerable<GameDto>> GetGameByGenreAsync(Guid id, CancellationToken token);
-        Task<GenreDto> GetGenreByIdAsync(Guid id, CancellationToken token);
-        Task<bool> DeleteGenreAsync(Guid id, CancellationToken token);
-        Task<IEnumerable<GenreDto>> GetGenresByParentIdAsync(Guid id, CancellationToken token);
-        Task<IEnumerable<GenreDto>> GetAllGenresAsync(CancellationToken token);
+        Task<Guid> CreateGenreAsync(CreateGenreRequest request, CancellationToken token=default);
+        Task<bool> UpdateGenreAsync(UpdateGenreRequest request, CancellationToken token= default);
+        Task<IEnumerable<GameDto>> GetGameByGenreAsync(Guid id, CancellationToken token = default);
+        Task<GenreDto> GetGenreByIdAsync(Guid id, CancellationToken token = default);
+        Task<bool> DeleteGenreAsync(Guid id, CancellationToken token = default);
+        Task<IEnumerable<GenreDto>> GetGenresByParentIdAsync(Guid id, CancellationToken token = default);
+        Task<IEnumerable<GenreDto>> GetAllGenresAsync(CancellationToken token = default);
     }
 }

@@ -20,41 +20,41 @@ namespace GameStoreApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateGameAsync([FromBody] CreateGameRequest request, CancellationToken token)
+        public async Task<IActionResult> CreateGameAsync([FromBody] CreateGameRequest request, CancellationToken token=default)
         {
             var id = await gameService.CreateGameAsync(request, token);
-            return CreatedAtAction(nameof(id), new { id, token });
+            return CreatedAtAction(nameof(id), new { id});
 
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateGameAsync([FromBody] UpdateGameRequest request,CancellationToken token)
+        public async Task<IActionResult> UpdateGameAsync([FromBody] UpdateGameRequest request,CancellationToken token=default)
         {
             var result = await gameService.UpdateGameAsync(request, token);
             return (result) ? NoContent() : NotFound(NotFoundMessage);
 
         }
 
-        [HttpGet]
-        [Route("{id}/files")]
-        [ResponseCache(CacheProfileName = "Default1Min")]
-        public async Task<IActionResult> GetGameFilesAsync(Guid id, CancellationToken token)
-        {
-            var files = await gameService.GetGameFilesAsync(id, token);
-            return (files)?Ok("file downloading is started"):BadRequest("File didn`t create");
-        }
-
         [HttpDelete]
         [Route("{id:guid}")]
-        public async Task<IActionResult> DeleteGameAsync(Guid id, CancellationToken token)
+        public async Task<IActionResult> DeleteGameAsync(Guid id, CancellationToken token = default)
         {
             var result = await gameService.DeleteGameAsync(id, token);
             return (result) ? NoContent() : NotFound(NotFoundMessage);
         }
 
         [HttpGet]
+        [Route("{id}/files")]
         [ResponseCache(CacheProfileName = "Default1Min")]
-        public async Task<IActionResult> GetAllGamesAsync(CancellationToken token)
+        public async Task<IActionResult> GetGameFilesAsync(Guid id, CancellationToken token= default)
+        {
+            var files = await gameService.GetGameFilesAsync(id, token);
+            return (files)?Ok("file downloading is started"):BadRequest("File didn`t create");
+        }
+
+        [HttpGet]
+        [ResponseCache(CacheProfileName = "Default1Min")]
+        public async Task<IActionResult> GetAllGamesAsync(CancellationToken token=default)
         {
             var games = await gameService.GetAllGamesAsync(token);
             return Ok(games);
@@ -63,7 +63,7 @@ namespace GameStoreApi.Controllers
         [HttpGet]
         [Route("{key}")]
         [ResponseCache(CacheProfileName = "Default1Min")]
-        public async Task<IActionResult> GetGameByKeyAsync(string key, CancellationToken token)
+        public async Task<IActionResult> GetGameByKeyAsync(string key, CancellationToken token = default)
         {
             var game = await gameService.GetGameByKeyAsync(key, token);
             return ((game is null) ? Ok(game) : NotFound(NotFoundMessage));
@@ -72,7 +72,7 @@ namespace GameStoreApi.Controllers
         [HttpGet]
         [Route("{key}/genres")]
         [ResponseCache(CacheProfileName = "Default1Min")]
-        public async Task<IActionResult> GetGameGenresAsync(string key, CancellationToken token)
+        public async Task<IActionResult> GetGameGenresAsync(string key, CancellationToken token = default)
         {
             var genres = await gameService.GetGameGenresByKeyAsync(key, token);
             return (genres is null) ? Ok(genres) : NotFound(NotFoundMessage);
@@ -81,7 +81,7 @@ namespace GameStoreApi.Controllers
         [HttpGet]
         [Route("{key}/platforms")]
         [ResponseCache(CacheProfileName = "Default1Min")]
-        public async Task<IActionResult> GetGamePlatformsAsync(string key, CancellationToken token)
+        public async Task<IActionResult> GetGamePlatformsAsync(string key, CancellationToken token = default)
         {
             var platforms = await gameService.GetGamePlatformsByKeyAsync(key, token);
             return (platforms is null) ? Ok(platforms) : NotFound(NotFoundMessage);
@@ -90,7 +90,7 @@ namespace GameStoreApi.Controllers
         [HttpGet]
         [Route("{id:guid}")]
         [ResponseCache(CacheProfileName = "Default1Min")]
-        public async Task<IActionResult> GetGameByIdAsync(Guid id, CancellationToken token)
+        public async Task<IActionResult> GetGameByIdAsync(Guid id, CancellationToken token = default)
         {
             var game = await gameService.GetGameByIdAsync(id, token);
             return ((game is null) ? Ok(game) : NotFound(NotFoundMessage));
