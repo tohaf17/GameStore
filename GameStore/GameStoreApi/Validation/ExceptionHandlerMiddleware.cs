@@ -1,5 +1,6 @@
 ﻿using GameStoreApi.Validation;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
@@ -9,8 +10,13 @@ namespace GameStoreApi.Validation
     public class ExceptionHandlingMiddleware
     {
         private readonly RequestDelegate next;
+        private readonly IEnumerable<IExceptionMapper> mappers;
 
-        public ExceptionHandlingMiddleware(RequestDelegate next) => this.next = next;
+        public ExceptionHandlingMiddleware(RequestDelegate next,IEnumerable<IExceptionMapper> mappers)
+        {
+            this.next = next;
+            this.mappers = mappers;
+        }
 
         public async Task InvokeAsync(HttpContext context)
         {
@@ -20,64 +26,26 @@ namespace GameStoreApi.Validation
             }
             catch (Exception ex)
             {
-                await HandleExceptionAsync(context, ex);
+                await HandleExceptionAsync(context, ex,mappers);
             }
         }
 
-        private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private async Task HandleExceptionAsync(HttpContext context, Exception exception, IEnumerable<IExceptionMapper> mappers)
         {
-            if (context.Response.HasStarted)
-            {
-                throw exception;
-            }
+            if (context.Response.HasStarted) return;
 
-            var status = HttpStatusCode.InternalServerError;
-            string message = "An unexpected error occurred.";
+            var mapper = mappers.FirstOrDefault(m => m.CanMap(exception));
 
-            switch (exception)
-            {
-                case OperationCanceledException:
-                    status = (HttpStatusCode)499;
-                    message = "Request was canceled.";
-                    break;
-                case AlreadyExistsException:
-                    status = HttpStatusCode.Conflict;
-                    message = exception.Message;
-                    break;
-                case NotFoundException:
-                    status = HttpStatusCode.NotFound;
-                    message = exception.Message;
-                    break;
-                case DbUpdateException dbEx when dbEx.InnerException is SqlException sqlEx:
-                    if (sqlEx.Number == 2601 || sqlEx.Number == 2627)
-                    {
-                        status = HttpStatusCode.Conflict;
-                        message = "Data already exist.";
-                    }
-                    break;
-                case ArgumentException argEx:
-                    status = HttpStatusCode.BadRequest;
-                    message = argEx.Message;
-                    break;
-                case ValidationException valEx:
-                    status = HttpStatusCode.BadRequest;
-                    await context.Response.WriteAsJsonAsync(new
-                    {
-                        error = "Validation failed",
-                        status = (int)status,
-                        details = valEx.Errors, 
-                        traceId = context.TraceIdentifier
-                    });
-                    return;
-            }
+            var response = mapper?.Map(exception)
+                ?? new ExceptionResponse(499, "Request was canceled.");
 
             context.Response.Clear();
             context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)status;
+            context.Response.StatusCode = (int)response.statusCode;
 
             await context.Response.WriteAsJsonAsync(new
             {
-                error = message,
+                error = response.message,
                 status = context.Response.StatusCode,
                 traceId = context.TraceIdentifier
             });

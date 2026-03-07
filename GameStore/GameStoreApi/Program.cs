@@ -15,36 +15,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//ExceptionMapper
+builder.Services.AddExceptionMappers();
+
 //ProblemDetails
 builder.Services.AddProblemDetails();
-//Async sufix
+
+//Async sufix + Validators + Controllers + CacheProfiles
 builder.Services.AddControllers(options =>
 {
     options.SuppressAsyncSuffixInActionNames = false;
-});
-//Validators
-builder.Services.AddValidatorsFromAssemblyContaining<GameValidator>();
-builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddControllers(options =>
-{
     options.Filters.Add<ValidationFilter>();
-});
-builder.Services.Configure<ApiBehaviorOptions>(options =>
-{
-    options.SuppressModelStateInvalidFilter = true;
-});
-//DbContext
-builder.Services.AddDbContext<GameStoreContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-//Mapper
-builder.Services.AddAutoMapper(cfg =>
-{
-    cfg.AddProfile<MappingProfile>();
-});
-//Controllers
-builder.Services.AddControllers();
-builder.Services.AddControllers(options =>
-{
     options.CacheProfiles.Add("Default1Min",
         new CacheProfile()
         {
@@ -52,17 +34,38 @@ builder.Services.AddControllers(options =>
             Location = ResponseCacheLocation.Any
         });
 });
+
+//Validators
+builder.Services.AddValidatorsFromAssemblyContaining<GameValidator>();
+builder.Services.AddFluentValidationAutoValidation();
+
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.SuppressModelStateInvalidFilter = true;
+});
+
+//DbContext
+builder.Services.AddDbContext<GameStoreContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+//Mapper
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AddProfile<MappingProfile>();
+});
+
 //Unit of work
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-//Register game service and repository
+
+//game service and repository
 builder.Services.AddScoped<IGameService, GameService>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();
 
-//Register platform service and repository
+//platform service and repository
 builder.Services.AddScoped<IPlatformRepository, PlatformRepository>();
 builder.Services.AddScoped<IPlatformService, PlatformService>();
 
-//Register genre service and repository
+//genre service and repository
 builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 builder.Services.AddScoped<IGenreService, GenreService>();
 
@@ -71,16 +74,19 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+app.UseHttpsRedirection();
 app.UseRouting();
 app.UseResponseCaching();
-app.UseHttpsRedirection();
 app.UseAuthorization();
+
 app.MapControllers();
 
 await app.RunAsync();
