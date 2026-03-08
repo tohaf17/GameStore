@@ -37,15 +37,15 @@ namespace GameStoreApi.Validation
             var mapper = mappers.FirstOrDefault(m => m.CanMap(exception));
 
             var response = mapper?.Map(exception)
-                ?? new ExceptionResponse(499, "Request was canceled.");
+                ?? new ExceptionResponse(500, exception.InnerException?.Message ?? exception.Message);
 
             context.Response.Clear();
             context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)response.statusCode;
+            context.Response.StatusCode = response.StatusCode;
 
             await context.Response.WriteAsJsonAsync(new
             {
-                error = response.message,
+                error = response.Message,
                 status = context.Response.StatusCode,
                 traceId = context.TraceIdentifier
             });

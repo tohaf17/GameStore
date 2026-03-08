@@ -22,15 +22,13 @@ namespace GameStore.Services.Services
             this.mapper = mapper;
         }
 
-
-
         public Task<PlatformDto> CreatePlatformAsync(CreatePlatformRequest request, CancellationToken token=default)
         {
             ArgumentNullException.ThrowIfNull(request);
             return CreatePlatformInternalAsync(request, token);
         }
 
-        private async Task<PlatformDto> CreatePlatformInternalAsync(CreatePlatformRequest request, CancellationToken token = default)
+        public async Task<PlatformDto> CreatePlatformInternalAsync(CreatePlatformRequest request, CancellationToken token = default)
         {
             var platform = mapper.Map<Platform>(request.Platform);
 
@@ -45,7 +43,7 @@ namespace GameStore.Services.Services
             return UpdatePlatformInternalAsync(request, token);
         }
 
-        private async Task<bool> UpdatePlatformInternalAsync(UpdatePlatformRequest request, CancellationToken token = default)
+        public async Task<bool> UpdatePlatformInternalAsync(UpdatePlatformRequest request, CancellationToken token = default)
         {
             var existingPlatform = await repository.Platforms.GetPlatformByIdAsync(request.Platform.Id, token);
 

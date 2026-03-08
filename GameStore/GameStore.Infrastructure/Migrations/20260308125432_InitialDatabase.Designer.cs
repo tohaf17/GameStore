@@ -12,15 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameStore.Infrastructure.Migrations
 {
     [DbContext(typeof(GameStoreContext))]
-    [Migration("20260223142135_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20260308125432_InitialDatabase")]
+    partial class InitialDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.3")
+                .HasAnnotation("ProductVersion", "9.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -110,19 +110,19 @@ namespace GameStore.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("866e4138-e354-45b3-9a62-c48edc9a983b"),
+                            Id = new Guid("a51e868b-5777-4509-9430-67180436d40d"),
                             Name = "RTS",
                             ParentGenreId = new Guid("11111111-1111-1111-1111-111111111111")
                         },
                         new
                         {
-                            Id = new Guid("1b3930e8-798c-4aa5-9411-ccdbe5f22157"),
+                            Id = new Guid("b72e868b-5777-4509-9430-67180436d40e"),
                             Name = "TBS",
                             ParentGenreId = new Guid("11111111-1111-1111-1111-111111111111")
                         },
                         new
                         {
-                            Id = new Guid("e5e9b9a3-4197-4803-8be2-ef3a99edf563"),
+                            Id = new Guid("c93e868b-5777-4509-9430-67180436d40f"),
                             Name = "RPG"
                         },
                         new
@@ -137,25 +137,25 @@ namespace GameStore.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("8798beee-97ef-48f1-bc63-3056d1634687"),
+                            Id = new Guid("d14e868b-5777-4509-9430-67180436d410"),
                             Name = "Rally",
                             ParentGenreId = new Guid("33333333-3333-3333-3333-333333333333")
                         },
                         new
                         {
-                            Id = new Guid("5e4f6b10-1792-4c29-b9d5-25b3ea4b3689"),
+                            Id = new Guid("e25e868b-5777-4509-9430-67180436d411"),
                             Name = "Arcade",
                             ParentGenreId = new Guid("33333333-3333-3333-3333-333333333333")
                         },
                         new
                         {
-                            Id = new Guid("397f89a5-adc9-48d3-b39b-e07e31c8c0bd"),
+                            Id = new Guid("f36e868b-5777-4509-9430-67180436d412"),
                             Name = "Formula",
                             ParentGenreId = new Guid("33333333-3333-3333-3333-333333333333")
                         },
                         new
                         {
-                            Id = new Guid("b7db66eb-e58c-4dfb-91a6-bf2413ed43e2"),
+                            Id = new Guid("047e868b-5777-4509-9430-67180436d413"),
                             Name = "Off-road",
                             ParentGenreId = new Guid("33333333-3333-3333-3333-333333333333")
                         },
@@ -166,24 +166,24 @@ namespace GameStore.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("46e429b3-a710-496b-b209-8d14aebe69ae"),
+                            Id = new Guid("158e868b-5777-4509-9430-67180436d414"),
                             Name = "FPS",
                             ParentGenreId = new Guid("44444444-4444-4444-4444-444444444444")
                         },
                         new
                         {
-                            Id = new Guid("4664165d-134e-45f6-8529-449079c535f6"),
+                            Id = new Guid("269e868b-5777-4509-9430-67180436d415"),
                             Name = "TPS",
                             ParentGenreId = new Guid("44444444-4444-4444-4444-444444444444")
                         },
                         new
                         {
-                            Id = new Guid("d7fd33ca-a352-4066-88ef-bac690ac6988"),
+                            Id = new Guid("37ae868b-5777-4509-9430-67180436d416"),
                             Name = "Adventure"
                         },
                         new
                         {
-                            Id = new Guid("b17c9c4c-840b-4d01-afa1-034bb2e31d42"),
+                            Id = new Guid("48be868b-5777-4509-9430-67180436d417"),
                             Name = "Puzzle & Skill"
                         });
                 });
@@ -208,22 +208,22 @@ namespace GameStore.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f43081ff-50c9-422d-a763-629e4e6c334f"),
+                            Id = new Guid("96a6669c-f947-4183-9602-047b198d0295"),
                             Type = "Mobile"
                         },
                         new
                         {
-                            Id = new Guid("9a093aae-88f8-4c6e-877e-7def4be39885"),
+                            Id = new Guid("72c21960-9173-4424-916c-e09355745772"),
                             Type = "Browser"
                         },
                         new
                         {
-                            Id = new Guid("a3869ef6-f8a1-4274-af5c-043d915ca431"),
+                            Id = new Guid("6d07e997-8c46-4e5a-939e-29249767675f"),
                             Type = "Desktop"
                         },
                         new
                         {
-                            Id = new Guid("87ddb679-74d4-4730-a2b1-d50c81e153a5"),
+                            Id = new Guid("af6d6e6f-537a-4933-8711-209a3930b207"),
                             Type = "Console"
                         });
                 });

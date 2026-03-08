@@ -33,6 +33,7 @@ namespace GameStoreApi.Controllers
             var result = await genreService.UpdateGenreAsync(request, token);
             return (result)?NoContent(): NotFound();
         }
+
         [HttpDelete]
         [Route("{id:guid}")]
         public async Task<IActionResult> DeleteGenreAsync(Guid id, CancellationToken token= default)
@@ -40,6 +41,7 @@ namespace GameStoreApi.Controllers
             var result = await genreService.DeleteGenreAsync(id, token);
             return (result) ? NoContent() : NotFound();
         }
+
         [HttpGet]
         [Route("{id:guid}")]
         [ResponseCache(CacheProfileName = "Default1Min")]
@@ -57,6 +59,7 @@ namespace GameStoreApi.Controllers
             var genre = await genreService.GetGenresByParentIdAsync(id, token);
             return (genre is null) ? NotFound() : Ok(genre);
         }
+
         [HttpGet]
         [ResponseCache(CacheProfileName = "Default1Min")]
         public async Task<IActionResult> GetAllGenresAsync(CancellationToken token = default)

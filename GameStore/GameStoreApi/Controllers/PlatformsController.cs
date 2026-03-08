@@ -50,6 +50,7 @@ namespace GameStoreApi.Controllers
             var platform = await platformService.GetPlatformByIdAsync(id, token);
             return (platform is null) ? NotFound(): Ok(platform);
         }
+
         [HttpGet]
         [ResponseCache(CacheProfileName = "Default1Min")]
         public async Task<IActionResult> GetAllPlatformsAsync(CancellationToken token=default)
@@ -57,6 +58,7 @@ namespace GameStoreApi.Controllers
             var platforms = await platformService.GetAllPlatformsAsync(token);
             return Ok(platforms);
         }
+
         [HttpGet]
         [Route("{id:guid}/games")]
         [ResponseCache(CacheProfileName = "Default1Min")]

@@ -22,6 +22,9 @@ builder.Services.AddExceptionMappers();
 //ProblemDetails
 builder.Services.AddProblemDetails();
 
+//ValidationFilter
+builder.Services.AddScoped<ValidationFilter>();
+
 //Async sufix + Validators + Controllers + CacheProfiles
 builder.Services.AddControllers(options =>
 {
@@ -38,7 +41,6 @@ builder.Services.AddControllers(options =>
 //Validators
 builder.Services.AddValidatorsFromAssemblyContaining<GameValidator>();
 builder.Services.AddFluentValidationAutoValidation();
-
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.SuppressModelStateInvalidFilter = true;

@@ -21,7 +21,7 @@ namespace GameStore.Services.Services
             this.mapper = mapper;
         }
 
-        public Task<GenreDto> CreateGenreAsync(CreateGenreRequest request, CancellationToken token=default)
+        public Task<GenreDto> CreateGenreAsync(CreateGenreRequest request, CancellationToken token = default)
         {
             ArgumentNullException.ThrowIfNull(request);
 
@@ -41,11 +41,10 @@ namespace GameStore.Services.Services
         {
             var existingGenre = await repository.Genres.GetGenreByIdAsync(id, token);
 
-            await repository.Genres.DeleteGenreAsync(existingGenre);
+            await repository.Genres.DeleteGenreAsync(existingGenre!);
             
             await repository.SaveChangesAsync(token);
             return true;
-
         }
 
         public Task<bool> UpdateGenreAsync(UpdateGenreRequest request, CancellationToken token = default)

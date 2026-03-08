@@ -5,7 +5,7 @@ using System.Net;
 
 namespace GameStoreApi.Validation
 {
-    public record ExceptionResponse(int statusCode,object message);
+    public record ExceptionResponse(int StatusCode,object Message);
     public class OperationCanceledExceptionMapper : IExceptionMapper
     {
         public bool CanMap(Exception exception) => exception is OperationCanceledException;
@@ -30,13 +30,27 @@ namespace GameStoreApi.Validation
         public ExceptionResponse Map(Exception exception)=>new ExceptionResponse(HttpStatusCode.Conflict.GetHashCode(), "Data already exist.");
         
     }
+    public class DbForeignKeyExceptionMapper : IExceptionMapper
+    {
+        public bool CanMap(Exception exception) =>
+            exception is DbUpdateException dbEx &&
+            dbEx.InnerException?.Message.Contains("FK_") == true;
+
+        public ExceptionResponse Map(Exception exception) =>
+            new ExceptionResponse(400, "Related entity (Genre or Platform) not found.");
+    }
     public class ArgumentExceptionMapper : IExceptionMapper
     {
         public bool CanMap(Exception exception) => exception is ArgumentException;
         public  ExceptionResponse Map(Exception exception)=>new ExceptionResponse(HttpStatusCode.BadRequest.GetHashCode(), exception.Message);
         
     }
-
+    public class BadHttpRequestExceptionMapper : IExceptionMapper
+    {
+        public bool CanMap(Exception exception) => exception is BadHttpRequestException;
+        public ExceptionResponse Map(Exception exception) =>
+            new ExceptionResponse(400, "Invalid JSON format or request: " + exception.Message);
+    }
     public class ValidationExceptionMapper : IExceptionMapper
     {
          public bool CanMap(Exception exception) => exception is ValidationException;

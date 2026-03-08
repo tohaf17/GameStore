@@ -32,7 +32,6 @@ namespace GameStoreApi.Controllers
         }
 
         [HttpPut]
-        
         public async Task<IActionResult> UpdateGameAsync([FromBody] UpdateGameRequest request,CancellationToken token=default)
         {
             var result = await gameService.UpdateGameAsync(request, token);
