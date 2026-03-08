@@ -6,10 +6,12 @@ using System.Net;
 namespace GameStoreApi.Validation
 {
     public record ExceptionResponse(int StatusCode,object Message);
+
     public class OperationCanceledExceptionMapper : IExceptionMapper
     {
+        public const int ClientClosedRequest = 499;
         public bool CanMap(Exception exception) => exception is OperationCanceledException;
-        public ExceptionResponse Map(Exception exception)=> new ExceptionResponse(499, "Request was canceled.");
+        public ExceptionResponse Map(Exception exception)=> new ExceptionResponse(ClientClosedRequest, "Request was canceled.");
         
     }
     public class AlreadyExistsExceptionMapper : IExceptionMapper
@@ -26,6 +28,10 @@ namespace GameStoreApi.Validation
     }
     public class DbUpdateExceptionMapper : IExceptionMapper
     {
+        public const int UniqueIndexViolation = 2601;
+
+        public const int DuplicateKeyViolation = 2627;
+
         public bool CanMap(Exception exception) => exception is DbUpdateException dbEx && dbEx.InnerException is SqlException sqlEx && (sqlEx.Number == 2601 || sqlEx.Number == 2627);
         public ExceptionResponse Map(Exception exception)=>new ExceptionResponse(HttpStatusCode.Conflict.GetHashCode(), "Data already exist.");
         
@@ -49,7 +55,7 @@ namespace GameStoreApi.Validation
     {
         public bool CanMap(Exception exception) => exception is BadHttpRequestException;
         public ExceptionResponse Map(Exception exception) =>
-            new ExceptionResponse(400, "Invalid JSON format or request: " + exception.Message);
+            new ExceptionResponse(HttpStatusCode.BadRequest.GetHashCode(), "Invalid JSON format or request: " + exception.Message);
     }
     public class ValidationExceptionMapper : IExceptionMapper
     {
