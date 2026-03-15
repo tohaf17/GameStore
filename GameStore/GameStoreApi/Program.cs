@@ -13,6 +13,7 @@ using GameStoreApi;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using GameStoreApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -92,3 +93,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 await app.RunAsync();
+public partial class Program { }

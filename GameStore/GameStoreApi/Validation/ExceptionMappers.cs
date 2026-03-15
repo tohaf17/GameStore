@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using GameStore.Domain;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 

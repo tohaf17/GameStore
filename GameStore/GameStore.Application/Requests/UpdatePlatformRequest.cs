@@ -18,10 +18,13 @@ namespace GameStore.Application.Requests
                 .NotNull()
                 .WithMessage("Platform data is required.")
                 .SetValidator(new PlatformValidator());
-
-            RuleFor(x => x.Platform.Id)
+            When(x => x.Platform != null, () =>
+            {
+                RuleFor(x => x.Platform.Id)
                 .NotEmpty()
                 .WithMessage("Platform ID is required for the update operation.");
+            });
+            
         }
     }
 }

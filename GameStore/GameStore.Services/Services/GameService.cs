@@ -83,7 +83,10 @@ namespace GameStore.Services.Services
         private async Task<bool> UpdateGameInternalAsync(UpdateGameRequest request, CancellationToken token = default)
         {
             var existingGame = await repository.Games.GetGameByIdAsync(request.Game.Id, token);
-
+            if (existingGame == null)
+            {
+                return false;
+            }
             mapper.Map(request.Game, existingGame);
             existingGame!.GameGenres.Clear();
             foreach (var genreDto in request.Genres)

@@ -8,7 +8,7 @@ namespace GameStore.Application.Requests
 {
     public class UpdateGenreRequest
     {
-        public required GenreDto Genre { get; set; }
+        public  GenreDto Genre { get; set; }
 
     }
     public class UpdateGenreRequestValidator : AbstractValidator<UpdateGenreRequest>
@@ -20,9 +20,12 @@ namespace GameStore.Application.Requests
                 .WithMessage("Genre data must be provided.")
                 .SetValidator(new GenreValidator());
 
-            RuleFor(x => x.Genre.Id)
-                .NotEmpty()
-                .WithMessage("Genre ID is mandatory for update operations.");
+            When(x => x.Genre != null, () =>
+            {
+                RuleFor(x => x.Genre.Id)
+                    .NotEmpty()
+                    .WithMessage("Genre ID is mandatory for update operations.");
+            });
         }
     }
 

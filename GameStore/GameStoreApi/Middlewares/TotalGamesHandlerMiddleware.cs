@@ -17,7 +17,8 @@ namespace GameStoreApi.Middlewares
         {
             if (!cache.TryGetValue("TotalGamesNumber", out string? totalGamesNumber))
             {
-                totalGamesNumber = db.Games.CountAsync().ToString();
+                var count = await db.Games.CountAsync();
+                totalGamesNumber = count.ToString();
                 cache.Set("TotalGamesNumber", totalGamesNumber, TimeSpan.FromMinutes(1));
             }
             context.Response.Headers.Append("x-total-numbers-of-games", totalGamesNumber);
