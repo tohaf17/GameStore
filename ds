@@ -1,0 +1,505 @@
+[33mcommit 8ae4808647767e20cc40dbed2ad8520e524a08c3[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/game-store-epic-01[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mgame-store-epic-01[m[33m)[m
+Author: anton <filipenkoa270@gmail.com>
+Date:   Wed Feb 25 17:50:21 2026 +0200
+
+    changed .slnx to .sln
+
+[33mcommit 2790f0fc4ed7e7c3137d7b32f7ff7114efdf5756[m
+Author: anton <filipenkoa270@gmail.com>
+Date:   Wed Feb 25 17:38:28 2026 +0200
+
+    removed old project GameStore
+
+[33mcommit 3e0f4db79124880bad65aa6345a99ed871c2a0f6[m
+Merge: 1598d6a ea95496
+Author: anton <filipenkoa270@gmail.com>
+Date:   Wed Feb 25 17:27:35 2026 +0200
+
+    Merge branch 'main' into game-store-epic-01
+
+[33mcommit 1598d6aee922e890429b4f7fe775074fa257960d[m
+Author: anton <filipenkoa270@gmail.com>
+Date:   Wed Feb 25 17:14:37 2026 +0200
+
+    sonarqube
+
+[33mcommit 392f8c928ec992c81711813505289f0d5f6dcac9[m
+Author: anton <filipenkoa270@gmail.com>
+Date:   Tue Feb 24 22:08:25 2026 +0200
+
+    NFR3E1
+    Add GET endpoints responses caching for 1 minute. 
+
+[33mcommit ef50913243266f636d71cc5fd4f3f9b79d05b32a[m
+Author: anton <filipenkoa270@gmail.com>
+Date:   Tue Feb 24 22:02:57 2026 +0200
+
+    user story 15
+
+[33mcommit 87ac61fda8b8409b973585a32a3277f490f20883[m
+Author: anton <filipenkoa270@gmail.com>
+Date:   Tue Feb 24 21:56:24 2026 +0200
+
+    user story 13
+
+[33mcommit 3fa10b3ec208d4ab0abf88c7426c1a3f8c5b8d45[m
+Author: anton <filipenkoa270@gmail.com>
+Date:   Tue Feb 24 21:54:10 2026 +0200
+
+    user story 12
+
+[33mcommit b83b6d8c6e3ea1e3662bceb89d76d9d9a06fb8aa[m
+Author: anton <filipenkoa270@gmail.com>
+Date:   Tue Feb 24 21:40:45 2026 +0200
+
+    user story 11
+
+[33mcommit ed551735ce09eaf57f32179554f03103f14950fc[m
+Author: anton <filipenkoa270@gmail.com>
+Date:   Tue Feb 24 21:30:13 2026 +0200
+
+    user story 10
+
+[33mcommit eb2644d1a6d13fb98a70f3c31c066d5376d446e7[m
+Author: anton <filipenkoa270@gmail.com>
+Date:   Tue Feb 24 21:28:12 2026 +0200
+
+    user story 9
+
+[33mcommit 240ee947ffbccb7d04d1ed3f8bf0d743c1b5bee5[m
+Author: anton <filipenkoa270@gmail.com>
+Date:   Tue Feb 24 21:10:33 2026 +0200
+
+    user story 8
+
+[33mcommit f595d0c0df0e2c260db5941d61bd11f8b9752c7d[m
+Author: anton <filipenkoa270@gmail.com>
+Date:   Tue Feb 24 10:45:22 2026 +0200
+
+    user story 7/ exceptions
+
+[33mcommit d4ec1c60521fcc91d33b18e02dacfa2b8b113b28[m
+Author: anton <filipenkoa270@gmail.com>
+Date:   Mon Feb 23 23:02:09 2026 +0200
+
+    user story 6
+
+[33mcommit 31a547245e1a9d3d9cd4253594a2db85f9f08f7b[m
+Author: anton <filipenkoa270@gmail.com>
+Date:   Mon Feb 23 22:56:59 2026 +0200
+
+    user story 5
+
+[33mcommit 1c42c5518d482203511e5283b489f25a1da625e4[m
+Author: anton <filipenkoa270@gmail.com>
+Date:   Mon Feb 23 22:46:39 2026 +0200
+
+    user story 5
+
+[33mcommit 3010e0f0cfd1605bacad76d3de7447f75359e91e[m
+Author: anton <filipenkoa270@gmail.com>
+Date:   Mon Feb 23 22:40:52 2026 +0200
+
+    user story 3
+
+[33mcommit 474da5a7e0b0fafee2e3ba29f3c30f3ec8a48f6b[m
+Author: anton <filipenkoa270@gmail.com>
+Date:   Mon Feb 23 22:29:06 2026 +0200
+
+    user stories 1 and 2
+
+[33mcommit c8d534f56664c0b8abc36bd0c1fe8eb97571eceb[m
+Author: anton <filipenkoa270@gmail.com>
+Date:   Mon Feb 23 19:18:24 2026 +0200
+
+    get game by platform/2 user story
+
+[33mcommit f4f680121a978b3793486803f452e68048778c67[m
+Author: anton <filipenkoa270@gmail.com>
+Date:   Mon Feb 23 18:09:38 2026 +0200
+
+    added normal architecture
+
+[33mcommit 40a13ef9eedf7d730cfe48bbf4b73dac3889a634[m
+Author: anton <filipenkoa270@gmail.com>
+Date:   Sun Feb 22 22:59:25 2026 +0200
+
+    user-story 1 and almost 2
+
+[33mcommit d6a6e8aa70f2d1bdd1af7d7c97db27674bd47c4a[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Fri Oct 17 16:09:45 2025 +0000
+
+    Update project-configuration.md
+
+[33mcommit 1972eb6466cf90caab5a9493c24bd2953b097526[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Fri Oct 17 16:04:46 2025 +0000
+
+    Update project-configuration.md
+
+[33mcommit b9b2c073f9accbb6f6c0ecc1c57446498bcd6f44[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Fri Oct 17 15:59:08 2025 +0000
+
+    Update epic-01.md
+
+[33mcommit 5e307a11b76d6558001fb3a954ef0e35394f65bf[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Fri Oct 17 15:12:48 2025 +0000
+
+    Delete .gitlab-ci.yml
+
+[33mcommit 996515621c7bcd92d67c8475b0b2d0a5af134cd7[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Fri Oct 17 12:26:49 2025 +0000
+
+    Update epic-01.md
+
+[33mcommit 40cf1c7d7a811d39217c8dbb8a661dfd250ea292[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Tue Oct 7 13:11:01 2025 +0000
+
+    Update epic-01.md
+
+[33mcommit 76cf3025ef97bb1e024236892b7175ffb1d92511[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Mon Jul 21 15:26:32 2025 +0000
+
+    Update epic-01.md
+
+[33mcommit 2d87903690bef1ff4d9c5f350cc84a3526410f87[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Thu Jul 17 14:44:59 2025 +0000
+
+    Update Directory.Build.props
+
+[33mcommit c2663a82c4344a4bce20473b03c225286da9f8f7[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Wed Jun 4 15:55:39 2025 +0000
+
+    Update project-configuration.md
+
+[33mcommit 9ed60bc57789b6db103d906113343d2873ff2d7b[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Wed Jun 4 15:50:46 2025 +0000
+
+    Replace RepositoryStructure.png
+
+[33mcommit 6ee6bc168303aec31caec908dd07069ba777429f[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Wed Jun 4 15:50:08 2025 +0000
+
+    Add new file
+
+[33mcommit 9725faf1929fa6f811538dce86b8218c8d869646[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Wed Jun 4 15:49:47 2025 +0000
+
+    Delete project-configuration.md
+
+[33mcommit 44783130846078011001c744d31c14c47088fe2a[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Wed Jun 4 15:46:53 2025 +0000
+
+    Replace project-configuration.md
+
+[33mcommit 289c5885c5448f3a89d6ccdd8b536eb5c0e22b31[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Wed Jun 4 15:45:35 2025 +0000
+
+    Update project-configuration.md
+
+[33mcommit 6a6849a608f87af785bcf427a8c21004864a947f[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Wed Jun 4 15:44:23 2025 +0000
+
+    Update project-configuration.md
+
+[33mcommit a75961194b179f41deef8d2a2fb6dc31568e5ba8[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Wed Jun 4 15:41:18 2025 +0000
+
+    Upload repository structure picture.
+
+[33mcommit 6d9f8c5154706dc27f50e1c7ce0e3ce56ed90438[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Wed May 28 16:36:39 2025 +0000
+
+    Update epic-01.md
+
+[33mcommit 21f4a867a3219c5493d3fa9e542d85037c53e388[m
+Author: Anzhelika Kravchuk <AnzhelikaKravchuk@users.noreply.github.com>
+Date:   Thu Apr 17 18:59:31 2025 +0300
+
+    Update README.md to match main
+
+[33mcommit ea95496a777fa50ab0e18d50809edc2df19b9807[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Thu Apr 17 14:39:38 2025 +0000
+
+    Update README.md
+
+[33mcommit 4dfa875528bea7a11efdc30968f3f2afc5e0794f[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Thu Apr 17 14:33:25 2025 +0000
+
+    Update README.md
+
+[33mcommit f75d3316a987f04c95ccc941fc3de7085248d86f[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Thu Apr 17 14:19:08 2025 +0000
+
+    Update README.md
+
+[33mcommit bdbf0b462c503c0c6358d570332bb9fbfe591391[m
+Author: Anzhelika Kravchuk <AnzhelikaKravchuk@users.noreply.github.com>
+Date:   Tue Apr 15 14:04:59 2025 +0300
+
+    Update README.md to match main
+
+[33mcommit 6ca05ebc24b9bc89f3d1867978f054dc83c1ea97[m
+Author: Anzhelika Kravchuk <AnzhelikaKravchuk@users.noreply.github.com>
+Date:   Tue Apr 15 13:50:03 2025 +0300
+
+    Update readme.md file.
+
+[33mcommit 709170257451697221613ff7dd882f71c6d49894[m
+Author: Anzhelika Kravchuk <AnzhelikaKravchuk@users.noreply.github.com>
+Date:   Tue Apr 15 12:30:15 2025 +0300
+
+    Update README.md to match main
+
+[33mcommit d94f86bff5bbf074bb79a6f5e4cb42093e029571[m
+Author: Anzhelika Kravchuk <AnzhelikaKravchuk@users.noreply.github.com>
+Date:   Tue Apr 15 11:52:09 2025 +0300
+
+    Reorder epics.
+
+[33mcommit f9b5faf87f596ab77c0994b4cdd8acd16f0430dd[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Sun Mar 23 20:14:57 2025 +0000
+
+    Update epic-01.md
+
+[33mcommit a91f5ca6315a05472dfa733c8cb7d531fa10b56f[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Sun Mar 23 20:13:58 2025 +0000
+
+    Update epic-01.md
+
+[33mcommit 931efd12a01c8c51a954adc0c860f45260914521[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Sun Mar 23 20:13:39 2025 +0000
+
+    Update epic-01.md
+
+[33mcommit b83daae894f5debcd9ee7e50585113857e6fb8e5[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Sun Mar 23 20:10:58 2025 +0000
+
+    Update .gitlab-ci.yml
+
+[33mcommit 74be57ab5d151923c38b40209bcaea1273f6889d[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Sun Mar 23 20:09:14 2025 +0000
+
+    Update project-configuration.md
+
+[33mcommit 795ea6094e2891dc8971b29f932cefc1079d1ed1[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Sun Mar 23 20:07:38 2025 +0000
+
+    Update project-configuration.md
+
+[33mcommit 1095586f30e818eb4f24a3209a366a2f94245abb[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Tue Feb 25 12:05:34 2025 +0000
+
+    Update project-configuration.md
+
+[33mcommit 3f5a134b4fdbe4c310ad5350c7a8c929f009b99e[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Tue Feb 25 12:04:18 2025 +0000
+
+    Update project-configuration.md
+
+[33mcommit c10ddbcacf8659fae8920e79c4fe9f28c0ca7bc9[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Tue Feb 25 10:54:13 2025 +0000
+
+    Update git-workflow-instructions.md
+
+[33mcommit caf99ac4866edbecf520230fcfff6f937446bcae[m
+Author: Anzhelika_Kravchuk_epam <Anzhelika_Kravchuk@epam.com>
+Date:   Tue Feb 25 13:16:37 2025 +0300
+
+    Remove git-workflow-instructions.md file
+
+[33mcommit bfabbd28785eef25a4cb3aa820a8fb04e5538d42[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Tue Feb 25 09:51:06 2025 +0000
+
+    Update GitWorkflowInstructions.md
+
+[33mcommit 49f5d87336fb7392df6a58ebfb7c89eded316f7c[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Tue Feb 25 09:46:30 2025 +0000
+
+    Update project-configuration.md
+
+[33mcommit d6f1e15308ee6a3eaaf8b4aec2806a0f17b74989[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Tue Feb 25 09:43:52 2025 +0000
+
+    Update project-configuration.md
+
+[33mcommit f5a23d12d586aa38e70cb4e2af738dd956c4f085[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Tue Feb 25 09:42:02 2025 +0000
+
+    Update project-configuration.md
+
+[33mcommit 0a5c1e64efb3c70d7a60716c1799f0fc8fbc96e6[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Mon Feb 24 20:31:05 2025 +0000
+
+    Update GitWorkflowInstructions.md
+
+[33mcommit a66e540f3f4507fb305144adddc8f82d83430c87[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Mon Feb 24 20:26:22 2025 +0000
+
+    Update GitWorkflowInstructions.md
+
+[33mcommit 514b0523b6206ae16c3b1eb51d593f4583b14b8e[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Mon Feb 24 19:30:04 2025 +0000
+
+    Update GitWorkflowInstructions.md
+
+[33mcommit ebc91259e3f8fa742022b37e5cce2e6b7ca4b399[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Mon Feb 24 19:26:13 2025 +0000
+
+    Update GitWorkflowInstructions.md
+
+[33mcommit 92b0d3669eb01fe9bb139423bd00e226f272027d[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Mon Feb 24 19:18:25 2025 +0000
+
+    Add new file
+
+[33mcommit 09d1cb2e89821f0266ebe24233a1d6468a4905bb[m
+Author: Anzhelika Kravchuk <AnzhelikaKravchuk@users.noreply.github.com>
+Date:   Mon Feb 24 21:18:20 2025 +0300
+
+    Add additional files.
+
+[33mcommit 33d3e1d0b0a80f5fcded56091db77d466d3eaae5[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Sat Feb 22 18:18:02 2025 +0000
+
+    Upload New File
+
+[33mcommit 80ae660d1b53fa7a1a26bd6abccc7cbd74652dda[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Sat Feb 22 18:17:30 2025 +0000
+
+    Add .gitignore file.
+
+[33mcommit 0ddb2f43b0fe08dabbab0d6a7e74bed7bc67270e[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Sat Feb 22 17:54:59 2025 +0000
+
+    Update README.md
+
+[33mcommit eb2f2c70471bf6180469a50f1ac1fd9528ce5da1[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Sat Feb 22 17:44:54 2025 +0000
+
+    Update README.md
+
+[33mcommit d80b17cb6c144cd91cccc7b4100217ee63cc1114[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Sat Feb 22 17:30:48 2025 +0000
+
+    Update README.md
+
+[33mcommit 540de8a435380b896e47e06ca98ac687aec53620[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Sat Feb 22 17:30:01 2025 +0000
+
+    Update README.md
+
+[33mcommit 0e4cc454e0f36405ce1ad72dd0457f4649654593[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Wed Feb 19 15:50:23 2025 +0000
+
+    Update README.md
+
+[33mcommit 399e42a98ab7f99973e1b3d6d2a7a254f3d8684f[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Tue Feb 4 12:53:37 2025 +0000
+
+    Update README.md
+
+[33mcommit 7c7f7748a4091312803ae59cd62be83ed5d49dac[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Tue Feb 4 12:40:22 2025 +0000
+
+    Update README.md
+
+[33mcommit 638f288c1a018a8ea6c806fd8125242e4ce2301c[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Tue Feb 4 11:12:09 2025 +0000
+
+    Update README.md
+
+[33mcommit b33c7252bbc3f3a256c18f28dbd998a1141be02d[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Tue Feb 4 11:11:29 2025 +0000
+
+    Update README.md
+
+[33mcommit 691e8305305b9c72acaa7c356329a85039cab124[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Tue Feb 4 11:10:48 2025 +0000
+
+    Update README.md
+
+[33mcommit 9f7f7d9312564431e5a05c34fab8bcea8647e92d[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Tue Feb 4 11:06:41 2025 +0000
+
+    Update README.md
+
+[33mcommit 04d3313dd72c84c01e1d2bc666d3e9eb3f655d83[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Tue Feb 4 11:05:45 2025 +0000
+
+    Update README.md
+
+[33mcommit 6bc70467af8407921a887bb12a2da451cf9863ba[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Tue Feb 4 11:04:52 2025 +0000
+
+    Update README.md
+
+[33mcommit b1c412fc9d577bd8cf52d076e779f0fa7718cb20[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Tue Feb 4 10:56:24 2025 +0000
+
+    Update README.md
+
+[33mcommit 8999cc0873fbe36e4827a86fcfd7d2cd6ed1eafc[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Tue Feb 4 10:52:50 2025 +0000
+
+    Update README.md
+
+[33mcommit 917c3783fd65452c252f49f593650fad7e74fd2a[m
+Author: Anzhelika Kravchuk <anzhelika_kravchuk@epam.com>
+Date:   Tue Feb 4 10:46:52 2025 +0000
+
+    Initial commit

@@ -1,0 +1,5 @@
+Game ID: 49b7888e-47ad-4eea-1170-08de7d1233cb
+Name: game1
+Description: game1
+Genres: RTS
+Platforms: Mobile
