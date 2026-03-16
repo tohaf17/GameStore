@@ -11,10 +11,10 @@ namespace GameStoreTests.Controllers
     public class GameContollerTest : IClassFixture<GameStoreApiFactory>
     {
         private readonly HttpClient client;
-        //public GameContollerTest(GameStoreApiFactory factory)
-        //{
-        //    client = factory.CreateClient();
-        //}
+        public GameContollerTest(GameStoreApiFactory factory)
+        {
+            client = factory.CreateClient();
+        }
 
         [Fact]
         public async Task CreateGameAsync_ShouldReturnNotNull_AndCorrectStatusCode()
@@ -68,7 +68,7 @@ namespace GameStoreTests.Controllers
             var createResponse = await client.PostAsJsonAsync("/api/games", createRequest);
 
             var createdGame = await createResponse.Content.ReadFromJsonAsync<GameDto>();
-            var gameId = createdGame.Id;
+            var gameId = createdGame!.Id;
 
             var getResponse = await client.GetAsync($"/api/games/{gameId}");
             if (!getResponse.IsSuccessStatusCode)
@@ -100,8 +100,8 @@ namespace GameStoreTests.Controllers
         public void DeleteGameAsync_ShouldReturnNotFound_WhenGameDoesNotExist()
         {
             var nonExistentGameId = Guid.NewGuid();
-            var response = client.DeleteAsync($"/api/games/{nonExistentGameId}").Result;
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            var response = client.DeleteAsync($"/api/games/{nonExistentGameId}")?.Result;
+            Assert.Equal(HttpStatusCode.NotFound, response?.StatusCode);
         }
         [Fact]
         public void DeleteGameAsync_ShouldReturnNoContent_WhenGameIsDeleted()
@@ -118,11 +118,11 @@ namespace GameStoreTests.Controllers
                 Genres = new List<GenreDto> { new GenreDto { Id = Guid.NewGuid(), Name = "Action" } },
                 Platforms = new List<PlatformDto> { new PlatformDto { Id = Guid.NewGuid(), Type = "PC" } }
             };
-            var createResponse = client.PostAsJsonAsync("/api/games", createRequest).Result;
-            var createdGame = createResponse.Content.ReadFromJsonAsync<GameDto>().Result;
-            var gameId = createdGame.Id;
-            var deleteResponse = client.DeleteAsync($"/api/games/{gameId}").Result;
-            Assert.Equal(HttpStatusCode.NoContent, deleteResponse.StatusCode);
+            var createResponse = client.PostAsJsonAsync("/api/games", createRequest)?.Result;
+            var createdGame = createResponse?.Content.ReadFromJsonAsync<GameDto>()?.Result;
+            var gameId = createdGame!.Id;
+            var deleteResponse = client.DeleteAsync($"/api/games/{gameId}")?.Result;
+            Assert.Equal(HttpStatusCode.NoContent, deleteResponse?.StatusCode);
 
         }
 
@@ -130,8 +130,8 @@ namespace GameStoreTests.Controllers
         public void GetGameFilesAsync_ShouldReturnNotFound_WhenGameDoesNotExist()
         {
             var nonExistentGameId = Guid.NewGuid();
-            var response = client.GetAsync($"/api/games/{nonExistentGameId}/files").Result;
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            var response = client.GetAsync($"/api/games/{nonExistentGameId}/files")?.Result;
+            Assert.Equal(HttpStatusCode.NotFound, response?.StatusCode);
         }
         [Fact]
         public void GetGameFilesAsync_ShouldReturnOk_WhenGameExists()
@@ -148,18 +148,18 @@ namespace GameStoreTests.Controllers
                 Genres = new List<GenreDto> { new GenreDto { Id = Guid.NewGuid(), Name = "Action" } },
                 Platforms = new List<PlatformDto> { new PlatformDto { Id = Guid.NewGuid(), Type = "PC" } }
             };
-            var createResponse = client.PostAsJsonAsync("/api/games", createRequest).Result;
-            var createdGame = createResponse.Content.ReadFromJsonAsync<GameDto>().Result;
-            var gameId = createdGame.Id;
-            var getFilesResponse = client.GetAsync($"/api/games/{gameId}/files").Result;
-            Assert.Equal(HttpStatusCode.OK, getFilesResponse.StatusCode);
+            var createResponse = client.PostAsJsonAsync("/api/games", createRequest)?.Result;
+            var createdGame = createResponse?.Content.ReadFromJsonAsync<GameDto>()?.Result;
+            var gameId = createdGame?.Id;
+            var getFilesResponse = client.GetAsync($"/api/games/{gameId}/files")?.Result;
+            Assert.Equal(HttpStatusCode.OK, getFilesResponse?.StatusCode);
         }
         [Fact]
         public void GetAllGamesAsync_ShouldReturnOk_AndListOfGames()
         {
-            var response = client.GetAsync("/api/games").Result;
-            response.EnsureSuccessStatusCode();
-            var games = response.Content.ReadFromJsonAsync<List<GameDto>>().Result;
+            var response = client.GetAsync("/api/games")?.Result;
+            response?.EnsureSuccessStatusCode();
+            var games = response?.Content.ReadFromJsonAsync<List<GameDto>>()?.Result;
             Assert.NotNull(games);
             Assert.IsType<List<GameDto>>(games);
         }
@@ -167,13 +167,15 @@ namespace GameStoreTests.Controllers
         public void GetGameByKeyAsync_ShouldReturnNotFound_WhenGameDoesNotExist()
         {
             var nonExistentKey = "non-existent-key";
-            var response = client.GetAsync($"/api/games/{nonExistentKey}").Result;
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            var response = client.GetAsync($"/api/games/{nonExistentKey}")?.Result;
+            Assert.Equal(HttpStatusCode.NotFound, response?.StatusCode);
         }
+
         [Fact]
-        public void GetGameByKeyAsync_ShouldReturnOk_AndGame()
+        public async Task GetGameByKeyAsync_ShouldReturnOk_AndGame() 
         {
-            var uniqueKey = ("game-" + Guid.NewGuid()).ToLower();
+           
+            var uniqueKey = ("game-" + Guid.NewGuid()).ToString().ToLower();
             var createRequest = new CreateGameRequest
             {
                 Game = new CreateGameDto
@@ -185,20 +187,25 @@ namespace GameStoreTests.Controllers
                 Genres = new List<GenreDto> { new GenreDto { Id = Guid.NewGuid(), Name = "Action" } },
                 Platforms = new List<PlatformDto> { new PlatformDto { Id = Guid.NewGuid(), Type = "PC" } }
             };
-            var createResponse = client.PostAsJsonAsync("/api/games", createRequest).Result;
-            var createdGame = createResponse.Content.ReadFromJsonAsync<GameDto>().Result;
-            var getResponse = client.GetAsync($"/api/games/{uniqueKey}").Result;
+
+            var createResponse = await client.PostAsJsonAsync("/api/games", createRequest);
+            createResponse.EnsureSuccessStatusCode();
+
+            var getResponse = await client.GetAsync($"/api/games/{uniqueKey}");
+
             getResponse.EnsureSuccessStatusCode();
-            var game = getResponse.Content.ReadFromJsonAsync<GameDto>().Result;
+            var game = await getResponse.Content.ReadFromJsonAsync<GameDto>();
+
             Assert.NotNull(game);
             Assert.Equal(uniqueKey, game.Key);
         }
+
         [Fact]
         public void GetGameGenresByKeyAsync_ShouldReturnNotFound_WhenGameDoesNotExist()
         {
             var nonExistentKey = "non-existent-key";
-            var response = client.GetAsync($"/api/games/{nonExistentKey}/genres").Result;
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            var response = client.GetAsync($"/api/games/{nonExistentKey}/genres")?.Result;
+            Assert.Equal(HttpStatusCode.NotFound, response?.StatusCode);
         }
         [Fact]
         public void GetGameGenresByKeyAsync_ShouldReturnOk_AndListOfGenres()
@@ -215,11 +222,10 @@ namespace GameStoreTests.Controllers
                 Genres = new List<GenreDto> { new GenreDto { Id = Guid.NewGuid(), Name = "Action" } },
                 Platforms = new List<PlatformDto> { new PlatformDto { Id = Guid.NewGuid(), Type = "PC" } }
             };
-            var createResponse = client.PostAsJsonAsync("/api/games", createRequest).Result;
-            var createdGame = createResponse.Content.ReadFromJsonAsync<GameDto>().Result;
-            var getResponse = client.GetAsync($"/api/games/{uniqueKey}/genres").Result;
-            getResponse.EnsureSuccessStatusCode();
-            var genres = getResponse.Content.ReadFromJsonAsync<List<GenreDto>>().Result;
+            var createResponse = client.PostAsJsonAsync("/api/games", createRequest)?.Result;
+            var getResponse = client.GetAsync($"/api/games/{uniqueKey}/genres")?.Result;
+            getResponse?.EnsureSuccessStatusCode();
+            var genres = getResponse?.Content.ReadFromJsonAsync<List<GenreDto>>()?.Result;
             Assert.NotNull(genres);
             Assert.IsType<List<GenreDto>>(genres);
         }
@@ -227,8 +233,8 @@ namespace GameStoreTests.Controllers
         public void GetGamePlatformsByKeyAsync_ShouldReturnNotFound_WhenGameDoesNotExist()
         {
             var nonExistentKey = "non-existent-key";
-            var response = client.GetAsync($"/api/games/{nonExistentKey}/platforms").Result;
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            var response = client.GetAsync($"/api/games/{nonExistentKey}/platforms")?.Result;
+            Assert.Equal(HttpStatusCode.NotFound, response?.StatusCode);
         }
         [Fact]
         public void GetGamePlatformsByKeyAsync_ShouldReturnOk_AndListOfPlatforms()
@@ -245,11 +251,11 @@ namespace GameStoreTests.Controllers
                 Genres = new List<GenreDto> { new GenreDto { Id = Guid.NewGuid(), Name = "Action" } },
                 Platforms = new List<PlatformDto> { new PlatformDto { Id = Guid.NewGuid(), Type = "PC" } }
             };
-            var createResponse = client.PostAsJsonAsync("/api/games", createRequest).Result;
-            var createdGame = createResponse.Content.ReadFromJsonAsync<GameDto>().Result;
-            var getResponse = client.GetAsync($"/api/games/{uniqueKey}/platforms").Result;
-            getResponse.EnsureSuccessStatusCode();
-            var platforms = getResponse.Content.ReadFromJsonAsync<List<PlatformDto>>().Result;
+            var createResponse = client.PostAsJsonAsync("/api/games", createRequest)?.Result;
+            var createdGame = createResponse?.Content.ReadFromJsonAsync<GameDto>()?.Result;
+            var getResponse = client.GetAsync($"/api/games/{uniqueKey}/platforms")?.Result;
+            getResponse?.EnsureSuccessStatusCode();
+            var platforms = getResponse?.Content.ReadFromJsonAsync<List<PlatformDto>>()?.Result;
             Assert.NotNull(platforms);
             Assert.IsType<List<PlatformDto>>(platforms);
         }
@@ -257,8 +263,8 @@ namespace GameStoreTests.Controllers
         public void GetGameByIdAsync_ShouldReturnNotFound_WhenGameDoesNotExist()
         {
             var nonExistentGameId = Guid.NewGuid();
-            var response = client.GetAsync($"/api/games/{nonExistentGameId}").Result;
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            var response = client.GetAsync($"/api/games/{nonExistentGameId}")?.Result;
+            Assert.Equal(HttpStatusCode.NotFound, response?.StatusCode);
         }
         [Fact]
         public void GetGameByIdAsync_ShouldReturnOk_AndGame()
@@ -275,12 +281,12 @@ namespace GameStoreTests.Controllers
                 Genres = new List<GenreDto> { new GenreDto { Id = Guid.NewGuid(), Name = "Action" } },
                 Platforms = new List<PlatformDto> { new PlatformDto { Id = Guid.NewGuid(), Type = "PC" } }
             };
-            var createResponse = client.PostAsJsonAsync("/api/games", createRequest).Result;
-            var createdGame = createResponse.Content.ReadFromJsonAsync<GameDto>().Result;
-            var gameId = createdGame.Id;
-            var getResponse = client.GetAsync($"/api/games/{gameId}").Result;
-            getResponse.EnsureSuccessStatusCode();
-            var game = getResponse.Content.ReadFromJsonAsync<GameDto>().Result;
+            var createResponse = client.PostAsJsonAsync("/api/games", createRequest)?.Result;
+            var createdGame = createResponse?.Content.ReadFromJsonAsync<GameDto>()?.Result;
+            var gameId = createdGame!.Id;
+            var getResponse = client.GetAsync($"/api/games/{gameId}")?.Result;
+            getResponse?.EnsureSuccessStatusCode();
+            var game = getResponse?.Content.ReadFromJsonAsync<GameDto>()?.Result;
             Assert.NotNull(game);
             Assert.Equal(gameId, game.Id);
         }

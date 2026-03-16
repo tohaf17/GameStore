@@ -28,7 +28,7 @@ namespace GameStoreTests.Middlewares
                 return Task.CompletedTask;
             };
             var middleware = new ExceptionHandlingMiddleware(next, list);
-            middleware.InvokeAsync(context).Wait();
+            middleware.InvokeAsync(context)?.Wait();
             Assert.True(nextCalled);
         }
         [Fact]
@@ -43,7 +43,7 @@ namespace GameStoreTests.Middlewares
             mock.Setup(m => m.CanMap(exception)).Returns(true);
             mock.Setup(m => m.Map(exception)).Returns(new ExceptionResponse(400, "Mapped exception"));
             var middleware = new ExceptionHandlingMiddleware(next, list);
-            middleware.InvokeAsync(context).Wait();
+            middleware.InvokeAsync(context)?.Wait();
             Assert.Equal(400, context.Response.StatusCode);
         }
         [Fact]
@@ -57,7 +57,7 @@ namespace GameStoreTests.Middlewares
             };
             mock.Setup(m => m.CanMap(exception)).Returns(false);
             var middleware = new ExceptionHandlingMiddleware(next, list);
-            middleware.InvokeAsync(context).Wait();
+            middleware.InvokeAsync(context)?.Wait();
             Assert.Equal(500, context.Response.StatusCode);
         }
     }

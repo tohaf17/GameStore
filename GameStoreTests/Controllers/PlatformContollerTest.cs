@@ -13,10 +13,10 @@ namespace GameStoreTests.Controllers
     {
         private readonly HttpClient client;
 
-        //public PlatformContollerTest(GameStoreApiFactory factory)
-        //{
-        //    client = factory.CreateClient();
-        //}
+        public PlatformContollerTest(GameStoreApiFactory factory)
+        {
+            client = factory.CreateClient();
+        }
 
 
         [Fact]
@@ -24,7 +24,7 @@ namespace GameStoreTests.Controllers
         {
             var request = new CreatePlatformRequest
             {
-                Platform=new CreatePlatformDto
+                Platform = new CreatePlatformDto
                 {
                     Type = "Mobile-" + Guid.NewGuid().ToString().Substring(0, 8)
                 }
@@ -40,15 +40,15 @@ namespace GameStoreTests.Controllers
         [Fact]
         public async Task UpdatePlatformAsync_ShouldReturnNoContent_WhenPlatformIsUpdated()
         {
-            var createRequest = new CreatePlatformRequest { Platform = new CreatePlatformDto{ Type = "Original Type" } };
+            var createRequest = new CreatePlatformRequest { Platform = new CreatePlatformDto { Type = "Original Type" } };
             var createResponse = await client.PostAsJsonAsync("/api/platforms", createRequest);
             var createdPlatform = await createResponse.Content.ReadFromJsonAsync<PlatformDto>();
 
             var updateRequest = new UpdatePlatformRequest
             {
-                Platform=new PlatformDto
+                Platform = new PlatformDto
                 {
-                    Id = createdPlatform.Id,
+                    Id = createdPlatform!.Id,
                     Type = "Updated Type"
                 }
             };
@@ -71,11 +71,11 @@ namespace GameStoreTests.Controllers
         [Fact]
         public async Task DeletePlatformAsync_ShouldReturnNoContent_WhenPlatformIsDeleted()
         {
-            var createRequest = new CreatePlatformRequest { Platform=new CreatePlatformDto { Type = "To Delete" } };
+            var createRequest = new CreatePlatformRequest { Platform = new CreatePlatformDto { Type = "To Delete" } };
             var createResponse = await client.PostAsJsonAsync("/api/platforms", createRequest);
             var createdPlatform = await createResponse.Content.ReadFromJsonAsync<PlatformDto>();
 
-            var deleteResponse = await client.DeleteAsync($"/api/platforms/{createdPlatform.Id}");
+            var deleteResponse = await client.DeleteAsync($"/api/platforms/{createdPlatform!.Id}");
 
             Assert.Equal(HttpStatusCode.NoContent, deleteResponse.StatusCode);
         }
@@ -95,7 +95,7 @@ namespace GameStoreTests.Controllers
             var createResponse = await client.PostAsJsonAsync("/api/platforms", createRequest);
             var createdPlatform = await createResponse.Content.ReadFromJsonAsync<PlatformDto>();
 
-            var getResponse = await client.GetAsync($"/api/platforms/{createdPlatform.Id}");
+            var getResponse = await client.GetAsync($"/api/platforms/{createdPlatform!.Id}");
 
             getResponse.EnsureSuccessStatusCode();
             var platform = await getResponse.Content.ReadFromJsonAsync<PlatformDto>();
@@ -104,7 +104,7 @@ namespace GameStoreTests.Controllers
             Assert.Equal(createdPlatform.Id, platform.Id);
         }
 
-        
+
 
         [Fact]
         public async Task GetAllPlatformsAsync_ShouldReturnOk_AndListOfPlatforms()
@@ -135,7 +135,7 @@ namespace GameStoreTests.Controllers
             var createResponse = await client.PostAsJsonAsync("/api/platforms", createRequest);
             var createdPlatform = await createResponse.Content.ReadFromJsonAsync<PlatformDto>();
 
-            var getResponse = await client.GetAsync($"/api/platforms/{createdPlatform.Id}/games");
+            var getResponse = await client.GetAsync($"/api/platforms/{createdPlatform!.Id}/games");
 
             getResponse.EnsureSuccessStatusCode();
             var games = await getResponse.Content.ReadFromJsonAsync<List<GameDto>>();

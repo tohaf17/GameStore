@@ -13,8 +13,8 @@ namespace GameStore.Services.Interfaces
         Task<bool> DeleteGameAsync(Guid id, CancellationToken token = default);
         Task<IEnumerable<GameDto>> GetAllGamesAsync(CancellationToken token=default);
         Task<GameDto?> GetGameByKeyAsync(string key, CancellationToken token = default);
-        Task<IEnumerable<GenreDto>> GetGameGenresByKeyAsync(string key, CancellationToken token = default);
-        Task<IEnumerable<PlatformDto>> GetGamePlatformsByKeyAsync(string key, CancellationToken token = default);
+        Task<IEnumerable<GenreDto>?> GetGameGenresByKeyAsync(string key, CancellationToken token = default);
+        Task<IEnumerable<PlatformDto>?> GetGamePlatformsByKeyAsync(string key, CancellationToken token = default);
         Task<GameDto> GetGameByIdAsync(Guid id, CancellationToken token = default);
         Task<bool> GetGameFilesAsync(Guid id, CancellationToken token = default);
     }

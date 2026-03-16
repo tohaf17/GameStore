@@ -13,10 +13,10 @@ namespace GameStoreTests.Controllers
     {
         private readonly HttpClient client;
 
-        //public GenreControllerTest(GameStoreApiFactory factory)
-        //{
-        //    client = factory.CreateClient();
-        //}
+        public GenreControllerTest(GameStoreApiFactory factory)
+        {
+            client = factory.CreateClient();
+        }
 
 
         [Fact]
@@ -52,7 +52,7 @@ namespace GameStoreTests.Controllers
             {
                 Genre=new GenreDto
                 {
-                    Id = createdGenre.Id,
+                    Id = createdGenre!.Id,
                     Name = "Updated Genre"
                 }
             };
@@ -80,7 +80,7 @@ namespace GameStoreTests.Controllers
             var createResponse = await client.PostAsJsonAsync("/api/genres", createRequest);
             var createdGenre = await createResponse.Content.ReadFromJsonAsync<GenreDto>();
 
-            var deleteResponse = await client.DeleteAsync($"/api/genres/{createdGenre.Id}");
+            var deleteResponse = await client.DeleteAsync($"/api/genres/{createdGenre!.Id}");
 
             Assert.Equal(HttpStatusCode.NoContent, deleteResponse.StatusCode);
         }
@@ -102,7 +102,7 @@ namespace GameStoreTests.Controllers
             var createResponse = await client.PostAsJsonAsync("/api/genres", createRequest);
             var createdGenre = await createResponse.Content.ReadFromJsonAsync<GenreDto>();
 
-            var getResponse = await client.GetAsync($"/api/genres/{createdGenre.Id}");
+            var getResponse = await client.GetAsync($"/api/genres/{createdGenre!.Id}");
             getResponse.EnsureSuccessStatusCode();
 
             var genre = await getResponse.Content.ReadFromJsonAsync<GenreDto>();
@@ -142,7 +142,7 @@ namespace GameStoreTests.Controllers
             var parentGenre = await parentResponse.Content.ReadFromJsonAsync<GenreDto>();
 
             
-            var getResponse = await client.GetAsync($"/api/genres/{parentGenre.Id}/genres");
+            var getResponse = await client.GetAsync($"/api/genres/{parentGenre!.Id}/genres");
             getResponse.EnsureSuccessStatusCode();
 
             var subGenres = await getResponse.Content.ReadFromJsonAsync<List<GenreDto>>();
@@ -168,7 +168,7 @@ namespace GameStoreTests.Controllers
             var createResponse = await client.PostAsJsonAsync("/api/genres", createRequest);
             var createdGenre = await createResponse.Content.ReadFromJsonAsync<GenreDto>();
 
-            var getResponse = await client.GetAsync($"/api/genres/{createdGenre.Id}/games");
+            var getResponse = await client.GetAsync($"/api/genres/{createdGenre!.Id}/games");
             getResponse.EnsureSuccessStatusCode();
 
             var games = await getResponse.Content.ReadFromJsonAsync<List<GameDto>>();

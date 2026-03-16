@@ -88,7 +88,7 @@ namespace GameStore.Services.Services
             return platforms.Select(platform => mapper.Map<PlatformDto>(platform));
         }
 
-        public async Task<IEnumerable<GameDto>> GetGameByPlatformAsync(Guid id, CancellationToken token = default)
+        public async Task<IEnumerable<GameDto>?> GetGameByPlatformAsync(Guid id, CancellationToken token = default)
         {
             var platform= await repository.Platforms.GetPlatformByIdAsync(id, token);
             if(platform == null)

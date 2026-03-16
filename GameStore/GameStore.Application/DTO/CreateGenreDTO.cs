@@ -7,7 +7,7 @@ namespace GameStore.Application.DTO
 {
     public class CreateGenreDto
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public Guid? ParentId { get; set; }
 
     }

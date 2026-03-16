@@ -11,6 +11,7 @@ namespace GameStore.Repositories.Repositories
     public class UnitOfWork: IUnitOfWork
     {
         private readonly GameStoreContext context;
+        private bool disposed = false;
         public IGameRepository Games{ get; set; }
         public IGenreRepository Genres { get; set; }
         public IPlatformRepository Platforms { get; set; }
@@ -27,9 +28,23 @@ namespace GameStore.Repositories.Repositories
             await context.SaveChangesAsync(token);
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    context.Dispose();
+                }
+                disposed = true;
+            }
+        }
+
         public void Dispose()
         {
-            context.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }
+

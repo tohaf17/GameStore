@@ -13,6 +13,6 @@ namespace GameStore.Services.Interfaces
         Task<bool> DeletePlatformAsync(Guid id, CancellationToken token = default);
         Task<PlatformDto> GetPlatformByIdAsync(Guid id, CancellationToken token = default);
         Task<IEnumerable<PlatformDto>> GetAllPlatformsAsync(CancellationToken token=default);
-        Task<IEnumerable<GameDto>> GetGameByPlatformAsync(Guid id, CancellationToken token = default);
+        Task<IEnumerable<GameDto>?> GetGameByPlatformAsync(Guid id, CancellationToken token = default);
     }
 }

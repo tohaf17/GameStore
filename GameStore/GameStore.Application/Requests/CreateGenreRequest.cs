@@ -7,7 +7,7 @@ namespace GameStore.Application.Requests
 {
     public class CreateGenreRequest
     {
-        public CreateGenreDto Genre { get; set; }
+        public CreateGenreDto Genre { get; set; } = default!;
 
     }
     public class CreateGenreRequestValidator : FluentValidation.AbstractValidator<CreateGenreRequest>

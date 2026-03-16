@@ -32,9 +32,9 @@ namespace GameStoreTests.GameStore.Application
         [Theory]
         [InlineData("")]
         [InlineData(null)]
-        public void ShouldHaveErrorWhenNameIsEmpty(string invalidName)
+        public void ShouldHaveErrorWhenNameIsEmpty(string? invalidName)
         {
-            var model = new CreateGameDto { Name = invalidName };
+            var model = new CreateGameDto { Name = invalidName! };
             var result = validator.TestValidate(model);
             result.ShouldHaveValidationErrorFor(g => g.Name)
                   .WithErrorMessage("Name is required");
@@ -52,9 +52,9 @@ namespace GameStoreTests.GameStore.Application
         [Theory]
         [InlineData("")]
         [InlineData(null)]
-        public void ShouldHaveErrorWhenKeyIsEmpty(string invalidKey)
+        public void ShouldHaveErrorWhenKeyIsEmpty(string? invalidKey)
         {
-            var model = new CreateGameDto { Key = invalidKey };
+            var model = new CreateGameDto { Key = invalidKey! };
             var result = validator.TestValidate(model);
             result.ShouldHaveValidationErrorFor(g => g.Key)
                   .WithErrorMessage("Key is required");
@@ -84,9 +84,9 @@ namespace GameStoreTests.GameStore.Application
         [Theory]
         [InlineData("")]
         [InlineData(null)]
-        public void ShouldHaveErrorWhenDescriptionIsEmpty(string invalidDescription)
+        public void ShouldHaveErrorWhenDescriptionIsEmpty(string? invalidDescription)
         {
-            var model = new CreateGameDto { Description = invalidDescription };
+            var model = new CreateGameDto { Description = invalidDescription! };
             var result = validator.TestValidate(model);
             result.ShouldHaveValidationErrorFor(g => g.Description)
                   .WithErrorMessage("Description is required");

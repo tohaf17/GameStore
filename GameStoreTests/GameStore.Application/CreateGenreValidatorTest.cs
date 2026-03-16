@@ -18,9 +18,9 @@ namespace GameStoreTests.GameStore.Application
         [Theory]
         [InlineData("")]
         [InlineData(null)]
-        public void ShouldHaveErrorWhenNameIsEmpty(string invalidName)
+        public void ShouldHaveErrorWhenNameIsEmpty(string? invalidName)
         {
-            var model = new CreateGenreDto { Name = invalidName };
+            var model = new CreateGenreDto { Name = invalidName! };
             var result = validator.TestValidate(model);
             result.ShouldHaveValidationErrorFor(g => g.Name)
                   .WithErrorMessage("Name is required");

@@ -19,9 +19,9 @@ namespace GameStoreTests.GameStore.Application
         [Theory]
         [InlineData("")]
         [InlineData(null)]
-        public void ShouldHaveErrorWhenTypeIsEmpty(string type)
+        public void ShouldHaveErrorWhenTypeIsEmpty(string? type)
         {
-            var model = new CreatePlatformDto { Type = type };
+            var model = new CreatePlatformDto { Type = type! };
             var result = validator.TestValidate(model);
             result.ShouldHaveValidationErrorFor(p => p.Type)
                 .WithErrorMessage("Type is required");

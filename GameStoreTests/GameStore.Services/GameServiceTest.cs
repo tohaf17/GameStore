@@ -90,7 +90,7 @@ namespace GameStoreTests.GameStore.Services
             repositoryMock.Setup(r => r.GetGamePlatformsByKeyAsync(key, It.IsAny<CancellationToken>())).ReturnsAsync(platforms);
             mapperMock.Setup(m => m.Map<IEnumerable<PlatformDto>>(platforms)).Returns(platformDtos);
 
-            var result = service.GetGamePlatformsByKeyAsync(key).Result;
+            var result = service.GetGamePlatformsByKeyAsync(key)?.Result;
 
             Assert.NotNull(result);
             Assert.Single(result);
@@ -130,7 +130,7 @@ namespace GameStoreTests.GameStore.Services
             }
         }
         [Fact]
-        public async void GetGamePlatformsByKeyAsync_ShouldThrowOperationCanceledException_WhenCancellationIsRequested()
+        public async Task GetGamePlatformsByKeyAsync_ShouldThrowOperationCanceledException_WhenCancellationIsRequested()
         {
             var key = "test-game";
             using (var cancellationTokenSource = new CancellationTokenSource())
@@ -143,7 +143,7 @@ namespace GameStoreTests.GameStore.Services
             }
         }
         [Fact]
-        public async void CreateGameAsync_ShouldHandleEmptyKeyByGeneratingFromName()
+        public async Task CreateGameAsync_ShouldHandleEmptyKeyByGeneratingFromName()
         {
             var request = new CreateGameRequest
             {
@@ -195,7 +195,7 @@ namespace GameStoreTests.GameStore.Services
             };
             var existingGame = new Game { Id = request.Game.Id, Name = "Existing Game", Key = "existing-game" };
             repositoryMock.Setup(r => r.GetGameByIdAsync(request.Game.Id, It.IsAny<CancellationToken>())).ReturnsAsync(existingGame);
-            var result = service.UpdateGameAsync(request).Result;
+            var result = service.UpdateGameAsync(request)?.Result;
             Assert.True(result);
             repositoryMock.Verify(r => r.UpdateGameAsync(It.Is<Game>(g => g.Id == existingGame.Id && g.Name == request.Game.Name && g.Key == request.Game.Key)), Times.Once);
             unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
@@ -234,7 +234,7 @@ namespace GameStoreTests.GameStore.Services
         {
             var gameId = Guid.NewGuid();
             repositoryMock.Setup(r => r.GetGameByIdAsync(gameId, It.IsAny<CancellationToken>())).ReturnsAsync((Game)null!);
-            var result = service.DeleteGameAsync(gameId).Result;
+            var result = service.DeleteGameAsync(gameId)?.Result;
             Assert.False(result);
         }
         [Fact]
@@ -256,7 +256,7 @@ namespace GameStoreTests.GameStore.Services
         {
             var key = "nonexistent-game";
             repositoryMock.Setup(r => r.GetGameByKeyAsync(key, It.IsAny<CancellationToken>())).ReturnsAsync((Game)null!);
-            var result = service.GetGameByKeyAsync(key).Result;
+            var result = service.GetGameByKeyAsync(key)?.Result;
             Assert.Null(result);
         }
         [Fact]
@@ -279,7 +279,7 @@ namespace GameStoreTests.GameStore.Services
         {
             var gameId = Guid.NewGuid();
             repositoryMock.Setup(r => r.GetGameByIdAsync(gameId, It.IsAny<CancellationToken>())).ReturnsAsync((Game)null!);
-            var result = service.GetGameByIdAsync(gameId).Result;
+            var result = service.GetGameByIdAsync(gameId)?.Result;
             Assert.Null(result);
         }
         [Fact]
@@ -287,7 +287,7 @@ namespace GameStoreTests.GameStore.Services
         {
             var gameId = Guid.NewGuid();
             repositoryMock.Setup(r => r.GetGameByIdAsync(gameId, It.IsAny<CancellationToken>())).ReturnsAsync(new Game { Id = gameId, Name = "Existing Game", Key = "existing-game" });
-            var result = service.GetGameFilesAsync(gameId).Result;
+            var result = service.GetGameFilesAsync(gameId)?.Result;
             Assert.NotNull(result);
         }
         [Fact]
@@ -305,7 +305,7 @@ namespace GameStoreTests.GameStore.Services
             };
             repositoryMock.Setup(r => r.GetAllGamesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(games);
             mapperMock.Setup(m => m.Map<IEnumerable<GameDto>>(games)).Returns(gameDtos);
-            var result = service.GetAllGamesAsync().Result;
+            var result = service.GetAllGamesAsync()?.Result;
             Assert.NotNull(result);
             Assert.Equal(2, result.Count());
         }

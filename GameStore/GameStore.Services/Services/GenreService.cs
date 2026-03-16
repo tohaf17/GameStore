@@ -69,7 +69,7 @@ namespace GameStore.Services.Services
             
         }
 
-        public async Task<IEnumerable<GenreDto>> GetGenresByParentIdAsync(Guid id, CancellationToken token = default)
+        public async Task<IEnumerable<GenreDto>?> GetGenresByParentIdAsync(Guid id, CancellationToken token = default)
         {
             var genre = await repository.Genres.GetGenreByIdAsync(id, token);
 
@@ -92,14 +92,14 @@ namespace GameStore.Services.Services
             return mapper.Map<GenreDto>(genre);
         }
 
-        public async Task<IEnumerable<GenreDto>> GetAllGenresAsync(CancellationToken token=default)
+        public async Task<IEnumerable<GenreDto>?> GetAllGenresAsync(CancellationToken token=default)
         {
             var genres = await repository.Genres.GetAllGenresAsync(token);
 
             return genres.Select(genre => mapper.Map<GenreDto>(genre));
         }
 
-        public async Task<IEnumerable<GameDto>> GetGameByGenreAsync(Guid id, CancellationToken token = default)
+        public async Task<IEnumerable<GameDto>?> GetGameByGenreAsync(Guid id, CancellationToken token = default)
         {
             var genre = await repository.Genres.GetGenreByIdAsync(id, token);
 

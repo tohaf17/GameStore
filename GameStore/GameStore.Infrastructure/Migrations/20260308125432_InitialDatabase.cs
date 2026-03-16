@@ -11,6 +11,8 @@ namespace GameStore.Infrastructure.Migrations
     public partial class InitialDatabase : Migration
     {
         /// <inheritdoc />
+        private readonly string[] GenreColumns = new string[] { "Id", "Name", "ParentGenreId" };
+        private readonly string[] PlatformColumns = new string[] { "Id", "Type" };
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -108,7 +110,7 @@ namespace GameStore.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Genres",
-                columns: new[] { "Id", "Name", "ParentGenreId" },
+                columns: GenreColumns,
                 values: new object[,]
                 {
                     { new Guid("11111111-1111-1111-1111-111111111111"), "Strategy", null },
@@ -122,7 +124,7 @@ namespace GameStore.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Platforms",
-                columns: new[] { "Id", "Type" },
+                columns: PlatformColumns,
                 values: new object[,]
                 {
                     { new Guid("6d07e997-8c46-4e5a-939e-29249767675f"), "Desktop" },
@@ -133,7 +135,7 @@ namespace GameStore.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Genres",
-                columns: new[] { "Id", "Name", "ParentGenreId" },
+                columns: GenreColumns,
                 values: new object[,]
                 {
                     { new Guid("047e868b-5777-4509-9430-67180436d413"), "Off-road", new Guid("33333333-3333-3333-3333-333333333333") },

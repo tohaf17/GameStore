@@ -33,7 +33,7 @@ namespace GameStoreTests.GameStore.Application
         [Fact]
         public void ShouldHaveErrorWhenIdIsEmpty()
         {
-            var model = new GameDto { Id = default };
+            var model = new GameDto { Id = Guid.Empty };
 
             var result = validator.TestValidate(model);
 
@@ -44,9 +44,9 @@ namespace GameStoreTests.GameStore.Application
         [Theory]
         [InlineData("")]
         [InlineData(null)]
-        public void ShouldHaveErrorWhenNameIsEmpty(string invalidName)
+        public void ShouldHaveErrorWhenNameIsEmpty(string? invalidName)
         {
-            var model = new GameDto { Name = invalidName };
+            var model = new GameDto { Name = invalidName! };
 
             var result = validator.TestValidate(model);
 
@@ -79,9 +79,9 @@ namespace GameStoreTests.GameStore.Application
         [Theory]
         [InlineData("")]
         [InlineData(null)]
-        public void ShouldHaveErrorWhenKeyIsEmpty(string invalidKey)
+        public void ShouldHaveErrorWhenKeyIsEmpty(string? invalidKey)
         {
-            var model = new GameDto { Key = invalidKey };
+            var model = new GameDto { Key = invalidKey! };
 
             var result = validator.TestValidate(model);
 
@@ -118,9 +118,9 @@ namespace GameStoreTests.GameStore.Application
         [Theory]
         [InlineData("")]
         [InlineData(null)]
-        public void ShouldHaveErrorWhenDescriptionIsEmpty(string invalidDescription)
+        public void ShouldHaveErrorWhenDescriptionIsEmpty(string? invalidDescription)
         {
-            var model = new GameDto { Description = invalidDescription };
+            var model = new GameDto { Description = invalidDescription! };
 
             var result = validator.TestValidate(model);
 

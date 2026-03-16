@@ -46,12 +46,12 @@ namespace GameStoreTests.GameStore.Application
         [Theory]
         [InlineData("")]
         [InlineData(null)]
-        public void ShouldHaveErrorWhenTypeIsEmpty(string invalidType)
+        public void ShouldHaveErrorWhenTypeIsEmpty(string? invalidType)
         {
             var model = new PlatformDto
             {
                 Id = Guid.NewGuid(),
-                Type = invalidType
+                Type = invalidType!
             };
 
             var result = validator.TestValidate(model);

@@ -57,7 +57,7 @@ namespace GameStore.Services.Services
 
             return mapper.Map<GameDto>(game);
         }
-        public async Task<IEnumerable<GenreDto>> GetGameGenresByKeyAsync(string key,CancellationToken token = default)
+        public async Task<IEnumerable<GenreDto>?> GetGameGenresByKeyAsync(string key,CancellationToken token = default)
         {
             var game = await repository.Games.GetGameByKeyAsync(key, token);
 
@@ -70,7 +70,7 @@ namespace GameStore.Services.Services
 
             return mapper.Map<IEnumerable<GenreDto>>(genres);
         }
-        public async Task<IEnumerable<PlatformDto>> GetGamePlatformsByKeyAsync(string key, CancellationToken token=default)
+        public async Task<IEnumerable<PlatformDto>?> GetGamePlatformsByKeyAsync(string key, CancellationToken token=default)
         {
             var game = await repository.Games.GetGameByKeyAsync(key, token);
 
@@ -124,7 +124,7 @@ namespace GameStore.Services.Services
 
             await repository.Games.DeleteGameAsync(existingGame!);
             await repository.SaveChangesAsync(token);
-            return (existingGame is not null)?true:false;
+            return (existingGame is not null);
         }
         public async Task<GameDto?> GetGameByKeyAsync(string key, CancellationToken token = default)
         {
@@ -152,7 +152,7 @@ namespace GameStore.Services.Services
             var games = await repository.Games.GetAllGamesAsync(token);
             return mapper.Map<IEnumerable<GameDto>>(games);
         }
-        private async Task GenerateGameFile(Game? game,CancellationToken token = default)
+        private static async Task GenerateGameFile(Game? game,CancellationToken token = default)
         {
             string fileContent = $"Game ID: {game?.Id}" +
                 $"\nName: {game?.Name}" +

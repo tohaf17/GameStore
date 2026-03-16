@@ -8,7 +8,7 @@ namespace GameStore.Application.DTO
     public class PlatformDto
     {
         public Guid Id { get; set; }
-        public string Type { get; set; }
+        public string Type { get; set; } = string.Empty;
     }
     public class PlatformValidator : AbstractValidator<PlatformDto>
     {

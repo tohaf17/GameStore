@@ -8,7 +8,7 @@ namespace GameStore.Application.Requests
 {
     public class UpdateGenreRequest
     {
-        public  GenreDto Genre { get; set; }
+        public GenreDto Genre { get; set; } = default!;
 
     }
     public class UpdateGenreRequestValidator : AbstractValidator<UpdateGenreRequest>
