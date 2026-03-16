@@ -22,11 +22,12 @@ namespace GameStoreTests.Controllers
         [Fact]
         public async Task CreatePlatformAsync_ShouldReturnCreated_AndCorrectStatusCode()
         {
+            var guidString = Guid.NewGuid().ToString();
             var request = new CreatePlatformRequest
             {
                 Platform = new CreatePlatformDto
                 {
-                    Type = "Mobile-" + Guid.NewGuid().ToString().Substring(0, 8)
+                    Type = string.Concat("Mobile-", guidString.AsSpan(0, 8))
                 }
             };
 
@@ -135,7 +136,7 @@ namespace GameStoreTests.Controllers
             var createResponse = await client.PostAsJsonAsync("/api/platforms", createRequest);
             var createdPlatform = await createResponse.Content.ReadFromJsonAsync<PlatformDto>();
 
-            var getResponse = await client.GetAsync($"/api/platforms/{createdPlatform!.Id}/games");
+            var getResponse = await client.GetAsync($"/api/platforms/{createdPlatform?.Id}/games");
 
             getResponse.EnsureSuccessStatusCode();
             var games = await getResponse.Content.ReadFromJsonAsync<List<GameDto>>();

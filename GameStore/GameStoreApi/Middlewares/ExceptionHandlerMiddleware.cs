@@ -30,7 +30,7 @@ namespace GameStoreApi.Middlewares
             }
         }
 
-        private async Task HandleExceptionAsync(HttpContext context, Exception exception, IEnumerable<IExceptionMapper> mappers)
+        private static async Task HandleExceptionAsync(HttpContext context, Exception exception, IEnumerable<IExceptionMapper> mappers)
         {
             if (context.Response.HasStarted) return;
 
