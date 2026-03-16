@@ -11,10 +11,10 @@ namespace GameStoreTests.Controllers
     public class GameContollerTest : IClassFixture<GameStoreApiFactory>
     {
         private readonly HttpClient client;
-        public GameContollerTest(GameStoreApiFactory factory)
-        {
-            client = factory.CreateClient();
-        }
+        //public GameContollerTest(GameStoreApiFactory factory)
+        //{
+        //    client = factory.CreateClient();
+        //}
 
         [Fact]
         public async Task CreateGameAsync_ShouldReturnNotNull_AndCorrectStatusCode()

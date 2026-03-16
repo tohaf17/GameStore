@@ -13,10 +13,10 @@ namespace GameStoreTests.Controllers
     {
         private readonly HttpClient client;
 
-        public GenreControllerTest(GameStoreApiFactory factory)
-        {
-            client = factory.CreateClient();
-        }
+        //public GenreControllerTest(GameStoreApiFactory factory)
+        //{
+        //    client = factory.CreateClient();
+        //}
 
 
         [Fact]
