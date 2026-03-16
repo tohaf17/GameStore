@@ -40,8 +40,11 @@ namespace GameStore.Services.Services
         public async Task<bool> DeleteGenreAsync(Guid id, CancellationToken token = default)
         {
             var existingGenre = await repository.Genres.GetGenreByIdAsync(id, token);
-
-            await repository.Genres.DeleteGenreAsync(existingGenre!);
+            if (existingGenre == null)
+            {
+                return false;
+            }
+            await repository.Genres.DeleteGenreAsync(existingGenre);
             
             await repository.SaveChangesAsync(token);
             return true;
@@ -68,8 +71,15 @@ namespace GameStore.Services.Services
 
         public async Task<IEnumerable<GenreDto>> GetGenresByParentIdAsync(Guid id, CancellationToken token = default)
         {
+            var genre = await repository.Genres.GetGenreByIdAsync(id, token);
+
+            if (genre == null)
+            {
+                return null;
+            }
 
             var genres = await repository.Genres.GetGenresByParentIdAsync(id, token);
+
 
             return genres.Select(genre => mapper.Map<GenreDto>(genre));
         }
@@ -91,7 +101,12 @@ namespace GameStore.Services.Services
 
         public async Task<IEnumerable<GameDto>> GetGameByGenreAsync(Guid id, CancellationToken token = default)
         {
+            var genre = await repository.Genres.GetGenreByIdAsync(id, token);
 
+            if (genre == null)
+            {
+                return null;
+            }
             var games = await repository.Genres.GetGameByGenreAsync(id, token);
 
             return games.Select(game => mapper.Map<GameDto>(game));

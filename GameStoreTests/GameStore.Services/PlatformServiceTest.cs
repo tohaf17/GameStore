@@ -201,7 +201,8 @@ namespace GameStoreTests.GameStore.Services
 
             repositoryMock.Setup(r => r.GetGameByPlatformAsync(platformId, It.IsAny<CancellationToken>()))
                           .ReturnsAsync(games);
-
+            repositoryMock.Setup(r => r.GetPlatformByIdAsync(platformId, It.IsAny<CancellationToken>()))
+                          .ReturnsAsync(new Platform { Id = platformId, Type = "PC" });
             mapperMock.Setup(m => m.Map<GameDto>(It.IsAny<Game>()))
                       .Returns((Game g) => new GameDto { Id = g.Id, Name = g.Name });
 

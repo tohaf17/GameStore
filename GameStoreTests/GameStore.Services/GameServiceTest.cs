@@ -68,7 +68,8 @@ namespace GameStoreTests.GameStore.Services
             var key = "test-game";
             var genres = new List<Genre> { new Genre { Id = Guid.NewGuid(), Name = "Action" } };
             var genreDtos = new List<GenreDto> { new GenreDto { Id = genres[0].Id, Name = "Action" } };
-
+            repositoryMock.Setup(r => r.GetGameByKeyAsync(key, It.IsAny<CancellationToken>()))
+                  .ReturnsAsync(new Game { Key = key });
             repositoryMock.Setup(r => r.GetGameGenresByKeyAsync(key, It.IsAny<CancellationToken>())).ReturnsAsync(genres);
             mapperMock.Setup(m => m.Map<IEnumerable<GenreDto>>(genres)).Returns(genreDtos);
 
@@ -84,7 +85,8 @@ namespace GameStoreTests.GameStore.Services
             var key = "test-game";
             var platforms = new List<Platform> { new Platform { Id = Guid.NewGuid(), Type = "PC" } };
             var platformDtos = new List<PlatformDto> { new PlatformDto { Id = platforms[0].Id, Type = "PC" } };
-
+            repositoryMock.Setup(r => r.GetGameByKeyAsync(key, It.IsAny<CancellationToken>()))
+                  .ReturnsAsync(new Game { Key = key });
             repositoryMock.Setup(r => r.GetGamePlatformsByKeyAsync(key, It.IsAny<CancellationToken>())).ReturnsAsync(platforms);
             mapperMock.Setup(m => m.Map<IEnumerable<PlatformDto>>(platforms)).Returns(platformDtos);
 
@@ -121,6 +123,8 @@ namespace GameStoreTests.GameStore.Services
             using (var cancellationTokenSource = new CancellationTokenSource())
             {
                 await cancellationTokenSource.CancelAsync();
+                repositoryMock.Setup(r => r.GetGameByKeyAsync(key, It.IsAny<CancellationToken>()))
+                      .ThrowsAsync(new OperationCanceledException());
                 repositoryMock.Setup(r => r.GetGameGenresByKeyAsync(key, It.IsAny<CancellationToken>())).ThrowsAsync(new OperationCanceledException());
                 await Assert.ThrowsAsync<OperationCanceledException>(() => service.GetGameGenresByKeyAsync(key, cancellationTokenSource.Token));
             }
@@ -132,6 +136,8 @@ namespace GameStoreTests.GameStore.Services
             using (var cancellationTokenSource = new CancellationTokenSource())
             {
                 await cancellationTokenSource.CancelAsync();
+                repositoryMock.Setup(r => r.GetGameByKeyAsync(key, It.IsAny<CancellationToken>()))
+                      .ThrowsAsync(new OperationCanceledException());
                 repositoryMock.Setup(r => r.GetGamePlatformsByKeyAsync(key, It.IsAny<CancellationToken>())).ThrowsAsync(new OperationCanceledException());
                 await Assert.ThrowsAsync<OperationCanceledException>(() => service.GetGamePlatformsByKeyAsync(key, cancellationTokenSource.Token));
             }
@@ -229,7 +235,7 @@ namespace GameStoreTests.GameStore.Services
             var gameId = Guid.NewGuid();
             repositoryMock.Setup(r => r.GetGameByIdAsync(gameId, It.IsAny<CancellationToken>())).ReturnsAsync((Game)null!);
             var result = service.DeleteGameAsync(gameId).Result;
-            Assert.True(result);
+            Assert.False(result);
         }
         [Fact]
         public async Task ShouldReturnTrueWhenGameIsDeletedSuccessfully()

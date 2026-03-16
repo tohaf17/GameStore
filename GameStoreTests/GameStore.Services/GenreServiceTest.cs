@@ -150,9 +150,10 @@ namespace GameStoreTests.GameStore.Services
                 new Genre { Id = Guid.NewGuid(), Name = "Sub-genre 1", ParentGenreId = parentId }
             };
 
+            repositoryMock.Setup(r => r.GetGenreByIdAsync(parentId, It.IsAny<CancellationToken>()))
+                  .ReturnsAsync(new Genre { Id = parentId, Name = "Test Genre" });
             repositoryMock.Setup(r => r.GetGenresByParentIdAsync(parentId, It.IsAny<CancellationToken>()))
-                          .ReturnsAsync(genres);
-
+          .ReturnsAsync(genres);
             mapperMock.Setup(m => m.Map<GenreDto>(It.IsAny<Genre>()))
                       .Returns((Genre g) => new GenreDto { Id = g.Id, Name = g.Name });
 
@@ -171,6 +172,8 @@ namespace GameStoreTests.GameStore.Services
                 new Game { Id = Guid.NewGuid(), Name = "Game 1", Key = "game-1" }
             };
 
+            repositoryMock.Setup(r => r.GetGenreByIdAsync(genreId, It.IsAny<CancellationToken>()))
+                          .ReturnsAsync(new Genre { Id = genreId, Name = "Action" });
             repositoryMock.Setup(r => r.GetGameByGenreAsync(genreId, It.IsAny<CancellationToken>()))
                           .ReturnsAsync(games);
 
